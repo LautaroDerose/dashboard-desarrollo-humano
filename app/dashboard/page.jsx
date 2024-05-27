@@ -1,14 +1,14 @@
 
 
 import { Dashboard } from "@/components/containers/DashboardTemplate";
-import Rightbar from "@/components/containers/RightBar";
 import BenefitCard from "@/components/dashboard/BenefitCard";
 import Chart from "@/components/dashboard/Chart";
 
 export default function DashboardPage() {
   return (
     <div >
-      <Dashboard />
+      {/* <Dashboard /> */}
+      <h1>Home</h1>
     </div>
   );
 }

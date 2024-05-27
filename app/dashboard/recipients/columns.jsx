@@ -48,11 +48,11 @@ export const columns = [
     enableHiding: false,
   },
   {
-    accessorKey: "firstName",
+    accessorKey: "first_name",
     header: "Name",
   },
   {
-    accessorKey: 'lastName',
+    accessorKey: 'last_name',
     header: 'Apellido',
     cell: (props) => <p className=''>{props.getValue()}</p>
   },
@@ -70,9 +70,13 @@ export const columns = [
     cell: (props) => <p className=''>{props.getValue()}</p>
   },
   {
-    accessorKey: 'birthDate',
+    accessorKey: 'birth_date',
     header: 'Fecha de Nacimiento',
     cell: (props) => <p className=''>{new Date(props.getValue()).toLocaleDateString()}</p>
+  //   cell: (props) => {
+  //     const date = new Date(props.getValue());
+  //     return <p className=''>{date.toLocaleDateString()}</p>;
+  // }
   },
   {
     accessorKey: "email",
@@ -94,43 +98,43 @@ export const columns = [
     cell: (props) => <p className=''>{props.getValue()}</p>
   },
   {
-    accessorKey: "enrollmentDate",
+    accessorKey: "enrollment_date",
     header: "Fech de Registro",
     cell: (props) => <p>{new Date(props.getValue()).toLocaleDateString()}</p>
   },
-  {
-    accessorKey: 'localityId',
-    header: 'ID de Localidad',
-    cell: (props) => <p className=''>{props.getValue()}</p>
-  },
-  {
-    accessorKey: 'streetId',
-    header: 'ID de Calle',
-    cell: (props) => <p className=''>{props.getValue()}</p>
-  },
-  {
-    accessorKey: 'streetNumber',
-    header: 'Número de Calle',
-    cell: (props) => <p className=''>{props.getValue()}</p>
-  },  
-  {
-    accessorKey: 'familyGroupId',
-    header: () => {
-      return(
-        <TooltipProvider>
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <Button variant="outline">ID_GF</Button>
-            </TooltipTrigger>
-            <TooltipContent>
-              <p>Id Grupo Familiar</p>
-            </TooltipContent>
-          </Tooltip>
-        </TooltipProvider>
-      )
-    },
-    cell: (props) => <p className=''>{props.getValue()}</p>
-  },
+  // {
+  //   accessorKey: 'locality_id',
+  //   header: 'ID de Localidad',
+  //   cell: (props) => <p className=''>{props.getValue()}</p>
+  // },
+  // {
+  //   accessorKey: 'streetId',
+  //   header: 'ID de Calle',
+  //   cell: (props) => <p className=''>{props.getValue()}</p>
+  // },
+  // {
+  //   accessorKey: 'streetNumber',
+  //   header: 'Número de Calle',
+  //   cell: (props) => <p className=''>{props.getValue()}</p>
+  // },  
+  // {
+  //   accessorKey: 'familyGroupId',
+  //   header: () => {
+  //     return(
+  //       <TooltipProvider>
+  //         <Tooltip>
+  //           <TooltipTrigger asChild>
+  //             <Button variant="outline">ID_GF</Button>
+  //           </TooltipTrigger>
+  //           <TooltipContent>
+  //             <p>Id Grupo Familiar</p>
+  //           </TooltipContent>
+  //         </Tooltip>
+  //       </TooltipProvider>
+  //     )
+  //   },
+  //   cell: (props) => <p className=''>{props.getValue()}</p>
+  // },
   {
     accessorKey: "benefits",
     header: "Beneficios",

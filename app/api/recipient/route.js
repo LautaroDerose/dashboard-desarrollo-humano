@@ -4,9 +4,9 @@ import { NextResponse } from "next/server";
 export async function GET() {
   try {
     const recipients = await prisma.recipient.findMany({
-      include: {
-        locality: true,  // Incluyendo localidad
-      },
+      include:{
+        contactinfo: true,
+      }
     });
     console.log("Recipients with locality:", recipients);  // Aquí
     return new Response(JSON.stringify(recipients), {

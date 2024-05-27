@@ -14,83 +14,104 @@ datasource db {
 }
 
 model BenefitCategory {
-  id        Int       @id @default(autoincrement())
-  name      String
-  benefits  Benefit[]
+  id      Int       @id @default(autoincrement())
+  name    String
+  Benefit Benefit[]
 }
 
 model Benefit {
-  id                  Int       @id @default(autoincrement())
-  name                String
-  frequency           String
-  quantity            Int?
-  amount              Int?
-  provider            String?
-  status              String
-  category            BenefitCategory?  @relation(fields: [categoryId], references: [id])
-  categoryId          Int?
-  recipients          Recipient[]       @relation("BenefitRecipient")
+  id          Int             @id @default(autoincrement())
+  name        String
+  type        String
+  frequency   String
+  provider    String
+  category    BenefitCategory @relation(fields: [category_id], references: [id])
+  category_id Int
+  Assignment  Assignment[]
 }
 
 model Recipient {
-  id              Int         @id @default(autoincrement())
-  firstName       String
-  lastName        String
-  birthDate       DateTime
-  dni             Int         @unique
-  phone           Int
-  email           String
-  sex             String
-  enrollmentDate  DateTime
-  locality        Locality    @relation(fields: [localityId], references: [id])
-  localityId      Int
-  street          Street      @relation(fields: [streetId], references: [id])
-  streetId        Int
-  streetNumber    String
-  familyGroup     FamilyGroup? @relation(fields: [familyGroupId], references: [id])
-  familyGroupId   Int?
-  riskFactors     RiskFactor[] 
-  socialConditions SocialCondition[] 
-  benefits        Benefit[]   @relation("BenefitRecipient")
+  id                Int               @id @default(autoincrement())
+  first_name        String
+  last_name         String
+  birth_date        DateTime
+  dni               Int               @unique
+  sex               String
+  enrollment_date   DateTime
+  is_active         Boolean
+  // family_group_id   Int
+  // family_group      FamilyGroup       @relation(fields: [family_group_id], references: [id])
+  contact_info     ContactInfo[]
+  risk_factors      RiskFactor[]
+  social_conditions SocialCondition[]
+  Assignment        Assignment[]
 }
 
-model Locality {
-  id      Int      @id @default(autoincrement())
-  name    String
-  streets Street[]
-  recipients  Recipient[]
-}
-
-model Street {
-  id          Int       @id @default(autoincrement())
-  name        String
-  locality    Locality  @relation(fields: [localityId], references: [id])
-  localityId  Int
-  recipients  Recipient[]
+model ContactInfo {
+  id            Int       @id @default(autoincrement())
+  recipient_id  Int
+  phone         Int
+  email         String
+  street_id     Int
+  street_number String
+  locality_id   Int
+  recipient     Recipient @relation(fields: [recipient_id], references: [id])
+  street        Street    @relation(fields: [street_id], references: [id])
+  locality      Locality  @relation(fields: [locality_id], references: [id])
 }
 
 model RiskFactor {
-  id          Int           @id @default(autoincrement())
-  name        String
-  gravity     String
-  type        String
-  recipients  Recipient[] @relation()
+  id           Int       @id @default(autoincrement())
+  name         String
+  gravity      String
+  type         String
+  recipient_id Int
+  recipient    Recipient @relation(fields: [recipient_id], references: [id])
 }
 
 model SocialCondition {
+  id           Int       @id @default(autoincrement())
+  name         String
+  gravity      String
+  type         String
+  recipient_id Int
+  recipient    Recipient @relation(fields: [recipient_id], references: [id])
+}
+
+model Locality {
   id          Int           @id @default(autoincrement())
   name        String
-  gravity     String
-  type        String
-  recipients  Recipient[] @relation()
+  ContactInfo ContactInfo[]
+  Street      Street[]
 }
 
-model FamilyGroup {
-  id        Int       @id @default(autoincrement())
-  familyName String?
-  recipients Recipient[]
+model Street {
+  id          Int           @id @default(autoincrement())
+  name        String
+  locality    Locality      @relation(fields: [locality_id], references: [id])
+  locality_id Int
+  ContactInfo ContactInfo[]
 }
 
+// model FamilyGroup {
+//   id          Int         @id @default(autoincrement())
+//   family_name String
+//   // Recipient   Recipient[]
+// }
+
+model Assignment {
+  id              Int       @id @default(autoincrement())
+  benefit_id      Int
+  recipient_id    Int
+  quantity        Int
+  amount          Int
+  status          String
+  enrollment_date DateTime
+  expiry_date     DateTime
+  withdrawal_date DateTime
+  benefit         Benefit   @relation(fields: [benefit_id], references: [id])
+  recipient       Recipient @relation(fields: [recipient_id], references: [id])
+}
 
 // -----------ORINIGAL MODELS ---------------------
 // model BenefitCategory {
@@ -99,11 +120,9 @@ model FamilyGroup {
 //   benefits  Benefit[]
 // }
 
-// // Definición del modelo para los beneficios
 // model Benefit {
 //   id                  Int       @id @default(autoincrement())
 //   name                String
-//   type                String? //eliminar 
 //   frequency           String
 //   quantity            Int?
 //   amount              Int?
@@ -114,7 +133,6 @@ model FamilyGroup {
 //   recipients          Recipient[]       @relation("BenefitRecipient")
 // }
 
-// // Definición del modelo para los beneficiarios
 // model Recipient {
 //   id              Int         @id @default(autoincrement())
 //   firstName       String
@@ -132,12 +150,11 @@ model FamilyGroup {
 //   streetNumber    String
 //   familyGroup     FamilyGroup? @relation(fields: [familyGroupId], references: [id])
 //   familyGroupId   Int?
-//   riskFactors     RiskFactor[]
-//   socialConditions SocialCondition[]
+//   riskFactors     RiskFactor[] 
+//   socialConditions SocialCondition[] 
 //   benefits        Benefit[]   @relation("BenefitRecipient")
 // }
 
-// // Definición del modelo para las localidades
 // model Locality {
 //   id      Int      @id @default(autoincrement())
 //   name    String
@@ -145,7 +162,6 @@ model FamilyGroup {
 //   recipients  Recipient[]
 // }
 
-// // Definición del modelo para las calles
 // model Street {
 //   id          Int       @id @default(autoincrement())
 //   name        String
@@ -154,25 +170,22 @@ model FamilyGroup {
 //   recipients  Recipient[]
 // }
 
-// // Definición del modelo para los factores de riesgo
 // model RiskFactor {
 //   id          Int           @id @default(autoincrement())
 //   name        String
 //   gravity     String
 //   type        String
-//   recipients  Recipient[] 
+//   recipients  Recipient[] @relation()
 // }
 
-// // Definición del modelo para las condiciones sociales
 // model SocialCondition {
 //   id          Int           @id @default(autoincrement())
 //   name        String
 //   gravity     String
 //   type        String
-//   recipients  Recipient[]
+//   recipients  Recipient[] @relation()
 // }
 
-// // Definición del modelo para los grupos familiares
 // model FamilyGroup {
 //   id        Int       @id @default(autoincrement())
 //   familyName String?

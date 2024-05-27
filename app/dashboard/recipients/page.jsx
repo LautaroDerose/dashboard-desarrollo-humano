@@ -14,7 +14,7 @@ async function getUsers() {
 
 export default async function RecipientsPage() {
   const data = await getUsers();
-  
+  console.log(data)
   if (!data || !columns) {
     return <div>Error loading data</div>;
   }
