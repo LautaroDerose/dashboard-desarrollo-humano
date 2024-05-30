@@ -70,9 +70,9 @@ export function DataTable({ columns, data }) {
       <div className="flex items-center gap-4 py-4">
         <Input
           placeholder="Filtrar por nombre..."
-          value={table.getColumn("first_name")?.getFilterValue() || ""}
+          value={table.getColumn("recipient.first_name")?.getFilterValue() || ""}
           onChange={(event) =>
-            table.getColumn("first_name")?.setFilterValue(event.target.value)
+            table.getColumn("recipient.first_name")?.setFilterValue(event.target.value)
           }
           className="max-w-sm"
         />

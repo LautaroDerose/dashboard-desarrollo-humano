@@ -11,7 +11,7 @@ export default async function RecipientFormPage() {
   const { localities, socialConditions, riskFactors } = await fetchData()
 
   return (
-    <div className=" flex justify-center mx-auto">
+    <div className=" flex justify-center mx-auto max-w-[600px]">
       <RecipientForm 
         localities={localities} 
         socialConditions={socialConditions} 

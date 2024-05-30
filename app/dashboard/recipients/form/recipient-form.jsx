@@ -45,7 +45,6 @@ export function RecipientForm({ localities, socialConditions, riskFactors }) {
     first_name: z.string().min(3, { message: "first_name must be at least 2 characters." }),
     last_name: z.string().min(2, { message: "last_name must be at least 2 characters." }),
     dni: z.string().refine(dni => !isNaN(parseFloat(dni))),
-    // dni: z.string(),
     birth_date: z.date(),
     sex: z.enum(["Femenino", "Masculino", "Otro"]),
     locality: z.enum(localityNames),
@@ -123,8 +122,8 @@ export function RecipientForm({ localities, socialConditions, riskFactors }) {
   };
 
   return (
-    <Form {...form}>
-      <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-8">
+    <Form {...form}  >
+      <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-8 w-full ">
         <FormField
           control={form.control}
           name="first_name"

@@ -48,8 +48,19 @@ export const columns = [
     enableHiding: false,
   },
   {
+    id: "recipient.first_name",
     accessorKey: "recipient.first_name",
-    header: "Name",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Nombre
+          <TbArrowsUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      )
+    },
   },
   {
     accessorKey: 'recipient.last_name',
@@ -159,11 +170,12 @@ export const columns = [
             <DropdownMenuItem
               onClick={() => navigator.clipboard.writeText(recipient.id)}
             >
-              Copy recipient ID
+              Copiar Id de persona
             </DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>View customer</DropdownMenuItem>
-            <DropdownMenuItem>View recipient details</DropdownMenuItem>
+            <DropdownMenuItem>Editar </DropdownMenuItem>
+            <DropdownMenuItem>Eliminar</DropdownMenuItem>
+            <DropdownMenuItem>Ver en detalle </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       )

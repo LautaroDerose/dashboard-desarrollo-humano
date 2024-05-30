@@ -19,7 +19,7 @@ export function DataTableViewOptions({ table }) {
 
   const columnNamesInSpanish = {
     
-    recipient_first_name: "Nombre",
+    "recipient.first_name": "Nombre",
     recipient_last_name: "Apellido",
     recipient_birth_date: "Fecha de Nacimiento",
     recipient_dni: "DNI",
@@ -39,7 +39,7 @@ export function DataTableViewOptions({ table }) {
             className="ml-auto hidden h-10 lg:flex"
           >
             <RxMixerHorizontal className="mr-2 h-4 w-4" />
-            View
+            Mostrar
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent className="w-[150px]">
