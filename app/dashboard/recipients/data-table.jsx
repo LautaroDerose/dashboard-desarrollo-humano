@@ -33,10 +33,13 @@ import {
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { DataTableViewOptions } from "./table-viewOptions";
+import { IoMdPersonAdd } from "react-icons/io";
+import Link from "next/link";
+import { MdPersonAdd } from "react-icons/md";
 
 
 export function DataTable({ columns, data }) {
-  console.log(data)
+  // console.log(data.assignments)
   const [sorting, setSorting] = useState([]);
   const [columnFilters, setColumnFilters] = useState([]);
   const [columnVisibility, setColumnVisibility] = useState({});
@@ -66,14 +69,30 @@ export function DataTable({ columns, data }) {
     {/* Filtros */}
       <div className="flex items-center gap-4 py-4">
         <Input
-          placeholder="Filter emails..."
-          value={table.getColumn("email")?.getFilterValue() || ""}
+          placeholder="Filtrar por nombre..."
+          value={table.getColumn("first_name")?.getFilterValue() || ""}
           onChange={(event) =>
-            table.getColumn("email")?.setFilterValue(event.target.value)
+            table.getColumn("first_name")?.setFilterValue(event.target.value)
           }
           className="max-w-sm"
         />
           <DataTableViewOptions table={table} />
+          <Button size="sm" className="h-8 gap-1" asChild>
+            <div>
+            <MdPersonAdd className="h-5 w-5 mr-2" />
+            <Link href="./recipients/form" className="sr-only sm:not-sr-only sm:whitespace-nowrap">
+              Agregar Persona
+            </Link>
+            </div>
+          </Button>
+
+          {/* <Link href="/dashboard/recipients/form"><Button 
+              variant="outline"
+              size="sm"
+              className="ml-auto hidden h-10 lg:flex"
+            >
+              <MdPersonAdd  className="mr-2 h-5 w-5"/>Agregar Persona
+          </Button></Link> */}
 
       </div>
     {/* Table */}

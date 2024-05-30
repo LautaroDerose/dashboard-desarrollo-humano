@@ -1,3 +1,4 @@
+'use client'
 import Link from "next/link"
 
 import {
@@ -5,6 +6,7 @@ import {
   AvatarFallback,
   AvatarImage,
 } from "@/components/ui/avatar"
+import { TbDots } from "react-icons/tb";
 
 import {
   ChevronLeft,
@@ -25,6 +27,10 @@ import {
   Truck,
   Users2,
 } from "lucide-react"
+import { IoMdAddCircleOutline } from "react-icons/io";
+import { IoFilterSharp } from "react-icons/io5";
+import { MdOutlineInsertDriveFile } from "react-icons/md";
+
 
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
@@ -77,6 +83,61 @@ export function PanelAssignment() {
   return (
     <div className="flex min-h-screen w-full flex-col">
       <main className="flex flex-1 flex-col gap-4 p-4 md:gap-8 md:p-8">
+      <div>
+          <Card x-chunk="dashboard-01-chunk-0 " className="p-4">
+            {/* <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">
+                Acciones
+              </CardTitle>
+              <div className=" flex items-center justify-center border-2 p-1  border-red-200 w-8 h-8 rounded-full">
+                <MdClose className="text-red-200" />
+              </div>
+            </CardHeader> */}
+            {/* <CardContent>
+              <div className="text-2xl font-bold">3 Asignaciones</div>
+              <p className="text-xs text-muted-foreground">
+                +20.1% from last month
+              </p>
+            </CardContent> */}
+            <div className="ml-auto flex items-center gap-2">
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button variant="outline" size="sm" className="h-8 gap-1">
+                      <IoFilterSharp className="h-3.5 w-3.5" />
+                      <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">
+                        Filter
+                      </span>
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="end">
+                    <DropdownMenuLabel>Filter by</DropdownMenuLabel>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuCheckboxItem checked>
+                      Active
+                    </DropdownMenuCheckboxItem>
+                    <DropdownMenuCheckboxItem>Draft</DropdownMenuCheckboxItem>
+                    <DropdownMenuCheckboxItem>
+                      Archived
+                    </DropdownMenuCheckboxItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+                <Button size="sm" variant="outline" className="h-8 gap-1">
+                  <MdOutlineInsertDriveFile className="h-3.5 w-3.5" />
+                  <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">
+                    Export
+                  </span>
+                </Button>
+                <Button size="sm" className="h-8 gap-1" asChild>
+                  <div>
+                  <IoMdAddCircleOutline className="h-3.5 w-3.5" />
+                  <Link href="./assignments/form" className="sr-only sm:not-sr-only sm:whitespace-nowrap">
+                    Crear Asignacion
+                  </Link>
+                  </div>
+                </Button>
+              </div>
+          </Card>
+        </div>
         <div className="grid gap-4 md:grid-cols-2 md:gap-8 lg:grid-cols-4">
           {/* <Card x-chunk="dashboard-01-chunk-0">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
@@ -184,8 +245,8 @@ export function PanelAssignment() {
                 <TableHeader>
                   <TableRow>
                     <TableHead>Tipo de Beneficios</TableHead>
-                    <TableHead className="hidden xl:table-column">
-                      Type
+                    <TableHead className="">
+                      Registracion
                     </TableHead>
                     <TableHead className="">
                       Estado
@@ -193,7 +254,7 @@ export function PanelAssignment() {
                     <TableHead className="">
                       Persona
                     </TableHead>
-                    <TableHead className="text-right">Registracion</TableHead>
+                    <TableHead className="text-right">actions</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -204,8 +265,9 @@ export function PanelAssignment() {
                         clavadera/tirantes/chapa
                       </div>
                     </TableCell>
-                    <TableCell className="hidden xl:table-column">
-                      Sale
+                    {/* <TableCell className="hidden xl:table-column"> */}
+                    <TableCell className="">
+                      15/04/2024
                     </TableCell>
                     <TableCell className="">
                       <Badge className="text-xs" variant="outline">
@@ -215,7 +277,28 @@ export function PanelAssignment() {
                     <TableCell className=" ">
                       Fulano
                     </TableCell>
-                    <TableCell className="text-right">15/05/24</TableCell>
+                    <TableCell className="text-right">
+                      <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                          <Button variant="ghost" className="h-8 w-8 p-0">
+                            <span className="sr-only">Open menu</span>
+                            <TbDots  className="h-4 w-4" />
+                          </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent align="end">
+                          <DropdownMenuLabel>Actions</DropdownMenuLabel>
+                          <DropdownMenuItem
+                            onClick={() => navigator.clipboard.writeText(recipient.id)}
+                          >
+                            Copiar ID de Persona
+                          </DropdownMenuItem>
+                          <DropdownMenuSeparator />
+                          <DropdownMenuItem>Editar</DropdownMenuItem>
+                          <DropdownMenuItem>Eliminar</DropdownMenuItem>
+                          <DropdownMenuItem>Ver en  detalle</DropdownMenuItem>
+                        </DropdownMenuContent>
+                      </DropdownMenu>
+                    </TableCell>
                   </TableRow>
                   <TableRow>
                     <TableCell>
@@ -224,8 +307,9 @@ export function PanelAssignment() {
                         Luz/gas/agua
                       </div>
                     </TableCell>
-                    <TableCell className="hidden xl:table-column">
-                      Refund
+                    <TableCell className="">
+                    {/* <TableCell className="hidden xl:table-column"> */}
+                      04/072024
                     </TableCell>
                     <TableCell className="">
                       <Badge className="text-xs" variant="outline">
@@ -235,7 +319,29 @@ export function PanelAssignment() {
                     <TableCell className="">
                       Mengano
                     </TableCell>
-                    <TableCell className="text-right">07/05/24</TableCell>
+                    <TableCell className="text-right">
+                      <DropdownMenu>
+                          <DropdownMenuTrigger asChild>
+                            <Button variant="ghost" className="h-8 w-8 p-0">
+                              <span className="sr-only">Open menu</span>
+                              {/* <MoreHorizontal  /> */}
+                              <TbDots  className="h-4 w-4" />
+
+                            </Button>
+                          </DropdownMenuTrigger>
+                          <DropdownMenuContent align="end">
+                            <DropdownMenuLabel>Actions</DropdownMenuLabel>
+                            <DropdownMenuItem
+                              onClick={() => navigator.clipboard.writeText(recipient.id)}
+                            >
+                              Copy recipient ID
+                            </DropdownMenuItem>
+                            <DropdownMenuSeparator />
+                            <DropdownMenuItem>View customer</DropdownMenuItem>
+                            <DropdownMenuItem>View recipient details</DropdownMenuItem>
+                          </DropdownMenuContent>
+                        </DropdownMenu>
+                    </TableCell>
                   </TableRow>
                   
                 </TableBody>

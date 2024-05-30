@@ -48,16 +48,16 @@ export const columns = [
     enableHiding: false,
   },
   {
-    accessorKey: "first_name",
+    accessorKey: "recipient.first_name",
     header: "Name",
   },
   {
-    accessorKey: 'last_name',
+    accessorKey: 'recipient.last_name',
     header: 'Apellido',
     cell: (props) => <p className=''>{props.getValue()}</p>
   },
   {
-    accessorKey: 'dni',
+    accessorKey: 'recipient.dni',
     header: 'DNI',
     cell: (props) => <p className=''>{props.getValue()}</p>
     // header: ({ column }) => (
@@ -65,19 +65,24 @@ export const columns = [
     // ),
   },
   {
-    accessorKey: 'phone',
-    header: 'Teléfono',
-    cell: (props) => <p className=''>{props.getValue()}</p>
-  },
-  {
-    accessorKey: 'birth_date',
+    accessorKey: 'recipient.birth_date',
     header: 'Fecha de Nacimiento',
     cell: (props) => <p className=''>{new Date(props.getValue()).toLocaleDateString()}</p>
-  //   cell: (props) => {
-  //     const date = new Date(props.getValue());
-  //     return <p className=''>{date.toLocaleDateString()}</p>;
-  // }
-  },
+    //   cell: (props) => {
+      //     const date = new Date(props.getValue());
+      //     return <p className=''>{date.toLocaleDateString()}</p>;
+      // }
+    },
+    {
+      accessorKey: 'recipient.sex',
+      header: 'Sexo',
+      cell: (props) => <p className=''>{props.getValue()}</p>
+    },
+    {
+      accessorKey: 'phone',
+      header: 'Teléfono',
+      cell: (props) => <p className=''>{props.getValue()}</p>
+    },
   {
     accessorKey: "email",
     header: ({ column }) => {
@@ -92,26 +97,21 @@ export const columns = [
       )
     },
   },
+  // {
+  //   accessorKey: "enrollment_date",
+  //   header: "Fech de Registro",
+  //   cell: (props) => <p>{new Date(props.getValue()).toLocaleDateString()}</p>
+  // },
   {
-    accessorKey: 'sex',
-    header: 'Sexo',
+    accessorKey: 'locality.name',
+    header: 'Localidad',
     cell: (props) => <p className=''>{props.getValue()}</p>
   },
   {
-    accessorKey: "enrollment_date",
-    header: "Fech de Registro",
-    cell: (props) => <p>{new Date(props.getValue()).toLocaleDateString()}</p>
+    accessorKey: 'street.name',
+    header: 'Calle',
+    cell: (props) => <p className=''>{props.getValue()}</p>
   },
-  // {
-  //   accessorKey: 'locality_id',
-  //   header: 'ID de Localidad',
-  //   cell: (props) => <p className=''>{props.getValue()}</p>
-  // },
-  // {
-  //   accessorKey: 'streetId',
-  //   header: 'ID de Calle',
-  //   cell: (props) => <p className=''>{props.getValue()}</p>
-  // },
   // {
   //   accessorKey: 'streetNumber',
   //   header: 'Número de Calle',

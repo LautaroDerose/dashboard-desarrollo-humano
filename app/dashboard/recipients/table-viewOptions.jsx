@@ -16,6 +16,19 @@ import {
 } from "@/components/ui/dropdown-menu";
 
 export function DataTableViewOptions({ table }) {
+
+  const columnNamesInSpanish = {
+    
+    recipient_first_name: "Nombre",
+    recipient_last_name: "Apellido",
+    recipient_birth_date: "Fecha de Nacimiento",
+    recipient_dni: "DNI",
+    recipient_sex: "Sexo",
+    recipient_enrollment_date: "Fecha de Inscripción",
+    locality_name: "Localidad",
+    street_name: "Calle"
+  };
+
   return (
     <div className="flex">
       <DropdownMenu>
@@ -30,7 +43,7 @@ export function DataTableViewOptions({ table }) {
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent className="w-[150px]">
-          <DropdownMenuLabel>Toggle columns</DropdownMenuLabel>
+          <DropdownMenuLabel>Columnas visibles</DropdownMenuLabel>
           <DropdownMenuSeparator />
           {table
             .getAllColumns()
@@ -46,7 +59,8 @@ export function DataTableViewOptions({ table }) {
                   checked={column.getIsVisible()}
                   onCheckedChange={(value) => column.toggleVisibility(!!value)}
                 >
-                  {column.id}
+                  {/* {column.id} */}
+                  {columnNamesInSpanish[column.id] || column.id}
                 </DropdownMenuCheckboxItem>
               );
             })}

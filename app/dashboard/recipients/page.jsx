@@ -3,7 +3,7 @@ import { DataTable } from "./data-table";
 import { columns } from './columns'; // Importa columnas correctamente
 
 async function getUsers() {
-    const res = await fetch('http://localhost:3000/api/recipient');
+    const res = await fetch('http://localhost:3000/api/contactinfo');
   if (!res.ok) {
     throw new Error("Failed to fetch data");
   }

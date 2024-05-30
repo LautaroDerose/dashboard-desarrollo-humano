@@ -3,12 +3,14 @@ import { NextResponse } from "next/server";
 
 export async function GET() {
   try {
-    const recipients = await prisma.recipient.findMany({
-      include:{
-        contactinfo: true,
+    const recipients = await prisma.contactInfo.findMany({
+      include: {
+        recipient: true,
+        street: true,
+        locality: true
       }
     });
-    console.log("Recipients with locality:", recipients);  // Aquí
+    console.log("Recipients with locality:", recipients);
     return new Response(JSON.stringify(recipients), {
       headers: { 'Content-Type': 'application/json' },
     });
@@ -16,68 +18,42 @@ export async function GET() {
     return new Response("Error fetching recipients: " + error.message, { status: 500 });
   }
 }
-export async function POST(request) {
+
+export async function POST(req) {
   try {
-    const data = await request.json()
-    const recipient = await prisma.recipient.create(({
-      data
-    }))
-    return new NextResponse(JSON.stringify(recipient), {
-      headers:{"Content-Type": "application/json"},
-      status: 201
-    })
+    const data = await req.json();
+
+    // Create a new recipient
+    const newRecipient = await prisma.recipient.create({
+      data: {
+        first_name: data.first_name,
+        last_name: data.last_name,
+        birth_date: new Date(data.birth_date),
+        dni: parseInt(data.dni, 10),
+        sex: data.sex,
+        enrollment_date: new Date(),
+        is_active: true,
+      },
+    });
+
+    // Create contact info for the new recipient
+    const newContactInfo = await prisma.contactInfo.create({
+      data: {
+        recipient_id: newRecipient.id,
+        phone: parseInt(data.phone, 10),
+        email: data.email,
+        street_id: data.street_id,
+        street_number: data.street_number,
+        locality_id: data.locality_id,
+      },
+    });
+
+    return new Response(JSON.stringify({ newRecipient, newContactInfo }), {
+      status: 200,
+      headers: { 'Content-Type': 'application/json' },
+    });
   } catch (error) {
-    return new NextResponse(error.message, {status: 500})
+    return new Response("Error creating recipient and contact info: " + error.message, { status: 500 });
   }
 }
-
-// export async function GET(){
-//   try {
-//     const recipients = await prisma.recipient.findMany()
-//     return NextResponse.json({data: recipients}, { status: 200 } );
-//   } catch (error) {
-//     return new NextResponse(error.message, { status: 500 })
-//   }
-// }
-
-
-// STANJDARD
-// export async function GET() {
-//   try {
-//     const {recipients} = await prisma.recipient.findMany();
-//     return recipients;
-//   } catch (error) {
-//     throw new Error("Error fetching recipients: " + error.message);
-//   }
-// }
-
-// export async function GET() {
-//   try {
-//     const recipients = await prisma.recipient.findMany();
-//     const recipientsJSON = JSON.stringify(recipients); // Convertir a JSON
-//     return recipientsJSON;
-//   } catch (error) {
-//     throw new Error("Error fetching recipients: " + error.message);
-//   }
-// }
-
-
-//    CHAT GPT 1 16/05
-// export async function GET() {
-//   try {
-//     const recipients = await prisma.recipient.findMany();
-//     return new Response(JSON.stringify(recipients), {
-//       headers: {
-//         'Content-Type': 'application/json'
-//       }
-//     });
-//   } catch (error) {
-//     return new Response(JSON.stringify({ error: error.message }), {
-//       status: 500,
-//       headers: {
-//         'Content-Type': 'application/json'
-//       }
-//     });
-//   }
-// }
 

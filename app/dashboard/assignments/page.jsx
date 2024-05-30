@@ -1,6 +1,6 @@
 import { TooltipProvider } from "@/components/ui/tooltip";
-import ContentAssignment from "./content";
 import { PanelAssignment } from "./panel-assignment";
+import { Dashboard } from "./form/assignment-form";
 
 async function getAssignments() {
   try {
@@ -29,6 +29,7 @@ export default async function AssignmentsPage() {
     <div>
       {/* <ContentAssignment data={data}  /> */}
         <PanelAssignment />/
+        {/* <Dashboard /> */}
     </div>
  )
 }
