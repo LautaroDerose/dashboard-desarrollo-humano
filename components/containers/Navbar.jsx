@@ -27,12 +27,15 @@ import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 
 import { MdCheck, MdClose, MdInfoOutline, MdMoreHoriz, MdOutlinePause, MdOutlinePauseCircle, MdOutlinePriorityHigh } from "react-icons/md"
 import { ModeToggle } from "../elements/mode-toggle";
+import { nasvLinks } from "@/constants";
+import clsx from "clsx";
 
 
 const styles = {
   container: 'flex px-4 py-2 items-center gap-2 text-slate-300 hover:bg-slate-600 active:bg-slate-600 rounded-md m-2   ', 
   containerActive: ' bg-slate-600  ', 
 };
+
 
 const Navbar = () => {
 
@@ -45,12 +48,23 @@ const Navbar = () => {
             {/* <Package2 className="h-6 w-6" /> <span className="sr-only">Acme Inc</span> */}
             <div className="w-fit flex items-center justify-center border-4 rounded-full p-2"><span className=" align-middle ">DH</span></div>
           </Link>
-          <Link href="/dashboard" className="text-foreground transition-colors hover:text-foreground" > Dashboard </Link>
-          <Link href="/dashboard/assignments" className="text-muted-foreground transition-colors hover:text-foreground" > Asignaciones </Link>
-          <Link href="/dashboard/recipients" className="text-muted-foreground transition-colors hover:text-foreground" > Personas </Link>
-          <Link href="/dashboard/benefits" className="text-muted-foreground transition-colors hover:text-foreground" > Beneficios </Link>
-          <Link href="#" className="text-muted-foreground transition-colors hover:text-foreground" > Estadisticas </Link>
-          <Link href="#" className="text-muted-foreground transition-colors hover:text-foreground" > Informes </Link>
+        
+          {nasvLinks.map((link) => {
+            return (
+              <Link
+                key={link.label}
+                href={link.href}
+                className={clsx(
+                  'text-muted-foreground transition-colors hover:text-foreground',
+                  {
+                    'text-bold text-white': pathname === link.href,
+                  },
+                )}
+              >
+              <p className="hidden md:block">{link.label}</p>
+              </Link>
+            );
+          })}
         </nav>
         <Sheet>
           <SheetTrigger asChild>

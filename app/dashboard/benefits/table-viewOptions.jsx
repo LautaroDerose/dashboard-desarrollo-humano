@@ -16,6 +16,12 @@ import {
 } from "@/components/ui/dropdown-menu";
 
 export function DataTableViewOptions({ table }) {
+
+  const columnNamesInSpanish = {
+    
+    "category_name": "Categoria",
+  };
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -45,7 +51,7 @@ export function DataTableViewOptions({ table }) {
                 checked={column.getIsVisible()}
                 onCheckedChange={(value) => column.toggleVisibility(!!value)}
               >
-                {column.id}
+                 {columnNamesInSpanish[column.id] || column.id}
               </DropdownMenuCheckboxItem>
             );
           })}
@@ -53,32 +59,3 @@ export function DataTableViewOptions({ table }) {
     </DropdownMenu>
   );
 }
-
- {/* <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="outline" className="ml-auto">
-                Columnas
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              {table
-                .getAllColumns()
-                .filter(
-                  (column) => column.getCanHide()
-                )
-                .map((column) => {
-                  return (
-                    <DropdownMenuCheckboxItem
-                      key={column.id}
-                      className="capitalize"
-                      checked={column.getIsVisible()}
-                      onCheckedChange={(value) =>
-                        column.toggleVisibility(!!value)
-                      }
-                    >
-                      {column.id}
-                    </DropdownMenuCheckboxItem>
-                  )
-                })}
-            </DropdownMenuContent>
-          </DropdownMenu> */}

@@ -9,7 +9,7 @@ export default function DashboardLayout({ children }) {
         <Sidebar />
       </div> */}
 
-      <div className=" flex-auto p-4">
+      <div className=" flex-auto px-4">
         <Navbar />
         {children}
       </div>

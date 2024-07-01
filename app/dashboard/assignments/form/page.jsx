@@ -11,7 +11,7 @@ export default async function AssignmentsFormPage() {
   const { assignments, recipients, benefits } = await fetchData()
 
   return (
-    <div className="flex justify-center mx-auto mt-8">
+    <div className="flex justify-center mx-auto mt-8 max-w-[600px]">
       <AssignmentForm 
         assignments={assignments}
         recipients={recipients}

@@ -8,3 +8,37 @@ export const STATUSES = [
   STATUS_TESTING,
   STATUS_DEPLOYED,
 ];
+
+export const nasvLinks = [
+  {
+    id: 1,
+    label: "Dashboard",
+    href: "/dashboard"
+  },
+  {
+    id: 2,
+    label: "Asignaciones",
+    href: "/dashboard/assignments"
+  },
+  {
+    id: 3,
+    label: "Personas",
+    href: "/dashboard/recipients"
+  },
+  {
+    id: 4,
+    label: "Beneficios",
+    href: "/dashboard/benefits"
+  },
+  {
+    id: 5,
+    label: "Estadisticas",
+    href: "#"
+  },
+  {
+    id: 6,
+    label: "Informes",
+    href: "#"
+  },
+]
+  

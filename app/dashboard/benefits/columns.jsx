@@ -55,38 +55,21 @@ export const columns = [
     header: "Beneficio",
   },
   {
-    accessorKey: 'category',
+    accessorKey: 'category.name',
     header: 'Categoria',
     cell: (props) => <p className='text-slate-400 p-2'>{props.getValue()}</p>
   },
   {
-    accessorKey: 'quantity',
-    header: 'Cantidd',
-    cell: (props) => <p className='text-slate-400 p-2'>{props.getValue()}</p>
-    // header: ({ column }) => (
-    //   <DataTableColumnHeader column={column} title="DNI" />
-    // ),
-  },
-  {
-    accessorKey: 'amount',
-    header: 'Monto',
+    accessorKey: 'type',
+    header: 'Tipo',
     cell: (props) => <p className='text-slate-400 p-2'>{props.getValue()}</p>
   },
-  // {
-  //   accessorKey: 'birthDate',
-  //   header: 'Fecha de Nacimiento',
-  //   cell: (props) => <p className='text-slate-400 p-2'>{new Date(props.getValue()).toLocaleDateString()}</p>
-  // },
   {
     accessorKey: 'frequency',
     header: 'frecuencia',
     cell: (props) => <p className='text-slate-400 p-2'>{props.getValue()}</p>
   },
-  {
-    accessorKey: 'status',
-    header: 'Estado',
-    cell: (props) => <p className='text-slate-400 p-2'>{props.getValue()}</p>
-  },
+  
   {
     accessorKey: 'provider',
     header: 'Provedor',

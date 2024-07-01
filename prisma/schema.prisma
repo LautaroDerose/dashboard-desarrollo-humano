@@ -41,11 +41,36 @@ model Recipient {
   is_active         Boolean
   // family_group_id   Int
   // family_group      FamilyGroup       @relation(fields: [family_group_id], references: [id])
-  contact_info     ContactInfo[]
-  risk_factors      RiskFactor[]
-  social_conditions SocialCondition[]
+  contact_info      ContactInfo[]
+  // risk_factors      RiskFactor[]
+    recipientSocialConditions RecipientSocialCondition[]
+
   Assignment        Assignment[]
 }
+model SocialCondition {
+  id           Int        @id @default(autoincrement())
+  name         String
+  gravity      String
+  type         String
+  recipientSocialConditions RecipientSocialCondition[]
+}
+
+model RecipientSocialCondition {
+  id                  Int      @id @default(autoincrement())
+  recipient_id        Int
+  social_condition_id Int
+  recipient           Recipient @relation(fields: [recipient_id], references: [id])
+  social_condition    SocialCondition @relation(fields: [social_condition_id], references: [id])
+}
+
+// model SocialCondition {
+//   id           Int       @id @default(autoincrement())
+//   name         String
+//   gravity      String
+//   type         String
+//   recipient_id Int
+//   recipient    Recipient @relation(fields: [recipient_id], references: [id])
+// }
 
 model ContactInfo {
   id            Int       @id @default(autoincrement())
@@ -60,29 +85,34 @@ model ContactInfo {
   locality      Locality  @relation(fields: [locality_id], references: [id])
 }
 
-model RiskFactor {
-  id           Int       @id @default(autoincrement())
-  name         String
-  gravity      String
-  type         String
-  recipient_id Int
-  recipient    Recipient @relation(fields: [recipient_id], references: [id])
-}
+// model RiskFactor {
+//   id           Int       @id @default(autoincrement())
+//   name         String
+//   gravity      String
+//   type         String
+//   recipient_id Int
+//   recipient    Recipient @relation(fields: [recipient_id], references: [id])
+// }
 
-model SocialCondition {
-  id           Int       @id @default(autoincrement())
-  name         String
-  gravity      String
-  type         String
-  recipient_id Int
-  recipient    Recipient @relation(fields: [recipient_id], references: [id])
-}
 
 model Locality {
   id          Int           @id @default(autoincrement())
   name        String
   ContactInfo ContactInfo[]
   Street      Street[]
+}
+model Assignment {
+  id              Int       @id @default(autoincrement())
+  benefit_id      Int
+  recipient_id    Int
+  quantity        Int
+  amount          Int
+  status          String
+  enrollment_date DateTime
+  expiry_date     DateTime
+  withdrawal_date DateTime
+  benefit         Benefit   @relation(fields: [benefit_id], references: [id])
+  recipient       Recipient @relation(fields: [recipient_id], references: [id])
 }
 
 model Street {
@@ -99,19 +129,6 @@ model Street {
 //   // Recipient   Recipient[]
 // }
 
-model Assignment {
-  id              Int       @id @default(autoincrement())
-  benefit_id      Int
-  recipient_id    Int
-  quantity        Int
-  amount          Int
-  status          String
-  enrollment_date DateTime
-  expiry_date     DateTime
-  withdrawal_date DateTime
-  benefit         Benefit   @relation(fields: [benefit_id], references: [id])
-  recipient       Recipient @relation(fields: [recipient_id], references: [id])
-}
 
 // -----------ORINIGAL MODELS ---------------------
 // model BenefitCategory {

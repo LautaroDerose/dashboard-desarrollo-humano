@@ -29,12 +29,15 @@ import { toast } from "@/components/ui/use-toast"
 import { Input } from "@/components/ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { useState } from "react"
+import { Checkbox } from "@/components/ui/checkbox"
 
-export function RecipientForm({ localities, socialConditions, riskFactors }) {
-
+export function RecipientForm({ localities, socialConditions, recipientSocialConditions }) {
+  
+  console.log(recipientSocialConditions)
+  
   const localityNames = localities.map((locality) => locality.name);
   const conditionNames = [...new Set(socialConditions.map((condition) => condition.name))];
-  const FactorNames = [...new Set(riskFactors.map((factor) => factor.name))];
+  // const FactorNames = [...new Set(riskFactors.map((factor) => factor.name))];
 
   const streetsByLocality = {};
   localities.forEach((locality) => {
@@ -52,8 +55,8 @@ export function RecipientForm({ localities, socialConditions, riskFactors }) {
     street_number: z.string().refine(street_number => !isNaN(parseFloat(street_number))),
     emailAddress: z.string().email(),
     phone: z.string().refine(phone => !isNaN(parseFloat(phone))),
-    socialCondition: z.enum(conditionNames),
-    riskFactor: z.enum(FactorNames),
+    social_conditions: z.string().array() ,
+    // riskFactor: z.enum(FactorNames),
   }).refine(
     (data) => {
       const selectedStreets = streetsByLocality[data.locality];
@@ -77,8 +80,8 @@ export function RecipientForm({ localities, socialConditions, riskFactors }) {
       street_number: "",
       emailAddress: "",
       phone: "",
-      socialCondition: "",
-      riskFactors: "",
+      social_conditions: [],
+      // riskFactors: "",
     },
   });
 
@@ -86,12 +89,22 @@ export function RecipientForm({ localities, socialConditions, riskFactors }) {
 
   // const handleSubmit = (values) => {
   //   console.log({ values });
+  //   // console.log(values.socialCondition)
   // };
 
   const handleSubmit = async (values) => {
     console.log({ values });
     try {
-      const response = await fetch('/api/recipient', { // Ensure the endpoint is correct
+      // Convertir social_conditions a un array de IDs si es una cadena
+      const social_conditions = Array.isArray(values.social_conditions) ? values.social_conditions : [values.social_conditions];
+  
+      // Convertir nombres de condiciones sociales a sus IDs correspondientes
+      const socialConditionIds = social_conditions.map(conditionName => {
+        const condition = socialConditions.find(cond => cond.name === conditionName);
+        return condition ? condition.id : null;
+      }).filter(id => id !== null);
+  
+      const response = await fetch('/api/recipient', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -107,11 +120,12 @@ export function RecipientForm({ localities, socialConditions, riskFactors }) {
           street_id: streetsByLocality[values.locality].findIndex(street => street === values.street) + 1,
           street_number: values.street_number,
           locality_id: localities.find(locality => locality.name === values.locality).id,
+          social_conditions: socialConditionIds, // Pasar IDs de condiciones sociales
         }),
       });
   
       if (!response.ok) {
-        throw new Error("Error al agregar el contacto response");
+        throw new Error("Error al agregar el contacto");
       }
   
       const result = await response.json();
@@ -121,9 +135,102 @@ export function RecipientForm({ localities, socialConditions, riskFactors }) {
     }
   };
 
+  // ----------ANTIGUA HANDDLER
+  // const handleSubmit = async (values) => {
+  //   console.log({ values });
+  //   try {
+  //     // Convertir socialCondition a un array si es una cadena
+  //     const social_conditions = Array.isArray(values.social_conditions) ? values.social_conditions : [values.social_conditions];
+
+  //     const response = await fetch('/api/recipient', { // Ensure the endpoint is correct
+  //       method: 'POST',
+  //       headers: {
+  //         'Content-Type': 'application/json',
+  //       },
+  //       body: JSON.stringify({
+  //         first_name: values.first_name,
+  //         last_name: values.last_name,
+  //         birth_date: values.birth_date,
+  //         dni: values.dni,
+  //         sex: values.sex,
+  //         phone: values.phone,
+  //         email: values.emailAddress,
+  //         street_id: streetsByLocality[values.locality].findIndex(street => street === values.street) + 1,
+  //         street_number: values.street_number,
+  //         locality_id: localities.find(locality => locality.name === values.locality).id,
+  //         social_conditions: social_conditions, // Pasar socialCondition como un array
+
+  //       }),
+  //     });
+  
+  //     if (!response.ok) {
+  //       throw new Error("Error al agregar el contacto ");
+  //     }
+  
+  //     const result = await response.json();
+  //     alert("Contacto agregado exitosamente");
+  //   } catch (error) {
+  //     alert(error.message);
+  //   }
+  // };
+
   return (
     <Form {...form}  >
       <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-8 w-full ">
+      <FormField
+          control={form.control}
+          name="social_conditions"
+          render={({ field }) => (
+            <FormItem>
+              <div className="mb-4">
+                <FormLabel className="text-base">Condicion Social</FormLabel>
+                <FormDescription>
+                  Marcar condiciones sociales que correspondan
+                </FormDescription>
+              </div>
+              {conditionNames.map((item) => (
+                <FormField
+                  key={item}
+                  control={form.control}
+                  name="social_conditions" // Nombre del campo debe ser "socialCondition"
+                  render={({ field }) => {
+                    return (
+                      <FormItem
+                        key={item}
+                        className="flex flex-row items-start space-x-3 space-y-0"
+                      >
+                        <FormControl>
+                          <Checkbox
+                            checked={Array.isArray(field.value) && field.value.includes(item)}
+                            onCheckedChange={(checked) => {
+                              const updatedValue = Array.isArray(field.value) ? [...field.value] : []; // Ensure field.value is an array
+                              if (checked) {
+                                field.onChange([
+                                  ...updatedValue,
+                                  item,
+                                ]);
+                              } else {
+                                field.onChange(
+                                  updatedValue.filter(
+                                    (value) => value !== item
+                                  )
+                                );
+                              }
+                            }}
+                          />
+                        </FormControl>
+                        <FormLabel className="font-normal">
+                          {item}
+                        </FormLabel>
+                      </FormItem>
+                    );
+                  }}
+                />
+              ))}
+              <FormMessage />
+            </FormItem>
+          )}
+        />
         <FormField
           control={form.control}
           name="first_name"
@@ -311,29 +418,8 @@ export function RecipientForm({ localities, socialConditions, riskFactors }) {
             </FormItem>
           )}
         />
-        <FormField
-          control={form.control}
-          name="socialCondition"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Condición social</FormLabel>
-              <Select onValueChange={field.onChange}>
-                <FormControl>
-                  <SelectTrigger>
-                    <SelectValue placeholder={form.watch("socialCondition") || "Seleccione una condición social"} />
-                  </SelectTrigger>
-                </FormControl>
-                <SelectContent>
-                  {conditionNames.map((item, index) => (
-                    <SelectItem key={index} value={item}>{item}</SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
+        
+        {/* <FormField
           control={form.control}
           name="riskFactor"
           render={({ field }) => (
@@ -354,7 +440,7 @@ export function RecipientForm({ localities, socialConditions, riskFactors }) {
               <FormMessage />
             </FormItem>
           )}
-        />
+        /> */}
         <Button type="submit">Submit</Button>
       </form>
     </Form>

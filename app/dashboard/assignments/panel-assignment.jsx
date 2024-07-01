@@ -82,17 +82,17 @@ import {
 export function PanelAssignment() {
   return (
     <div className="flex min-h-screen w-full flex-col">
-      <main className="flex flex-1 flex-col gap-4 p-4 md:gap-8 md:p-8">
+      <main className="flex flex-1 flex-col gap-4 p-4 md:gap-8 md:px-8 md:py-4">
       <div>
           <Card x-chunk="dashboard-01-chunk-0 " className="p-4">
-            {/* <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">
+            {/* <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2"> */}
+              {/* <CardTitle className="text-sm font-medium">
                 Acciones
-              </CardTitle>
-              <div className=" flex items-center justify-center border-2 p-1  border-red-200 w-8 h-8 rounded-full">
+              </CardTitle> */}
+              {/* <div className=" flex items-center justify-center border-2 p-1  border-red-200 w-8 h-8 rounded-full">
                 <MdClose className="text-red-200" />
-              </div>
-            </CardHeader> */}
+              </div> */}
+            {/* </CardHeader> */}
             {/* <CardContent>
               <div className="text-2xl font-bold">3 Asignaciones</div>
               <p className="text-xs text-muted-foreground">

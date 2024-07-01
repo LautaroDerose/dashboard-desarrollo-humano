@@ -1,3 +1,5 @@
+'use client'
+
 import Image from "next/image"
 import Link from "next/link"
 import {
@@ -69,8 +71,34 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip"
+import { useEffect, useState } from "react"
 
-export function DetailView() {
+export function DetailView({ recipientId }) {
+
+  const [recipientData, setRecipientData] = useState(null);
+
+  useEffect(() => {
+    const fetchRecipientData = async () => {
+      try {
+        const response = await fetch(`/api/recipient/${recipientId}`);
+        if (!response.ok) {
+          throw new Error('Failed to fetch recipient data');
+        }
+        const data = await response.json();
+        setRecipientData(data);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    fetchRecipientData();
+  }, [recipientId]);
+
+  if (!recipientData) {
+    return <div>Loading...</div>;
+  }
+
+
   return (
     <div className="flex min-h-screen w-full flex-col bg-muted/40">
       
@@ -139,14 +167,14 @@ export function DetailView() {
                 <Button variant="destructive" size="sm">
                   Eliminar
                 </Button>
-                <Button size="sm">Save Product</Button>
+                <Button size="sm">Guardar Cambios</Button>
               </div>
             </div>
             <div className="grid gap-4 md:grid-cols-[1fr_250px] lg:grid-cols-3 lg:gap-8">
               <div className="grid auto-rows-max items-start gap-4 lg:col-span-2 lg:gap-8">
                 <Card x-chunk="dashboard-07-chunk-0">
                   <CardHeader>
-                    <CardTitle>Product Details</CardTitle>
+                    <CardTitle>Detalles de {recipientData.first_name} {recipientData.last_name}</CardTitle>
                     <CardDescription>
                       Lipsum dolor sit amet, consectetur adipiscing elit
                     </CardDescription>
@@ -362,7 +390,7 @@ export function DetailView() {
               <div className="grid auto-rows-max items-start gap-4 lg:gap-8">
                 <Card x-chunk="dashboard-07-chunk-3">
                   <CardHeader>
-                    <CardTitle>Product Status</CardTitle>
+                    <CardTitle>Estado del Beneficiario</CardTitle>
                   </CardHeader>
                   <CardContent>
                     <div className="grid gap-6">
@@ -370,12 +398,11 @@ export function DetailView() {
                         <Label htmlFor="status">Status</Label>
                         <Select>
                           <SelectTrigger id="status" aria-label="Select status">
-                            <SelectValue placeholder="Select status" />
+                            <SelectValue placeholder="Estado del beneficiario" />
                           </SelectTrigger>
                           <SelectContent>
-                            <SelectItem value="draft">Draft</SelectItem>
-                            <SelectItem value="published">Active</SelectItem>
-                            <SelectItem value="archived">Archived</SelectItem>
+                            <SelectItem value={1}>Activo</SelectItem>
+                            <SelectItem value={0}>Inactivo</SelectItem>
                           </SelectContent>
                         </Select>
                       </div>

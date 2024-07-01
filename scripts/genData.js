@@ -11,7 +11,7 @@ const connection = mysql.createConnection({
 // Listas de palabras para cada tabla
 const benefitCategoriesNames = ["Salud", "Educación", "Materiales", "Energia", "Transporte", "Alimentación", "Financiera"];
 const benefitNames = ["alimentos", "agua", "gas", "luz", "garrafa", "leña", "estudio médico", "materiales de construcción", "alquiler de vivienda", "farmacia", "chapa", "tirante", "clavadera", "colchon", "frazada", "traslado", "óptica", "bono jubilados", "atmosférico"];
-const riskFactorNames = ["recien nacido", "escabiosis", "diabetes", "incumplimiento de controles de salud", "TBC", "cáncer", "discapacidad", "parásitos", "enfermedad mental", "embarazo", "TRAB", "falta de esquema de  acunación", "adulto mayor con limitaciones", "anemia", "sífilis", "alcoholismo", "enfermedad neurológica", "adicción a drogas", "hipertensión", "HIV/ sida", "desnutrición", "puerperio", "otro"];
+// const riskFactorNames = ["recien nacido", "escabiosis", "diabetes", "incumplimiento de controles de salud", "TBC", "cáncer", "discapacidad", "parásitos", "enfermedad mental", "embarazo", "TRAB", "falta de esquema de  acunación", "adulto mayor con limitaciones", "anemia", "sífilis", "alcoholismo", "enfermedad neurológica", "adicción a drogas", "hipertensión", "HIV/ sida", "desnutrición", "puerperio", "otro"];
 const socialConditionNames = ["flia sola con menores de 5 anos", "flia sola con menores de 14 anos", "bajo nivel de instruccion", "emergencia habitacional", "situacion de abandono", "indigencia", "abandono paterno", "abandono materno", "pobreza", "desocupación jefe de hogar", "trabajo inestable jefe de hogar", "madre sola con menores"];
 const localityNames = ["Carhue", "San Miguel", "Gascon", "Rivera", "Villa Maza"];
 const streetNames = ["San Martin", "Belgrano", "Rivadavia", "Saavedra", "Moreno", "Alvear", "Guemes", "Pueyrredon", "Mitre", "Dorrego", "Yrigoyen", "Sarmiento", "Alberdi", "Velez Sarsfield", "Castelli", "Laprida", "Las Heras", "Balcarce", "Anchorena", "Zeballos"];
@@ -98,19 +98,19 @@ async function main() {
     console.log('ContactInfos insertados con éxito:', contactInfoIds);
 
     // Insertar RiskFactors con referencia a Recipients existentes
-    const riskFactors = [];
-    for (const recipientId of recipientIds) {
-      const randomRiskFactor = chance.pickone(riskFactorNames);
-      const riskFactor = {
-        name: randomRiskFactor,
-        gravity: chance.pickone(['Alta', 'Media', 'Baja']),
-        type: chance.pickone(['Salud', 'Seguridad', 'Otro']),
-        recipient_id: recipientId
-      };
-      riskFactors.push(riskFactor);
-    }
-    const riskFactorIds = await insertAndGetIds('RiskFactor', riskFactors);
-    console.log('RiskFactors insertados con éxito:', riskFactorIds);
+    // const riskFactors = [];
+    // for (const recipientId of recipientIds) {
+    //   const randomRiskFactor = chance.pickone(riskFactorNames);
+    //   const riskFactor = {
+    //     name: randomRiskFactor,
+    //     gravity: chance.pickone(['Alta', 'Media', 'Baja']),
+    //     type: chance.pickone(['Salud', 'Seguridad', 'Otro']),
+    //     recipient_id: recipientId
+    //   };
+    //   riskFactors.push(riskFactor);
+    // }
+    // const riskFactorIds = await insertAndGetIds('RiskFactor', riskFactors);
+    // console.log('RiskFactors insertados con éxito:', riskFactorIds);
 
     // Insertar SocialConditions con referencia a Recipients existentes
     const socialConditions = [];
