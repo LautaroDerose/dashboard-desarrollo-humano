@@ -33,7 +33,7 @@ export const nasvLinks = [
   {
     id: 5,
     label: "Estadisticas",
-    href: "#"
+    href: "/dashboard/estadisticas"
   },
   {
     id: 6,

@@ -21,22 +21,37 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-
-import { DataTablePagination } from "./table-pagination";
-import { Input } from "@/components/ui/input"
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
   DropdownMenuContent,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { Button } from "@/components/ui/button";
-import { DataTableViewOptions } from "./table-viewOptions";
-import { IoMdPersonAdd } from "react-icons/io";
-import Link from "next/link";
-import { MdPersonAdd } from "react-icons/md";
+import { Button } from "@/components/ui/button"
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+
 import { useState, useRef, useEffect } from "react";
+import Link from "next/link";
+import { CirclePlus } from "lucide-react";
+
+
+import { DataTablePagination } from "./table-pagination";
+import { DataTableViewOptions } from "./table-viewOptions";
+
+import { MdPersonAdd } from "react-icons/md";
+import { IoMdPersonAdd } from "react-icons/io";
 import { TbLeaf } from "react-icons/tb";
+import { FormModal } from "./form-modal";
 
 const FilterInput = ({ table }) => {
   const [inputValue, setInputValue] = useState(table.getColumn("recipient.dni")?.getFilterValue() || "");
@@ -73,9 +88,12 @@ export function DataTable({ columns, data }) {
   const [columnVisibility, setColumnVisibility] = useState({});
   const [rowSelection, setRowSelection] = useState({});
   const [selectedFilter, setSelectedFilter] = useState("recipient.dni"); // Campo de búsqueda seleccionado
+  const [openModalCreate, setOpenModalCreate] = useState(false)
 
+  
+  // console.log(socialConditions)
   const table = useReactTable({
-    data,
+    data:data.contactInfos,
     columns,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
@@ -140,12 +158,25 @@ export function DataTable({ columns, data }) {
           <DataTableViewOptions table={table} />
           <Button size="sm" className="h-8 gap-1" asChild>
             <div>
-            <MdPersonAdd className="h-5 w-5 mr-2" />
-            <Link href="./recipients/form" className="sr-only sm:not-sr-only sm:whitespace-nowrap">
-              Agregar Persona
-            </Link>
+              <MdPersonAdd className="h-5 w-5 mr-2" />
+              <Link href="./recipients/form" className="sr-only sm:not-sr-only sm:whitespace-nowrap"> Agregar Persona </Link>
             </div>
           </Button>
+          <Dialog className="max-w-4xl" open={openModalCreate} onOpenChange={setOpenModalCreate} >
+            <DialogTrigger asChild>
+              <Button>
+                <MdPersonAdd className="h-5 w-5 mr-2" />
+                <p>Agregar Persona</p>
+              </Button>
+            </DialogTrigger>
+            <DialogContent className="">
+              <DialogHeader>
+                <DialogTitle>Crear Persona</DialogTitle>
+                <DialogDescription>Asegurese de que no se encuentre en la lista antes de agregar una persona</DialogDescription>
+              </DialogHeader>
+              <FormModal data={data} />
+            </DialogContent>
+          </Dialog>
       </div>
     {/* Table */}
       <div className="rounded-md border">

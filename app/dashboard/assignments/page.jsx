@@ -18,7 +18,7 @@ async function getAssignments() {
 
 export default async function AssignmentsPage() {
   const data = await getAssignments();
-  console.log(data)
+  // console.log(data)
   if (!data) {
     return <div>Error loading data</div>;
   }

@@ -42,7 +42,7 @@ const Navbar = () => {
   const pathname = usePathname()
 
   return (
-      <header className="sticky top-0 flex h-16 items-center gap-4 border-b bg-background px-4 md:px-6 mb-2 ">
+      <header className="sticky z-10 top-0 flex h-16 items-center gap-4 border-b bg-background px-4 md:px-6 mb-2 ">
         <nav className="hidden flex-col gap-6 text-lg font-medium md:flex md:flex-row md:items-center md:gap-5 md:text-sm lg:gap-6">
           <Link href="#" className="flex items-center gap-2 text-lg font-semibold md:text-base" >
             {/* <Package2 className="h-6 w-6" /> <span className="sr-only">Acme Inc</span> */}
@@ -86,7 +86,8 @@ const Navbar = () => {
               <Link href="/dashboard/assignments" className="text-muted-foreground hover:text-foreground" > Asignaciones </Link>
               <Link href="/dashboard/recipients" className="text-muted-foreground hover:text-foreground" > Personas </Link>
               <Link href="/dashboard/benefits" className="text-muted-foreground hover:text-foreground" > Beneficios </Link>
-              <Link href="#" className="text-muted-foreground hover:text-foreground" > Estadisticas </Link>
+              <Link href="/dashboard/estadisticas" className="text-muted-foreground hover:text-foreground" > Estadisticas</Link>
+              {/* <Link href="/dashboard/estadisticas" className="text-muted-foreground hover:text-foreground" > Estadisticas <//Link> */}
               <Link href="#" className="text-muted-foreground hover:text-foreground" > Informes </Link>
             </nav>
           </SheetContent>

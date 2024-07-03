@@ -10,7 +10,7 @@ export async function GET() {
         locality: true
       }
     });
-    console.log("Recipients with locality:", recipients);
+    // console.log("Recipients with locality:", recipients);
     return new Response(JSON.stringify(recipients), {
       headers: { 'Content-Type': 'application/json' },
     });

@@ -6,14 +6,11 @@ export async function GET() {
     const assignments = await prisma.assignment.findMany({
       include: {
         benefit: true,
-        recipient: {
-          include: {
-            contact_info: true // Incluye la información de contacto si es necesario
-          }
-        }
+        recipient:true,
+        contact_info: true // Incluye la información de contacto si es necesario
       }
     });
-    console.log("Assignments with benefit and recipient info:", assignments);
+    // console.log("Assignments with benefit and recipient info:", assignments);
     return new Response(JSON.stringify(assignments), {
       headers: { 'Content-Type': 'application/json' },
     });
@@ -91,74 +88,3 @@ export async function POST(req) {
     });
   }
 }
-
-// export async function POST(req) {
-//   try {
-//     const { benefit_id, recipient_id, quantity, amount, status, enrollment_date, expiry_date } = await req.json();
-    
-//     // Validate input data
-//     if (!benefit_id || !recipient_id || !quantity || !amount || !status || !enrollment_date || !expiry_date) {
-//       throw new Error("Missing required fields");
-//     }
-
-//     const newAssignment = await prisma.assignment.create({
-//       data: {
-//         benefit_id,
-//         recipient_id,
-//         quantity: parseFloat(quantity), // Ensure numeric values are correctly parsed
-//         amount: parseFloat(amount),
-//         status,
-//         enrollment_date: new Date(enrollment_date).toISOString(),
-//         expiry_date: new Date(expiry_date).toISOString(),
-//         // withdrawal_date: new Date(withdrawal_date)
-//       }
-//     });
-
-//     return new NextResponse(JSON.stringify(newAssignment), {
-//       status: 201,
-//       headers: { 'Content-Type': 'application/json' },
-//     });
-//   } catch (error) {
-//     return new NextResponse(JSON.stringify({ error: "Error creating assignment: " + error.message }), {
-//       status: 500,
-//       headers: { 'Content-Type': 'application/json' },
-//     });
-//   }
-// }
-
-// export async function POST(req) {
-//   try {
-//     const data = await req.json();
-//     const newAssignment = await prisma.assignment.create({
-//       data: {
-//         benefit_id,
-//         recipient_id,
-//         quantity,
-//         amount,
-//         status,
-//         enrollment_date: new Date(enrollment_date).toISOString(),
-//         expiry_date: new Date(expiry_date).toISOString(),
-//         // withdrawal_date: new Date(withdrawal_date)
-//       }
-//     });
-//     return new NextResponse(JSON.stringify(newAssignment), {
-//       status: 201,
-//       headers: { 'Content-Type': 'application/json' },
-//     });
-//   } catch (error) {
-//     return new NextResponse(JSON.stringify({ error: "Error creating assignment: " + error.message }), {
-//       status: 500,
-//       headers: { 'Content-Type': 'application/json' },
-//     });
-//   }
-// }
-
-
-// {"amount": "12",
-//     "benefit":"gas",
-//     "enrollment_date": Wed May 29 2024 00:00:00 GMT-0300 (hora estándar de Argentina), 
-//     "expiry_date":Fri May 31 2024 00:00:00 GMT-0300 (hora estándar de Argentina),
-//     "quantity": "123",
-//     "recipient":"Marc Wilkerson",
-//     "status":"En Proceso"
-// }
