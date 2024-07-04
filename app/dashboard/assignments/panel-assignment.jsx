@@ -1,13 +1,4 @@
 'use client'
-import Link from "next/link"
-
-import {
-  Avatar,
-  AvatarFallback,
-  AvatarImage,
-} from "@/components/ui/avatar"
-import { TbDots } from "react-icons/tb";
-
 import {
   ChevronLeft,
   ChevronRight,
@@ -27,9 +18,15 @@ import {
   Truck,
   Users2,
 } from "lucide-react"
-import { IoMdAddCircleOutline } from "react-icons/io";
-import { IoFilterSharp } from "react-icons/io5";
-import { MdOutlineInsertDriveFile } from "react-icons/md";
+import {
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+} from "@/components/ui/avatar"
+
+
+import { useState } from "react";
+import Link from "next/link"
 
 
 import { Badge } from "@/components/ui/badge"
@@ -41,6 +38,26 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
+
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog"
+
+import {
+  DropdownMenu,
+  DropdownMenuCheckboxItem,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
 
 import {
   Tabs,
@@ -58,28 +75,18 @@ import {
   TableRow,
 } from "@/components/ui/table"
 
-import {
-  DropdownMenu,
-  DropdownMenuCheckboxItem,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
 
-import { 
-  MdCheck, 
-  MdClose, 
-  MdInfoOutline, 
-  MdMoreHoriz, 
-  MdOutlinePause,
-  MdArrowOutward, 
-  MdOutlinePauseCircle, 
-  MdOutlinePriorityHigh 
-} from "react-icons/md"
+import { IoMdAddCircleOutline } from "react-icons/io";
+import { IoFilterSharp } from "react-icons/io5";
+import { MdOutlineInsertDriveFile } from "react-icons/md";
+import { MdCheck, MdClose, MdInfoOutline, MdMoreHoriz, MdOutlinePause, MdArrowOutward, MdAssignmentAdd, MdOutlinePriorityHigh } from "react-icons/md"
+import { TbDots } from "react-icons/tb";
 
-export function PanelAssignment() {
+import FormModalAssignment from "./form-modal-assignment";
+
+export function PanelAssignment({ data }) {
+  // console.log(data)
+  const [openModalCreate, setOpenModalCreate] = useState(false)
   return (
     <div className="flex min-h-screen w-full flex-col">
       <main className="flex flex-1 flex-col gap-4 p-4 md:gap-8 md:px-8 md:py-4">
@@ -135,6 +142,21 @@ export function PanelAssignment() {
                   </Link>
                   </div>
                 </Button>
+                <Dialog className="max-w-4xl" open={openModalCreate} onOpenChange={setOpenModalCreate} >
+                  <DialogTrigger asChild>
+                    <Button>
+                      <MdAssignmentAdd className="h-5 w-5 mr-2" />
+                      <p>Agregar Asignacion</p>
+                    </Button>
+                  </DialogTrigger>
+                  <DialogContent className="z-50">
+                    <DialogHeader>
+                      <DialogTitle>Crear Persona</DialogTitle>
+                      <DialogDescription>Asegurese de que no se encuentre en la lista antes de agregar una persona</DialogDescription>
+                    </DialogHeader>
+                    <FormModalAssignment data={data} />
+                  </DialogContent>
+                </Dialog>
               </div>
           </Card>
         </div>
@@ -195,7 +217,7 @@ export function PanelAssignment() {
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">En procesos</CardTitle>
               <div className=" flex items-center justify-center border-2 p-1  border-blue-200 w-8 h-8 rounded-full">
-                <MdMoreHoriz MdCheck className="text-blue-200" />
+                <MdMoreHoriz className="text-blue-200" />
               </div>
               {/* <CreditCard className="h-4 w-4 text-muted-foreground" /> */}
             </CardHeader>
@@ -355,7 +377,7 @@ export function PanelAssignment() {
             <CardContent className="grid gap-8">
               <div className="flex items-center gap-4">
                 <Avatar className="hidden h-9 w-9 sm:flex">
-                  <AvatarImage src="/avatars/01.png" alt="Avatar" />
+                  {/* <AvatarImage src="/avatars/01.png" alt="Avatar" /> */}
                   <AvatarFallback>CP</AvatarFallback>
                 </Avatar>
                 <div className="grid gap-1">
@@ -370,7 +392,7 @@ export function PanelAssignment() {
               </div>
               <div className="flex items-center gap-4">
                 <Avatar className="hidden h-9 w-9 sm:flex">
-                  <AvatarImage src="/avatars/02.png" alt="Avatar" />
+                  {/* <AvatarImage src="/avatars/02.png" alt="Avatar" /> */}
                   <AvatarFallback>PG</AvatarFallback>
                 </Avatar>
                 <div className="grid gap-1">
@@ -385,7 +407,7 @@ export function PanelAssignment() {
               </div>
               <div className="flex items-center gap-4">
                 <Avatar className="hidden h-9 w-9 sm:flex">
-                  <AvatarImage src="/avatars/03.png" alt="Avatar" />
+                  {/* <AvatarImage src="/avatars/03.png" alt="Avatar" /> */}
                   <AvatarFallback>FD</AvatarFallback>
                 </Avatar>
                 <div className="grid gap-1">
@@ -400,7 +422,7 @@ export function PanelAssignment() {
               </div>
               <div className="flex items-center gap-4">
                 <Avatar className="hidden h-9 w-9 sm:flex">
-                  <AvatarImage src="/avatars/04.png" alt="Avatar" />
+                  {/* <AvatarImage src="/avatars/04.png" alt="Avatar" /> */}
                   <AvatarFallback>ML</AvatarFallback>
                 </Avatar>
                 <div className="grid gap-1">

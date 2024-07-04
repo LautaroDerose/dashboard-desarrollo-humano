@@ -10,7 +10,11 @@ const Popover = PopoverPrimitive.Root
 const PopoverTrigger = PopoverPrimitive.Trigger
 
 const PopoverContent = React.forwardRef(({ className, align = "center", sideOffset = 4, ...props }, ref) => (
-  <PopoverPrimitive.Portal>
+  // <PopoverPrimitive.Portal>
+  // Se comento este contenedor, para solucionar el problema relacionado con que el DatePicker no funciona dentro de un modal, solucion extraida de la siguiente discusion en github:
+  // https://github.com/shadcn-ui/ui/pull/1169
+  // https://github.com/shadcn-ui/ui/issues/1511
+  
     <PopoverPrimitive.Content
       ref={ref}
       align={align}
@@ -20,7 +24,7 @@ const PopoverContent = React.forwardRef(({ className, align = "center", sideOffs
         className
       )}
       {...props} />
-  </PopoverPrimitive.Portal>
+  // </PopoverPrimitive.Portal>
 ))
 PopoverContent.displayName = PopoverPrimitive.Content.displayName
 

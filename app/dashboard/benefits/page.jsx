@@ -14,14 +14,14 @@ async function getBenefits() {
 
 export default async function RecipientsPage() {
   const data = await getBenefits();
-  console.log(data)
+  // console.log(data)
   if (!data || !columns) {
     return <div>Error loading data</div>;
   }
   
   return (
-    <div>
-      <DataTable data={data} columns={columns} />
+    <div >
+      <DataTable  data={data} columns={columns} />
     </div>
   );
 }

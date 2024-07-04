@@ -1,39 +1,50 @@
 "use client";
 
+import { useRef, useState } from "react";
 import {
   // ColumnDef,
-  ColumnFiltersState,
-  SortingState,
-  VisibilityState,
-  flexRender,
-  getCoreRowModel,
-  getPaginationRowModel,
-  getSortedRowModel,
-  getFilteredRowModel,
-  useReactTable,
-} from "@tanstack/react-table";
+  ColumnFiltersState, SortingState, VisibilityState, flexRender, getCoreRowModel, getPaginationRowModel, getSortedRowModel, getFilteredRowModel, useReactTable } from "@tanstack/react-table";
 
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
+import { Button } from "@/components/ui/button";
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
+import { DropdownMenu, DropdownMenuCheckboxItem, DropdownMenuContent, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
+import { Input } from "@/components/ui/input"
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 
 import { DataTablePagination } from "./table-pagination";
-import { Input } from "@/components/ui/input"
-import {
-  DropdownMenu,
-  DropdownMenuCheckboxItem,
-  DropdownMenuContent,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
-import { useState } from "react";
-import { Button } from "@/components/ui/button";
 import { DataTableViewOptions } from "./table-viewOptions";
 
+import { MdPersonAdd } from "react-icons/md";
+import { FormModalBenefit } from "./form-modal-benefit";
+
+
+const FilterInput = ({ table }) => {
+  const [inputValue, setInputValue] = useState(table.getColumn("name")?.getFilterValue() || "");
+  const debounceTimeout = useRef(null);
+
+  const handleInputChange = (event) => {
+    const value = event.target.value;
+    setInputValue(value);
+
+    if (debounceTimeout.current) {
+      clearTimeout(debounceTimeout.current);
+    }
+
+    debounceTimeout.current = setTimeout(() => {
+      // console.log("Input value:", value, "Type", typeof value);
+      table.getColumn("name")?.setFilterValue(value);
+    }, 1000); // Ajusta el tiempo de espera según tus necesidades
+  };
+
+  return (
+    <Input
+      placeholder="Filtrar por nombre..."
+      value={inputValue}
+      onChange={handleInputChange}
+      className="max-w-sm"
+    />
+  );
+};
 
 export function DataTable({ columns, data }) {
   console.log(data)
@@ -41,9 +52,11 @@ export function DataTable({ columns, data }) {
   const [columnFilters, setColumnFilters] = useState([]);
   const [columnVisibility, setColumnVisibility] = useState({});
   const [rowSelection, setRowSelection] = useState({});
+  const [selectedFilter, setSelectedFilter] = useState("name"); // Campo de búsqueda seleccionado
+  const [openModalCreate, setOpenModalCreate] = useState(false)
 
   const table = useReactTable({
-    data,
+    data:data.benefits,
     columns,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
@@ -62,22 +75,38 @@ export function DataTable({ columns, data }) {
   });
 
   return (
-    <>
+    <div className="max-w-screen-lg flex flex-col justify-center mx-auto  ">
     {/* Filtros */}
-      <div className="flex items-center py-4">
-        <Input
+      <div className="flex items-center gap-4 py-4">
+        {/* <Input
           placeholder="Filter providers..."
           value={table.getColumn("provider")?.getFilterValue() || ""}
           onChange={(event) =>
             table.getColumn("provider")?.setFilterValue(event.target.value)
           }
           className="max-w-sm"
-        />
-          <DataTableViewOptions table={table} />
-
+        /> */}
+        <FilterInput table={table} />
+        <DataTableViewOptions table={table} />
+        <Dialog  className="w-fit" open={openModalCreate} onOpenChange={setOpenModalCreate} >
+          <DialogTrigger asChild>
+            <Button>
+              <MdPersonAdd className="h-5 w-5 mr-2" />
+              <p>Agregar Beneficio</p>
+            </Button>
+          </DialogTrigger>
+          <DialogContent className="z-50">
+            <DialogHeader>
+              <DialogTitle>Crear Persona</DialogTitle>
+              <DialogDescription>Asegurese de que no se encuentre en la lista antes de agregar una persona</DialogDescription>
+            </DialogHeader>
+            <FormModalBenefit data={data} />
+          </DialogContent>
+        </Dialog>
+          
       </div>
     {/* Table */}
-      <div className="rounded-md border">
+      <div className=" rounded-md border">
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
@@ -123,6 +152,6 @@ export function DataTable({ columns, data }) {
       </div>
      
       <DataTablePagination table={table} />
-    </>
+    </div>
   );
 }

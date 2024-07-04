@@ -21,14 +21,16 @@ export async function GET() {
           recipient: true 
         }
       }),
-      prisma.socialCondition.findMany()
+      prisma.socialCondition.findMany(),
+      // prisma.benefits.findMany()
     ]);
 
     const result = {
       contactInfos,
       localities,
       recipientSocialConditions,
-      socialConditions
+      socialConditions,
+      // benefits
     };
     // console.log("API Result:", result); // Verificar los datos aquí
 

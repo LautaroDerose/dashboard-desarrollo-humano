@@ -20,12 +20,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 // import { DataTableColumnHeader } from "./table-header";
-
- 
 // import { ColumnDef } from "@tanstack/react-table"
- 
-
-
 
 export const columns = [
   {
@@ -51,6 +46,7 @@ export const columns = [
     enableHiding: false,
   },
   {
+    id: "name",
     accessorKey: "name",
     header: "Beneficio",
   },
@@ -60,50 +56,10 @@ export const columns = [
     cell: (props) => <p className='text-slate-400 p-2'>{props.getValue()}</p>
   },
   {
-    accessorKey: 'type',
-    header: 'Tipo',
-    cell: (props) => <p className='text-slate-400 p-2'>{props.getValue()}</p>
-  },
-  {
-    accessorKey: 'frequency',
-    header: 'frecuencia',
-    cell: (props) => <p className='text-slate-400 p-2'>{props.getValue()}</p>
-  },
-  
-  {
-    accessorKey: 'provider',
-    header: 'Provedor',
-    cell: (props) => <p className='text-slate-400 p-2'>{props.getValue()}</p>
-  },
-  {
-    accessorKey: 'recipients',
-    header: 'Beneficiarios',
-    cell: (props) => <p className='text-slate-400 p-2'>{props.getValue()}</p>
-  },
-  
-  {
-    accessorKey: 'familyGroupId',
-    header: () => {
-      return(
-        <TooltipProvider>
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <Button variant="outline">ID_GF</Button>
-            </TooltipTrigger>
-            <TooltipContent>
-              <p>Id Grupo Familiar</p>
-            </TooltipContent>
-          </Tooltip>
-        </TooltipProvider>
-      )
-    },
-    cell: (props) => <p className='text-slate-400 p-2'>{props.getValue()}</p>
-  },
-  {
     id: "actions",
     cell: ({ row }) => {
       const recipient = row.original
- 
+      
       return (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -117,7 +73,7 @@ export const columns = [
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
             <DropdownMenuItem
-              onClick={() => navigator.clipboard.writeText(recipient.id)}
+              onClick={() => navigator.clipboard.writeText(benefit.id)}
             >
               Copy recipient ID
             </DropdownMenuItem>
@@ -130,30 +86,50 @@ export const columns = [
     },
   },
 ]
+
+// {
+//   accessorKey: 'familyGroupId',
+//   header: () => {
+//     return(
+//       <TooltipProvider>
+//         <Tooltip>
+//           <TooltipTrigger asChild>
+//             <Button variant="outline">ID_GF</Button>
+//           </TooltipTrigger>
+//           <TooltipContent>
+//             <p>Id Grupo Familiar</p>
+//           </TooltipContent>
+//         </Tooltip>
+//       </TooltipProvider>
+//     )
+//   },
+//   cell: (props) => <p className='text-slate-400 p-2'>{props.getValue()}</p>
+// },
+
 // "use client"
- 
+
 // import { ColumnDef } from "@tanstack/react-table"
- 
+
 // // This type is used to define the shape of our data.
 // // You can use a Zod schema here if you want.
 // export type Payment = {
-//   id: string
-//   amount: number
-//   status: "pending" | "processing" | "success" | "failed"
-//   email: string
-// }
- 
-// export const columns: ColumnDef<Payment>[] = [
-//   {
-//     accessorKey: "status",
-//     header: "Status",
-//   },
-//   {
-//     accessorKey: "email",
-//     header: "Email",
-//   },
-//   {
-//     accessorKey: "amount",
-//     header: "Amount",
-//   },
-// ]
+  //   id: string
+  //   amount: number
+  //   status: "pending" | "processing" | "success" | "failed"
+  //   email: string
+  // }
+  
+  // export const columns: ColumnDef<Payment>[] = [
+    //   {
+      //     accessorKey: "status",
+      //     header: "Status",
+      //   },
+      //   {
+        //     accessorKey: "email",
+        //     header: "Email",
+        //   },
+        //   {
+          //     accessorKey: "amount",
+          //     header: "Amount",
+          //   },
+          // ]

@@ -120,7 +120,7 @@ const MultiSelector = ({
       <Command
         onKeyDown={handleKeyDown}
         className={cn(
-          "overflow-visible bg-transparent flex flex-col space-y-2",
+          "overflow-visible bg-transparent flex flex-col ",
           className
         )}
         dir={dir}
@@ -145,7 +145,7 @@ const MultiSelectorTrigger = forwardRef(
       <div
         ref={ref}
         className={cn(
-          "flex flex-wrap gap-1 p-1 py-2 border border-muted rounded-lg bg-background",
+          "flex flex-wrap gap-1 p-1 min-h-10 rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50",
           className
         )}
         {...props}
@@ -159,7 +159,7 @@ const MultiSelectorTrigger = forwardRef(
             )}
             variant={"secondary"}
           >
-            <span className="text-xs">{item}</span>
+            <span className="text-xs font-normal px-1  ">{item}</span>
             <button
               aria-label={`Remove ${item} option`}
               aria-roledescription="button to remove option"
@@ -199,7 +199,7 @@ const MultiSelectorInput = forwardRef(
         onFocus={() => setOpen(true)}
         onClick={() => setActiveIndex(-1)}
         className={cn(
-          "ml-2 bg-transparent outline-none placeholder:text-muted-foreground flex-1",
+          "ml-2 bg-transparent block outline-none text-sm placeholder:text-muted-foreground flex-1",
           className,
           activeIndex !== -1 && "caret-transparent"
         )}

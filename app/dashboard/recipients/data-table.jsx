@@ -51,7 +51,7 @@ import { DataTableViewOptions } from "./table-viewOptions";
 import { MdPersonAdd } from "react-icons/md";
 import { IoMdPersonAdd } from "react-icons/io";
 import { TbLeaf } from "react-icons/tb";
-import { FormModal } from "./form-modal";
+import { FormModalRecipient } from "./form-modal-recipient";
 
 const FilterInput = ({ table }) => {
   const [inputValue, setInputValue] = useState(table.getColumn("recipient.dni")?.getFilterValue() || "");
@@ -82,7 +82,7 @@ const FilterInput = ({ table }) => {
 };
 
 export function DataTable({ columns, data }) {
-  // console.log(data.assignments)
+  console.log(data)
   const [sorting, setSorting] = useState([]);
   const [columnFilters, setColumnFilters] = useState([]);
   const [columnVisibility, setColumnVisibility] = useState({});
@@ -169,12 +169,12 @@ export function DataTable({ columns, data }) {
                 <p>Agregar Persona</p>
               </Button>
             </DialogTrigger>
-            <DialogContent className="">
+            <DialogContent className="z-50">
               <DialogHeader>
                 <DialogTitle>Crear Persona</DialogTitle>
                 <DialogDescription>Asegurese de que no se encuentre en la lista antes de agregar una persona</DialogDescription>
               </DialogHeader>
-              <FormModal data={data} />
+              <FormModalRecipient data={data} />
             </DialogContent>
           </Dialog>
       </div>

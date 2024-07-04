@@ -6,7 +6,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { cn } from "@/lib/utils"
 import { buttonVariants } from "@/components/ui/button"
 import { ScrollArea } from "./scroll-area";
-
+import { es } from 'date-fns/locale';
 function Calendar({
   className,
   classNames,
@@ -14,7 +14,8 @@ function Calendar({
   ...props
 }) {
   return (
-    (<DayPicker
+    (<DayPicker 
+      locale={es}
       showOutsideDays={showOutsideDays}
       className={cn("p-3", className)}
       classNames={{
@@ -83,7 +84,7 @@ function Calendar({
               <SelectValue>{seleccionado?.props?.children}</SelectValue>
             </SelectTrigger>
             <SelectContent position="popper">
-              <ScrollArea className="h-80">
+              <ScrollArea className="h-80 ">
                 {options.map((option, id) => (
                   <SelectItem key={`${option.props.value}-${id}`} value={option.props.value?.toString() ?? ""}>
                     {option.props.children}

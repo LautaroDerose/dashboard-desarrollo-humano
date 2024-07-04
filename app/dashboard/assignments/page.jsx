@@ -28,7 +28,7 @@ export default async function AssignmentsPage() {
   return (
     <div>
       {/* <ContentAssignment data={data}  /> */}
-        <PanelAssignment />/
+        <PanelAssignment data={data}/>
         {/* <Dashboard /> */}
     </div>
  )
