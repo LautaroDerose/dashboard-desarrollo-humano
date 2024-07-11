@@ -122,7 +122,7 @@ export function FormModalBenefit({ data }) {
             )}
           />
         </div>
-        <Button type="submit">Submit</Button>
+        <Button type="submit">Agregar</Button>
       </form>
     </Form>
   );

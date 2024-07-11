@@ -30,8 +30,8 @@
 //   );
 // }
 
-import { DataTable } from "./data-table";
-import { columns } from './columns'; // Importa columnas correctamente
+import { DataTable } from "./(table)/data-table";
+import { columns } from './(table)/columns'; // Importa columnas correctamente
 
 async function getUsers() {
     const res = await fetch('http://localhost:3000/api/contactinfo');

@@ -5,28 +5,23 @@ import { useForm } from "react-hook-form"
 import { z } from "zod"
 import { cn } from "@/lib/utils"
 import { format } from "date-fns"
+import { es } from "date-fns/locale"
 
-import { Calendar } from "@/components/ui/calendar"
-import { FiCalendar } from "react-icons/fi";
 import { Button } from "@/components/ui/button"
-import {
-  Form,
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form"
+import { Calendar } from "@/components/ui/calendar"
+import { Command, CommandInput, CommandEmpty, CommandGroup, CommandItem, CommandList } from "@/components/ui/command"
+import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 
 import { Input } from "@/components/ui/input"
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 // import { DatePickerWithRange } from "./date-range-picker"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 import { ScrollArea } from "@/components/ui/scroll-area"
-import { useState } from "react"
-import { es } from "date-fns/locale"
 
+import { useState } from "react"
+import { FiCalendar } from "react-icons/fi";
+import { LuChevronsUpDown } from "react-icons/lu";
+import { FaCheck } from "react-icons/fa";
 
 export default function FormModalAssignment({ data }) {
   // console.log(data)
@@ -112,11 +107,69 @@ export default function FormModalAssignment({ data }) {
     }
   };
  
+  const [open, setOpen] = useState(false)
+  const [value, setValue] = useState("")
 
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(handleSubmit)} className=" space-y-8 w-full ">
           <div className="grid grid-cols-2 gap-3">
+          {/* <FormField
+            control={form.control}
+            name="recipient"
+            render={({ field }) => (
+              <Popover open={open} onOpenChange={setOpen}>
+                <PopoverTrigger asChild>
+                  <Button
+                    variant="outline"
+                    role="combobox"
+                    aria-expanded={open}
+                    className="w-[200px] justify-between"
+                  >
+                    {field.value
+                      ? recipientNames.find((recipient) => recipient === field.value) || "Select recipient..."
+                      : "Select recipient..."}
+                    <LuChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent className="w-[200px] p-0">
+                  <Command>
+                    <CommandInput
+                      {...field}
+                      placeholder="Search recipient..."
+                    />
+                    {recipientNames.length === 0 && (
+                      <CommandEmpty>No recipient found.</CommandEmpty>
+                    )}
+                    {recipientNames.length > 0 && (
+                      <CommandGroup>
+                       <CommandList>
+                        {recipientNames.map((recipient, index) => (
+                            <CommandItem
+                              key={index}
+                              value={recipient}
+                              onSelect={(currentValue) => {
+                                field.onChange(currentValue === field.value ? "" : currentValue);
+                                setOpen(false);
+                              }}
+                            >
+                              <FaCheck
+                                className={cn(
+                                  "mr-2 h-4 w-4",
+                                  field.value === recipient ? "opacity-100" : "opacity-0"
+                                )}
+                              />
+                              {recipient}
+                            </CommandItem>
+                          ))}
+                       </CommandList>
+                      </CommandGroup>
+                    )}
+                  </Command>
+                </PopoverContent>
+              </Popover>
+            )}
+          /> */}
             <FormField
               control={form.control}
               name="recipient"
@@ -143,7 +196,6 @@ export default function FormModalAssignment({ data }) {
                 </FormItem>
               )}
             />
-          
           <FormField
             control={form.control}
             name="benefit"
@@ -296,7 +348,7 @@ export default function FormModalAssignment({ data }) {
               </FormItem>
             )}
           />
-        <Button type="submit">Submit</Button>
+        <Button type="submit">Agregar</Button>
       </form>
     </Form>
   )

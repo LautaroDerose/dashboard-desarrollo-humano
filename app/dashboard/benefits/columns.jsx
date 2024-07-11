@@ -19,6 +19,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
+import EditableCell from "./EditableCell";
 // import { DataTableColumnHeader } from "./table-header";
 // import { ColumnDef } from "@tanstack/react-table"
 
@@ -48,6 +49,7 @@ export const columns = [
   {
     id: "name",
     accessorKey: "name",
+    // cell: EditableCell,
     header: "Beneficio",
   },
   {

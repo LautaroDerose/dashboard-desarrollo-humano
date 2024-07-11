@@ -3,17 +3,9 @@
 import { DropdownMenuTrigger } from "@radix-ui/react-dropdown-menu";
 // import { MixerHorizontalIcon } from "@radix-ui/react-icons";
 import { RxMixerHorizontal } from "react-icons/rx";
-
 import { Table } from "@tanstack/react-table";
-
 import { Button } from "@/components/ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuCheckboxItem,
-  DropdownMenuContent,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-} from "@/components/ui/dropdown-menu";
+import { DropdownMenu, DropdownMenuCheckboxItem, DropdownMenuContent, DropdownMenuLabel, DropdownMenuSeparator } from "@/components/ui/dropdown-menu";
 
 export function DataTableViewOptions({ table }) {
 
@@ -36,7 +28,8 @@ export function DataTableViewOptions({ table }) {
           <Button
             variant="outline"
             size="sm"
-            className="ml-auto hidden h-10 lg:flex"
+            className="ml-auto  h-10 lg:flex"
+            // className="ml-auto hidden h-10 lg:flex"
           >
             <RxMixerHorizontal className="mr-2 h-4 w-4" />
             Mostrar

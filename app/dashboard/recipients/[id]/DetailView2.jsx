@@ -1,61 +1,291 @@
 'use client'
 
-import React, { useState, useEffect } from 'react';
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
+import { DropdownMenu, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuCheckboxItem, DropdownMenuContent, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+import { Separator } from "@/components/ui/separator";
+import { Textarea } from "@/components/ui/textarea"
+import BarChartExample from "./detail-components/bar-chart-example";
 
-const DetailView2 = ({ recipientId }) => {
-  const [recipientData, setRecipientData] = useState(null);
+import { useState } from "react";
+import { IoFilterSharp } from "react-icons/io5";
+import { IoMdAddCircleOutline } from "react-icons/io";
+import Link from "next/link";
+import { MdCheck, MdOutlineInsertDriveFile, MdClose, MdInfoOutline, MdMoreHoriz, MdOutlinePause, MdArrowOutward, MdAssignmentAdd, MdOutlinePriorityHigh, MdOutlineEdit, MdDeleteOutline } from "react-icons/md"
+import { FaUserAltSlash } from "react-icons/fa";
+import { FormEditRecipient } from "./form-edit-recipient";
+import { FormModalRecipient } from "../form-modal-recipient";
 
-  useEffect(() => {
-    const fetchRecipientData = async () => {
-      try {
-        const response = await fetch(`/api/recipient/${recipientId}`);
-        if (!response.ok) {
-          throw new Error('Failed to fetch recipient data');
-        }
-        const data = await response.json();
-        setRecipientData(data);
-      } catch (error) {
-        console.error(error);
-      }
-    };
 
-    fetchRecipientData();
-  }, [recipientId]);
+function calculateAge(birthDateString) {
+  const today = new Date();
+  const birthDate = new Date(birthDateString);
+  let age = today.getFullYear() - birthDate.getFullYear();
+  const monthDifference = today.getMonth() - birthDate.getMonth();
 
-  if (!recipientData) {
-    return <div>Loading...</div>;
+  if (monthDifference < 0 || (monthDifference === 0 && today.getDate() < birthDate.getDate())) {
+    age--;
   }
+
+  return age;
+}
+
+function getInitials(firstName, lastName) {
+  const firstInitial = firstName ? firstName.charAt(0).toUpperCase() : "";
+  const lastInitial = lastName ? lastName.charAt(0).toUpperCase() : "";
+  const initials = firstInitial + lastInitial
+  return initials;
+}
+
+export default function DetailView2({ recipient }) {
+  
+  const contactInfo = recipient.contact_info[0] || {};
+  const socialConditions = recipient.recipientSocialConditions || {};
+  const assignment = recipient.Assignment[0] 
+  const benefits = assignment.benefit || [];
+  // console.log(assignment)
+  // const benefitNames = benefits.map((benefit) => benefit.name );
+  // const [selectedBenefit, setSelectedBenefit] = useState("");
+  
+  const age = calculateAge(recipient.birth_date)
+  const initials = getInitials(recipient.first_name, recipient.last_name)
+
+  const getStatusClass = (status) => {
+    switch (status) {
+      case "En Proceso":
+        return "text-yellow-500";
+      case "Pendiente":
+        return "text-red-500";
+      case "Concretado":
+        return "text-green-500";
+      default:
+        return "";
+    }
+  };
+  const [openEditModal, setOpenEditModal] = useState(false);
+  const [openDesactivateModal, setOpenDesactivateModal] = useState(false);
+
 
   return (
     <div>
-      <h1>Recipient Details</h1>
-      <p>ID: {recipientData.id}</p>
-      <p>First Name: {recipientData.first_name}</p>
-      <p>Last Name: {recipientData.last_name}</p>
-      <p>Birth Date: {recipientData.birth_date}</p>
-      <p>DNI: {recipientData.dni}</p>
-      <p>Sex: {recipientData.sex}</p>
-      <p>Enrollment Date: {recipientData.enrollment_date}</p>
-      <p>Is Active: {recipientData.is_active ? 'Yes' : 'No'}</p>
-      <h2>Contact Info</h2>
-      {recipientData.contact_info.map(contact => (
-        <div key={contact.id}>
-          <p>Phone: {contact.phone}</p>
-          <p>Email: {contact.email}</p>
-          <p>Street: {contact.street.name}</p>
-          <p>Locality: {contact.locality.name}</p>
+        <Card className="p-4">
+            <div className="ml-auto flex items-center justify-between ">
+                {/* <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button variant="outline" size="sm" className="h-8 gap-1">
+                      <IoFilterSharp className="h-3.5 w-3.5" />
+                      <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">
+                        Filter
+                      </span>
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="end">
+                    <DropdownMenuLabel>Filter by</DropdownMenuLabel>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuCheckboxItem checked>
+                      Active
+                    </DropdownMenuCheckboxItem>
+                    <DropdownMenuCheckboxItem>Draft</DropdownMenuCheckboxItem>
+                    <DropdownMenuCheckboxItem>
+                      Archived
+                    </DropdownMenuCheckboxItem>
+                  </DropdownMenuContent>
+                </DropdownMenu> */}
+                <div className="flex items-center gap-2">
+                  <Button size="sm" variant="outline" className="h-10 gap-1">
+                    <MdOutlineInsertDriveFile className="h-3.5 w-3.5" />
+                    <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">
+                      Exportar Datos
+                    </span>
+                  </Button>
+                  {/* <Dialog className="max-w-4xl" open={openEditModal} onOpenChange={setOpenEditModal} >
+                    <DialogTrigger asChild>
+                      <Button>
+                        <MdOutlineEdit className="h-5 w-5 mr-2" />
+                        <p>Editar Datos</p>
+                      </Button>
+                    </DialogTrigger>
+                    <DialogContent className="z-50">
+                      <DialogHeader>
+                        <DialogTitle>Edicion de Beneficiario</DialogTitle>
+                        <DialogDescription>Asegurese de que no se encuentre en la lista antes de agregar una persona</DialogDescription>
+                      </DialogHeader>
+                      <FormEditRecipient recipient={recipient} />
+                    </DialogContent>
+                  </Dialog> */}
+                  {/* <Dialog className="max-w-4xl" open={openEditModal} onOpenChange={setOpenEditModal} >
+                    <DialogTrigger asChild>
+                      <Button>
+                        <MdOutlineEdit className="h-5 w-5 mr-2" />
+                        <p>Editar Datos</p>
+                      </Button>
+                    </DialogTrigger>
+                    <DialogContent className="z-50">
+                      <DialogHeader>
+                        <DialogTitle>Edicion de Beneficiario</DialogTitle>
+                        <DialogDescription>Asegurese de que no se encuentre en la lista antes de agregar una persona</DialogDescription>
+                      </DialogHeader>
+                      <FormEditRecipient recipient={recipient} />
+                    </DialogContent>
+                  </Dialog> */}
+                  <Button><Link href={`/dashboard/recipients/${recipient.id}/edit`}>Editar Datos</Link></Button>
+                </div>
+                <Dialog className="max-w-4xl" open={openDesactivateModal} onOpenChange={setOpenDesactivateModal} >
+                  <DialogTrigger asChild>
+                    <Button variant="destructive" >
+                      <FaUserAltSlash className="h-5 w-5 mr-2" />
+                      <p>Dar de baja Beneficiario</p>
+                    </Button>
+                  </DialogTrigger>
+                  <DialogContent className="z-50">
+                    <DialogHeader>
+                      <DialogTitle>Esta seguro de desactivar este usuario?</DialogTitle>
+                      <DialogDescription >Por favor realice una descripcion de los motivos para desactivar este Beneficiario </DialogDescription>
+                    </DialogHeader>
+                    <Textarea placeholder="Escriba la descripcion aqui" />
+                    <Button variant="destructive">Dar de baja</Button>
+                  </DialogContent>
+                </Dialog>
+              </div>
+          </Card>
+      <div className="flex gap-3 mt-3">
+        <Card className="w-1/4">
+          <CardHeader className="flex items-center justify-center mx-auto">
+            <Avatar className=" w-20 h-20">
+              {/* <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" className="" /> */}
+              <AvatarFallback className="font-bolds text-3xl">{initials}</AvatarFallback>
+            </Avatar>
+            <CardTitle> {recipient.first_name} {recipient.last_name}</CardTitle>
+            <CardDescription>
+              {recipient.sex} |  {age} años de edad
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="grid gap-2">
+              <div className="flex justify-between">
+               <span className="font-extralight  ">DNI: </span><p>{recipient.dni}</p>
+              </div>
+              <Separator/>
+              <div className="flex justify-between">
+               <span className="font-extralight  ">Localidad: </span><p>{contactInfo.locality.name}</p>
+              </div>
+              <Separator/>
+              <div className="flex justify-between">
+                <span className="font-extralight  ">Direccion: </span><p>{contactInfo.street.name}{" "}{contactInfo.street_number}</p>
+              </div>
+              <Separator/>
+              <div className="flex justify-between">
+                <span className="font-extralight  ">Telefono: </span><p>{contactInfo.phone}</p>
+              </div>
+              <Separator/>
+              <div className="flex justify-between">
+                <span className="font-extralight  ">Email: </span><p>{contactInfo.email}</p>
+              </div>
+              <Separator/>
+              <div>
+                <span className="font-extralight">Condición Social: </span>
+                <div className="flex">
+                  {socialConditions.map((condition) => (
+                    <div key={condition.id}  >
+                      <Badge className="mr-2" >
+                        {condition.social_condition.name}
+                      </Badge>
+                    </div>
+                  ))}
+                </div>
+              </div>
+              
+              {/* <div className="grid gap-3">
+                <Label htmlFor="description">Description</Label>
+                <Textarea
+                  id="description"
+                  defaultValue="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam auctor, nisl nec ultricies ultricies, nunc nisl ultricies nunc, nec ultricies nunc nisl nec nunc."
+                  className="min-h-32"
+                />
+              </div> */}
+            </div>
+          </CardContent>
+        </Card>
+        <div className="w-3/4 flex flex-row gap-2">
+        {/* <Separator orientation="vertical"/> */}
+        <Card className="w-full" >
+          <CardHeader>
+            <CardTitle>Detalles de {recipient.first_name} {recipient.last_name}</CardTitle>
+            <CardDescription>
+              El Beneficiario cuenta con * asignaciones en los ultimos * años
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="grid gap-6">
+              <div className="grid gap-3">
+                {/* <Label htmlFor="name">Name</Label> */}
+                  <p className="font-thin ">Asignacion de este mes: <span className="font-bold ml-2">{benefits.name}</span></p>
+                  <Separator />
+                  <p className="font-thin ">Fecha de Registro: 
+                  <span className="font-bold ml-2">
+                    {new Date(assignment.enrollment_date).toLocaleDateString("es-ES", {
+                      day: "2-digit",
+                      month: "2-digit",
+                      year: "numeric",
+                    })}
+                  </span></p>
+                  <Separator />
+                  <p className="font-thin ">Fecha de Vencimiento: 
+                  <span className="font-bold ml-2">
+                    {new Date(assignment.expiry_date).toLocaleDateString("es-ES", {
+                      day: "2-digit",
+                      month: "2-digit",
+                      year: "numeric",
+                    })}
+                  </span></p>
+                  <Separator />
+                  <p className="font-thin">
+                    Estado de Asignación:
+                    <span className={`font-bold ml-2 ${getStatusClass(assignment.status)}`}>
+                      {assignment.status}
+                    </span>
+                  </p>
+                  <Separator />
+              </div>
+              <div className="grid gap-3">
+                  <CardTitle>Historial de Asignaciones</CardTitle>
+                  <div className="flex justify-between">
+                    <p className="font-thin ">Junio:</p>
+                    <span className="font-bold">Alimentos</span>
+                  </div>
+                  <Separator />
+                  <div className="flex justify-between">
+                    <p className="font-thin ">Mayo:</p>
+                    <span className="font-bold">Transporte</span>
+                  </div>
+                  <Separator />
+                  <div className="flex justify-between">
+                    <p className="font-thin ">Abril:</p>
+                    <span className="font-bold">Alimentos</span>
+                  </div>
+                  <Separator />
+                  <div className="flex justify-between">
+                    <p className="font-thin ">Marzo:</p>
+                    <span className="font-bold">Alimentos</span>
+                  </div>
+                  <Separator />
+                  
+              </div>
+            
+            </div>
+          </CardContent>
+        </Card>
+        {/* <BarChartExample /> */}
+        {/* <FormModalRecipient data={recipient} /> */}
+        {/* <FormEditRecipient recipient={recipient} /> */}
         </div>
-      ))}
-      <h2>Recipient Social Conditions</h2>
-      {recipientData.recipientSocialConditions.map(condition => (
-        <div key={condition.id}>
-          <p>Social Condition: {condition.social_condition.name}</p>
-          <p>Gravity: {condition.social_condition.gravity}</p>
-          <p>Type: {condition.social_condition.type}</p>
-        </div>
-      ))}
+      </div>
     </div>
   );
-};
+}
 
-export default DetailView2;

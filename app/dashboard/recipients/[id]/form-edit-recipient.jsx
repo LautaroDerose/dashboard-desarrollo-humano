@@ -23,7 +23,7 @@ import { toast } from "@/components/ui/use-toast"
 import { FiCalendar } from "react-icons/fi";
 
 
-export function FormModalRecipient({ data }) {
+export function FormEditRecipient({ data }) {
   const localities = data.localities;
   const socialConditions = data.socialConditions;
 
@@ -361,30 +361,3 @@ export function FormModalRecipient({ data }) {
     </Form>
   );
 }
-
-{/*         
-        <AlertDialog>
-          <AlertDialogTrigger asChild>
-            <Button variant="outline" >Agregar</Button>
-          </AlertDialogTrigger>
-          <AlertDialogContent>
-            <AlertDialogHeader>
-              <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
-              <AlertDialogDescription>
-                This action cannot be undone. This will permanently delete your
-                account and remove your data from our servers.
-              </AlertDialogDescription>
-            </AlertDialogHeader>
-            <AlertDialogFooter>
-              <AlertDialogCancel
-
-              >
-                Cancel
-              </AlertDialogCancel>
-              </AlertDialogFooter>
-              </AlertDialogContent>
-            </AlertDialog> */}
-            
-            {/* <AlertDialogAction type="submit">Agregar</AlertDialogAction> */}
-            {/* <AlertDialogAction><Button type="submit">Agregar</Button></AlertDialogAction> */}
-            {/* <Button type="submit">Agregar</Button> */}

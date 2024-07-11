@@ -51,7 +51,7 @@ import { DataTableViewOptions } from "./table-viewOptions";
 import { MdPersonAdd } from "react-icons/md";
 import { IoMdPersonAdd } from "react-icons/io";
 import { TbLeaf } from "react-icons/tb";
-import { FormModalRecipient } from "./form-modal-recipient";
+import { FormModalRecipient } from "../form-modal-recipient";
 
 const FilterInput = ({ table }) => {
   const [inputValue, setInputValue] = useState(table.getColumn("recipient.dni")?.getFilterValue() || "");
@@ -82,7 +82,7 @@ const FilterInput = ({ table }) => {
 };
 
 export function DataTable({ columns, data }) {
-  console.log(data)
+  // console.log(data)
   const [sorting, setSorting] = useState([]);
   const [columnFilters, setColumnFilters] = useState([]);
   const [columnVisibility, setColumnVisibility] = useState({});
@@ -156,12 +156,12 @@ export function DataTable({ columns, data }) {
         /> */}
           <FilterInput table={table} />
           <DataTableViewOptions table={table} />
-          <Button size="sm" className="h-8 gap-1" asChild>
+          {/* <Button size="sm" className="h-8 gap-1" asChild>
             <div>
               <MdPersonAdd className="h-5 w-5 mr-2" />
               <Link href="./recipients/form" className="sr-only sm:not-sr-only sm:whitespace-nowrap"> Agregar Persona </Link>
             </div>
-          </Button>
+          </Button> */}
           <Dialog className="max-w-4xl" open={openModalCreate} onOpenChange={setOpenModalCreate} >
             <DialogTrigger asChild>
               <Button>
@@ -207,7 +207,7 @@ export function DataTable({ columns, data }) {
                   data-state={row.getIsSelected() && "selected"}
                 >
                   {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id}>
+                    <TableCell key={cell.id} className="w-fit" > 
                       {flexRender(cell.column.columnDef.cell, cell.getContext())}
                     </TableCell>
                   ))}

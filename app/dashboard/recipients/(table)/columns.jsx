@@ -1,31 +1,51 @@
 "use client"
-import { TbDots } from "react-icons/tb";
-import { TbArrowsUpDown } from "react-icons/tb";
-import { Checkbox } from "@/components/ui/checkbox"
+import Link from "next/link";
 
 import { Button } from "@/components/ui/button"
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip"
+import { Checkbox } from "@/components/ui/checkbox"
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
-import Link from "next/link";
+import { TbDots } from "react-icons/tb";
+import { TbArrowsUpDown } from "react-icons/tb";
 // import { DataTableColumnHeader } from "./table-header";
-
- 
 // import { ColumnDef } from "@tanstack/react-table"
  
 export const columns = [
+  {
+    id: "actions",
+    cell: ({ row }) => {
+      const recipient = row.original
+ 
+      return (
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="ghost" className="h-8 w-8 p-0">
+              <span className="sr-only">Open menu</span>
+              {/* <MoreHorizontal  /> */}
+              <TbDots  className="h-4 w-4" />
+
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end">
+            <DropdownMenuLabel>Actions</DropdownMenuLabel>
+            <DropdownMenuItem
+              onClick={() => navigator.clipboard.writeText(recipient.id)}
+            >
+              Copiar Id de persona
+            </DropdownMenuItem>
+            <DropdownMenuSeparator />
+            {/* <DropdownMenuItem><Link href={}>Editar</Link></DropdownMenuItem>
+            <DropdownMenuItem>Eliminar</DropdownMenuItem> */}
+            {/* <DropdownMenuItem>Ver en detalle </DropdownMenuItem> */}
+            <Link href={`/dashboard/recipients/${recipient.id}`}>
+              <DropdownMenuItem>Ver en detalle</DropdownMenuItem>
+            </Link>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      )
+    },
+  },
   {
     id: "select",
     header: ({ table }) => (
@@ -90,7 +110,7 @@ export const columns = [
     header: 'DNI',
     cell: (props) => {
       const value = props.getValue().toString();
-      console.log("Cell value (DNI):", value, "Type:", typeof value);
+      // console.log("Cell value (DNI):", value, "Type:", typeof value);
       return <p className=''>{value}</p>;
     },
     filterFn: (row, columnId, filterValue) => {
@@ -175,40 +195,7 @@ export const columns = [
     accessorKey: "benefits",
     header: "Beneficios",
   },
-  {
-    id: "actions",
-    cell: ({ row }) => {
-      const recipient = row.original
- 
-      return (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="h-8 w-8 p-0">
-              <span className="sr-only">Open menu</span>
-              {/* <MoreHorizontal  /> */}
-              <TbDots  className="h-4 w-4" />
-
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuLabel>Actions</DropdownMenuLabel>
-            <DropdownMenuItem
-              onClick={() => navigator.clipboard.writeText(recipient.id)}
-            >
-              Copiar Id de persona
-            </DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem>Editar </DropdownMenuItem>
-            <DropdownMenuItem>Eliminar</DropdownMenuItem>
-            {/* <DropdownMenuItem>Ver en detalle </DropdownMenuItem> */}
-            <Link href={`/dashboard/recipients/${recipient.id}`}>
-              <DropdownMenuItem>Ver en detalle</DropdownMenuItem>
-            </Link>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      )
-    },
-  },
+  
 ]
 // "use client"
  

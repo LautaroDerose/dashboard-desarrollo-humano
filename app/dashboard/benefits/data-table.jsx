@@ -54,6 +54,7 @@ export function DataTable({ columns, data }) {
   const [rowSelection, setRowSelection] = useState({});
   const [selectedFilter, setSelectedFilter] = useState("name"); // Campo de búsqueda seleccionado
   const [openModalCreate, setOpenModalCreate] = useState(false)
+  // const [editData, setEditData] = useState({data})
 
   const table = useReactTable({
     data:data.benefits,
@@ -72,6 +73,16 @@ export function DataTable({ columns, data }) {
       columnVisibility,
       rowSelection,
       },
+    // meta: {
+    //   updateData: (rowIndex, columnId, value) => 
+    //     setEditData((prev) => 
+    //       prev.map( (row, index) => 
+    //       index === rowIndex 
+    //       ? { ...prev[rowIndex], [columnId]: value} 
+    //       : row
+    //     )
+    //   ),
+    // },
   });
 
   return (
