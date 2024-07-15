@@ -1,81 +1,18 @@
 'use client'
-import {
-  ChevronLeft,
-  ChevronRight,
-  Copy,
-  CreditCard,
-  File,
-  Home,
-  LineChart,
-  ListFilter,
-  MoreVertical,
-  Package,
-  Package2,
-  PanelLeft,
-  Search,
-  Settings,
-  ShoppingCart,
-  Truck,
-  Users2,
-} from "lucide-react"
-import {
-  Avatar,
-  AvatarFallback,
-  AvatarImage,
-} from "@/components/ui/avatar"
-
 
 import { useState } from "react";
 import Link from "next/link"
 
-
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
+import { DropdownMenu, DropdownMenuCheckboxItem, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog"
-
-import {
-  DropdownMenu,
-  DropdownMenuCheckboxItem,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
-
-import {
-  Tabs,
-  TabsContent,
-  TabsList,
-  TabsTrigger,
-} from "@/components/ui/tabs"
-
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table"
-
-
+import { ChevronLeft, ChevronRight, Copy, CreditCard, File, Home, LineChart, ListFilter, MoreVertical, Package, Package2, PanelLeft, Search, Settings, ShoppingCart, Truck, Users2 } from "lucide-react"
 import { IoMdAddCircleOutline } from "react-icons/io";
 import { IoFilterSharp } from "react-icons/io5";
 import { MdOutlineInsertDriveFile } from "react-icons/md";
@@ -133,14 +70,6 @@ export function PanelAssignment({ data }) {
                   <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">
                     Export
                   </span>
-                </Button>
-                <Button size="sm" className="h-8 gap-1" asChild>
-                  <div>
-                  <IoMdAddCircleOutline className="h-3.5 w-3.5" />
-                  <Link href="./assignments/form" className="sr-only sm:not-sr-only sm:whitespace-nowrap">
-                    Crear Asignacion
-                  </Link>
-                  </div>
                 </Button>
                 <Dialog className="max-w-4xl" open={openModalCreate} onOpenChange={setOpenModalCreate} >
                   <DialogTrigger asChild>

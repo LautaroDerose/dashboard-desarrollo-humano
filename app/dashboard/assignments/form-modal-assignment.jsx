@@ -25,20 +25,16 @@ import { FaCheck } from "react-icons/fa";
 
 export default function FormModalAssignment({ data }) {
   // console.log(data)
-  // const assignments = data.assignments
   const recipients = data.recipients;
   const benefits = data.benefits;
-  // console.log("busqueda de recipients",recipients)
-  // const [selectedRecipient, setSelectedRecipient] = useState("");
+
   const [selectedBenefit, setSelectedBenefit] = useState("");
 
   // Extraer solo los nombres de los recipients del objeto data
   const recipientNames = recipients.map((recipient) => recipient.first_name + " " + recipient.last_name );
-  // console.log(recipientNames)
 
   // Extraer solo los nombres de las localidades del objeto data
   const benefitNames = benefits.map((benefit) => benefit.name );
-  // console.log(benefitNames)
 
   const formSchema = z.object({
     recipient: z.enum(recipientNames),
@@ -71,7 +67,7 @@ export default function FormModalAssignment({ data }) {
   // }
 
   const handleSubmit = async (values) => {
-    console.log({ values });
+    // console.log({ values });
 
     const payload = {
       enrollment_date: values.enrollment_date.toISOString(),

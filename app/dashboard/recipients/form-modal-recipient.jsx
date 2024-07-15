@@ -145,7 +145,7 @@ export function FormModalRecipient({ data }) {
                 <FormItem>
                   <FormLabel>Nombre</FormLabel>
                   <FormControl>
-                    <Input placeholder="Ingrese su nombre" {...field} type="text" />
+                    <Input placeholder="Ingrese su nombre" {...field} type="text" defaultValues={data.first_name} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

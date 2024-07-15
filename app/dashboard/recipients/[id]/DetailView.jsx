@@ -10,7 +10,6 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Separator } from "@/components/ui/separator";
 import { Textarea } from "@/components/ui/textarea"
-import BarChartExample from "./detail-components/bar-chart-example";
 
 import { useState } from "react";
 import { IoFilterSharp } from "react-icons/io5";
@@ -18,8 +17,12 @@ import { IoMdAddCircleOutline } from "react-icons/io";
 import Link from "next/link";
 import { MdCheck, MdOutlineInsertDriveFile, MdClose, MdInfoOutline, MdMoreHoriz, MdOutlinePause, MdArrowOutward, MdAssignmentAdd, MdOutlinePriorityHigh, MdOutlineEdit, MdDeleteOutline } from "react-icons/md"
 import { FaUserAltSlash } from "react-icons/fa";
-import { FormEditRecipient } from "./form-edit-recipient";
+import { FormEditRecipient } from "./edit/form-edit-recipient";
 import { FormModalRecipient } from "../form-modal-recipient";
+import FormActionRecipient from "../form-action-recipient";
+import { format } from "date-fns";
+import { es } from "date-fns/locale"
+import RecipientDeleteButton from "@/components/recipient-components/recipient-delete-button";
 
 
 function calculateAge(birthDateString) {
@@ -42,12 +45,12 @@ function getInitials(firstName, lastName) {
   return initials;
 }
 
-export default function DetailView2({ recipient }) {
+export default function DetailView({ recipient }) {
   
   const contactInfo = recipient.contact_info[0] || {};
   const socialConditions = recipient.recipientSocialConditions || {};
   const assignment = recipient.Assignment[0] 
-  const benefits = assignment.benefit || [];
+  const benefits = assignment?.benefit || [];
   // console.log(assignment)
   // const benefitNames = benefits.map((benefit) => benefit.name );
   // const [selectedBenefit, setSelectedBenefit] = useState("");
@@ -70,32 +73,10 @@ export default function DetailView2({ recipient }) {
   const [openEditModal, setOpenEditModal] = useState(false);
   const [openDesactivateModal, setOpenDesactivateModal] = useState(false);
 
-
   return (
     <div>
         <Card className="p-4">
             <div className="ml-auto flex items-center justify-between ">
-                {/* <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <Button variant="outline" size="sm" className="h-8 gap-1">
-                      <IoFilterSharp className="h-3.5 w-3.5" />
-                      <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">
-                        Filter
-                      </span>
-                    </Button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent align="end">
-                    <DropdownMenuLabel>Filter by</DropdownMenuLabel>
-                    <DropdownMenuSeparator />
-                    <DropdownMenuCheckboxItem checked>
-                      Active
-                    </DropdownMenuCheckboxItem>
-                    <DropdownMenuCheckboxItem>Draft</DropdownMenuCheckboxItem>
-                    <DropdownMenuCheckboxItem>
-                      Archived
-                    </DropdownMenuCheckboxItem>
-                  </DropdownMenuContent>
-                </DropdownMenu> */}
                 <div className="flex items-center gap-2">
                   <Button size="sm" variant="outline" className="h-10 gap-1">
                     <MdOutlineInsertDriveFile className="h-3.5 w-3.5" />
@@ -103,7 +84,7 @@ export default function DetailView2({ recipient }) {
                       Exportar Datos
                     </span>
                   </Button>
-                  {/* <Dialog className="max-w-4xl" open={openEditModal} onOpenChange={setOpenEditModal} >
+                  <Dialog className="max-w-4xl" open={openEditModal} onOpenChange={setOpenEditModal} >
                     <DialogTrigger asChild>
                       <Button>
                         <MdOutlineEdit className="h-5 w-5 mr-2" />
@@ -115,27 +96,16 @@ export default function DetailView2({ recipient }) {
                         <DialogTitle>Edicion de Beneficiario</DialogTitle>
                         <DialogDescription>Asegurese de que no se encuentre en la lista antes de agregar una persona</DialogDescription>
                       </DialogHeader>
-                      <FormEditRecipient recipient={recipient} />
+                      <FormActionRecipient recipient={recipient} />
+                      {/* <FormModalRecipient recipient={recipient} /> */}
                     </DialogContent>
-                  </Dialog> */}
-                  {/* <Dialog className="max-w-4xl" open={openEditModal} onOpenChange={setOpenEditModal} >
-                    <DialogTrigger asChild>
-                      <Button>
-                        <MdOutlineEdit className="h-5 w-5 mr-2" />
-                        <p>Editar Datos</p>
-                      </Button>
-                    </DialogTrigger>
-                    <DialogContent className="z-50">
-                      <DialogHeader>
-                        <DialogTitle>Edicion de Beneficiario</DialogTitle>
-                        <DialogDescription>Asegurese de que no se encuentre en la lista antes de agregar una persona</DialogDescription>
-                      </DialogHeader>
-                      <FormEditRecipient recipient={recipient} />
-                    </DialogContent>
-                  </Dialog> */}
-                  <Button><Link href={`/dashboard/recipients/${recipient.id}/edit`}>Editar Datos</Link></Button>
+                  </Dialog>
+                  {/* <Button><Link href={`/dashboard/recipients/${recipient.id}/edit`}>Editar Datos</Link></Button> */}
                 </div>
-                <Dialog className="max-w-4xl" open={openDesactivateModal} onOpenChange={setOpenDesactivateModal} >
+
+                <RecipientDeleteButton recipientId={recipient.id} />
+
+                {/* <Dialog className="max-w-4xl" open={openDesactivateModal} onOpenChange={setOpenDesactivateModal} >
                   <DialogTrigger asChild>
                     <Button variant="destructive" >
                       <FaUserAltSlash className="h-5 w-5 mr-2" />
@@ -150,7 +120,8 @@ export default function DetailView2({ recipient }) {
                     <Textarea placeholder="Escriba la descripcion aqui" />
                     <Button variant="destructive">Dar de baja</Button>
                   </DialogContent>
-                </Dialog>
+                </Dialog> */}
+                
               </div>
           </Card>
       <div className="flex gap-3 mt-3">
@@ -167,6 +138,21 @@ export default function DetailView2({ recipient }) {
           </CardHeader>
           <CardContent>
             <div className="grid gap-2">
+              <div className="flex justify-between">
+               <span className="font-extralight  ">Fecha de nacimiento: </span>
+               <p>
+               {recipient.birth_date ? (
+                  <>
+                    {new Date(new Date(recipient.birth_date).getTime() + 86400000).toLocaleDateString("es-ES", {
+                      day: "2-digit",
+                      month: "2-digit",
+                      year: "numeric",
+                    })}
+                  </>
+                ) : "No especificada"}
+               </p>
+              </div>
+              <Separator/>
               <div className="flex justify-between">
                <span className="font-extralight  ">DNI: </span><p>{recipient.dni}</p>
               </div>
@@ -199,15 +185,6 @@ export default function DetailView2({ recipient }) {
                   ))}
                 </div>
               </div>
-              
-              {/* <div className="grid gap-3">
-                <Label htmlFor="description">Description</Label>
-                <Textarea
-                  id="description"
-                  defaultValue="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam auctor, nisl nec ultricies ultricies, nunc nisl ultricies nunc, nec ultricies nunc nisl nec nunc."
-                  className="min-h-32"
-                />
-              </div> */}
             </div>
           </CardContent>
         </Card>
@@ -280,8 +257,7 @@ export default function DetailView2({ recipient }) {
             </div>
           </CardContent>
         </Card>
-        {/* <BarChartExample /> */}
-        {/* <FormModalRecipient data={recipient} /> */}
+        {/* <FormModalRecipient data={dataSelect} /> */}
         {/* <FormEditRecipient recipient={recipient} /> */}
         </div>
       </div>

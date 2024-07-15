@@ -1,24 +1,16 @@
 "use client";
 
-import { DropdownMenuTrigger } from "@radix-ui/react-dropdown-menu";
-// import { MixerHorizontalIcon } from "@radix-ui/react-icons";
-import { RxMixerHorizontal } from "react-icons/rx";
-
 import { Table } from "@tanstack/react-table";
 
 import { Button } from "@/components/ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuCheckboxItem,
-  DropdownMenuContent,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-} from "@/components/ui/dropdown-menu";
+import { DropdownMenuTrigger } from "@radix-ui/react-dropdown-menu";
+import { DropdownMenu, DropdownMenuCheckboxItem, DropdownMenuContent, DropdownMenuLabel, DropdownMenuSeparator } from "@/components/ui/dropdown-menu";
+
+import { RxMixerHorizontal } from "react-icons/rx";
 
 export function DataTableViewOptions({ table }) {
 
   const columnNamesInSpanish = {
-    
     "recipient.first_name": "Nombre",
     "recipient.last_name": "Apellido",
     recipient_birth_date: "Fecha de Nacimiento",
@@ -69,32 +61,3 @@ export function DataTableViewOptions({ table }) {
     </div>
   );
 }
-
- {/* <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="outline" className="ml-auto">
-                Columnas
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              {table
-                .getAllColumns()
-                .filter(
-                  (column) => column.getCanHide()
-                )
-                .map((column) => {
-                  return (
-                    <DropdownMenuCheckboxItem
-                      key={column.id}
-                      className="capitalize"
-                      checked={column.getIsVisible()}
-                      onCheckedChange={(value) =>
-                        column.toggleVisibility(!!value)
-                      }
-                    >
-                      {column.id}
-                    </DropdownMenuCheckboxItem>
-                  )
-                })}
-            </DropdownMenuContent>
-          </DropdownMenu> */}

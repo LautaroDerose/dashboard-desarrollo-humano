@@ -1,7 +1,5 @@
-import AdminTable from "@/components/RecipientTable/AdminTable";
-import { DataTable } from "./data-table";
-import { columns } from './columns'; // Importa columnas correctamente
-import { RxVercelLogo } from "react-icons/rx";
+import { DataTable } from "./(table)/data-table";
+import { columns } from './(table)/columns'; // Importa columnas correctamente
 
 async function getBenefits() {
   const res = await fetch('http://localhost:3000/api/benefit');

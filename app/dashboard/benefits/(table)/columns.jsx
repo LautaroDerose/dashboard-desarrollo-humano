@@ -1,27 +1,14 @@
 "use client"
-import { TbDots } from "react-icons/tb";
-import { TbArrowsUpDown } from "react-icons/tb";
-import { Checkbox } from "@/components/ui/checkbox"
 
 import { Button } from "@/components/ui/button"
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip"
+import { Checkbox } from "@/components/ui/checkbox"
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
 import EditableCell from "./EditableCell";
-// import { DataTableColumnHeader } from "./table-header";
-// import { ColumnDef } from "@tanstack/react-table"
+
+import { TbDots } from "react-icons/tb";
+import { TbArrowsUpDown } from "react-icons/tb";
 
 export const columns = [
   {
@@ -88,50 +75,3 @@ export const columns = [
     },
   },
 ]
-
-// {
-//   accessorKey: 'familyGroupId',
-//   header: () => {
-//     return(
-//       <TooltipProvider>
-//         <Tooltip>
-//           <TooltipTrigger asChild>
-//             <Button variant="outline">ID_GF</Button>
-//           </TooltipTrigger>
-//           <TooltipContent>
-//             <p>Id Grupo Familiar</p>
-//           </TooltipContent>
-//         </Tooltip>
-//       </TooltipProvider>
-//     )
-//   },
-//   cell: (props) => <p className='text-slate-400 p-2'>{props.getValue()}</p>
-// },
-
-// "use client"
-
-// import { ColumnDef } from "@tanstack/react-table"
-
-// // This type is used to define the shape of our data.
-// // You can use a Zod schema here if you want.
-// export type Payment = {
-  //   id: string
-  //   amount: number
-  //   status: "pending" | "processing" | "success" | "failed"
-  //   email: string
-  // }
-  
-  // export const columns: ColumnDef<Payment>[] = [
-    //   {
-      //     accessorKey: "status",
-      //     header: "Status",
-      //   },
-      //   {
-        //     accessorKey: "email",
-        //     header: "Email",
-        //   },
-        //   {
-          //     accessorKey: "amount",
-          //     header: "Amount",
-          //   },
-          // ]

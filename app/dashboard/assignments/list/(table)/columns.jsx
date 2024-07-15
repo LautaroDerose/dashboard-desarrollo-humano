@@ -20,10 +20,6 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import Link from "next/link";
-// import { DataTableColumnHeader } from "./table-header";
-
- 
-// import { ColumnDef } from "@tanstack/react-table"
  
 export const columns = [
   {
@@ -69,21 +65,6 @@ export const columns = [
     header: 'Apellido',
     cell: (props) => <p className=''>{props.getValue()}</p>
   },
-  // {
-  //   id: 'recipient.dni',
-  //   accessorKey: 'recipient.dni',
-  //   header: 'DNI',
-  //   cell: (props) => {
-  //     const value = props.getValue().toString();
-  //     console.log("Cell value (DNI):", value, "Type:", typeof value);
-  //     return <p className=''>{value}</p>;
-  //   }
-    // cell: (props) => <p className=''>{props.getValue().toString()}</p>
-    // cell: (props) => <p className=''>{props.getValue()}</p>
-    // header: ({ column }) => (
-    //   <DataTableColumnHeader column={column} title="DNI" />
-    // ),
-  // },
   {
     id: 'recipient.dni',
     accessorKey: 'recipient.dni',
@@ -103,21 +84,17 @@ export const columns = [
     accessorKey: 'recipient.birth_date',
     header: 'Fecha de Nacimiento',
     cell: (props) => <p className=''>{new Date(props.getValue()).toLocaleDateString()}</p>
-    //   cell: (props) => {
-      //     const date = new Date(props.getValue());
-      //     return <p className=''>{date.toLocaleDateString()}</p>;
-      // }
-    },
-    {
-      accessorKey: 'recipient.sex',
-      header: 'Sexo',
-      cell: (props) => <p className=''>{props.getValue()}</p>
-    },
-    {
-      accessorKey: 'phone',
-      header: 'Teléfono',
-      cell: (props) => <p className=''>{props.getValue()}</p>
-    },
+  },
+  {
+    accessorKey: 'recipient.sex',
+    header: 'Sexo',
+    cell: (props) => <p className=''>{props.getValue()}</p>
+  },
+  {
+    accessorKey: 'phone',
+    header: 'Teléfono',
+    cell: (props) => <p className=''>{props.getValue()}</p>
+  },
   {
     accessorKey: "email",
     header: ({ column }) => {
@@ -149,11 +126,6 @@ export const columns = [
     cell: (props) => <p className=''>{props.getValue()}</p>
   },
   // {
-  //   accessorKey: 'streetNumber',
-  //   header: 'Número de Calle',
-  //   cell: (props) => <p className=''>{props.getValue()}</p>
-  // },  
-  // {
   //   accessorKey: 'familyGroupId',
   //   header: () => {
   //     return(
@@ -179,7 +151,6 @@ export const columns = [
     id: "actions",
     cell: ({ row }) => {
       const recipient = row.original
- 
       return (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -210,30 +181,3 @@ export const columns = [
     },
   },
 ]
-// "use client"
- 
-// import { ColumnDef } from "@tanstack/react-table"
- 
-// // This type is used to define the shape of our data.
-// // You can use a Zod schema here if you want.
-// export type Payment = {
-//   id: string
-//   amount: number
-//   status: "pending" | "processing" | "success" | "failed"
-//   email: string
-// }
- 
-// export const columns: ColumnDef<Payment>[] = [
-//   {
-//     accessorKey: "status",
-//     header: "Status",
-//   },
-//   {
-//     accessorKey: "email",
-//     header: "Email",
-//   },
-//   {
-//     accessorKey: "amount",
-//     header: "Amount",
-//   },
-// ]

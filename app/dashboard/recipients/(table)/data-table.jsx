@@ -52,6 +52,7 @@ import { MdPersonAdd } from "react-icons/md";
 import { IoMdPersonAdd } from "react-icons/io";
 import { TbLeaf } from "react-icons/tb";
 import { FormModalRecipient } from "../form-modal-recipient";
+import FormActionRecipient from "../form-action-recipient";
 
 const FilterInput = ({ table }) => {
   const [inputValue, setInputValue] = useState(table.getColumn("recipient.dni")?.getFilterValue() || "");
@@ -174,7 +175,8 @@ export function DataTable({ columns, data }) {
                 <DialogTitle>Crear Persona</DialogTitle>
                 <DialogDescription>Asegurese de que no se encuentre en la lista antes de agregar una persona</DialogDescription>
               </DialogHeader>
-              <FormModalRecipient data={data} />
+              {/* <FormModalRecipient data={data} /> */}
+              <FormActionRecipient />
             </DialogContent>
           </Dialog>
       </div>

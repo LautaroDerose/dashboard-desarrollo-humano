@@ -1,34 +1,22 @@
 
 "use client"
 
-import { zodResolver } from "@hookform/resolvers/zod"
+import { useState } from "react"
 import { useForm } from "react-hook-form"
+import { zodResolver } from "@hookform/resolvers/zod"
 import * as z from "zod"
 import { format } from "date-fns"
-
 import { cn } from "@/lib/utils"
+
 import { Button } from "@/components/ui/button"
 import { Calendar } from "@/components/ui/calendar"
-import { FiCalendar } from "react-icons/fi";
-
-import {
-  Form,
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form"
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover"
-import { toast } from "@/components/ui/use-toast"
+import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { useState } from "react"
+import { toast } from "@/components/ui/use-toast"
+
+import { FiCalendar } from "react-icons/fi";
 
 export function FormModalBenefit({ data }) {
 

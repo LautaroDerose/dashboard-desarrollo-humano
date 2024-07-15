@@ -1,5 +1,5 @@
 import prisma from "@/lib/prisma";
-import FormEditRecipient from "../form-edit-recipient";
+import FormEditRecipient from "./form-edit-recipient";
 import { redirect } from "next/navigation";
 // import { FormModalRecipient } from "../../form-modal-recipient";
 

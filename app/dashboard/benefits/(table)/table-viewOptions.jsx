@@ -1,24 +1,13 @@
 "use client";
 
-import { DropdownMenuTrigger } from "@radix-ui/react-dropdown-menu";
-// import { MixerHorizontalIcon } from "@radix-ui/react-icons";
-import { RxMixerHorizontal } from "react-icons/rx";
-
-import { Table } from "@tanstack/react-table";
-
 import { Button } from "@/components/ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuCheckboxItem,
-  DropdownMenuContent,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-} from "@/components/ui/dropdown-menu";
+import { DropdownMenu, DropdownMenuCheckboxItem, DropdownMenuContent, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+
+import { RxMixerHorizontal } from "react-icons/rx";
 
 export function DataTableViewOptions({ table }) {
 
   const columnNamesInSpanish = {
-    
     "category_name": "Categoria",
   };
 
