@@ -116,7 +116,7 @@ export async function editRecipient(formData) {
   const phone = parseInt(formData.get("phone"));
   const selectedSocialConditions = JSON.parse(formData.get("social_conditions") || "[]");
 
-  if (!id || !firstName || !lastName || !locality_id || !street_id || !street_number || !email || !phone) {
+  if (!id) {
     return;
   }
 
@@ -128,31 +128,39 @@ export async function editRecipient(formData) {
       return condition ? condition.id : null;
     }).filter(id => id !== null);
 
+    // Construir el objeto de datos para la actualización del recipient
+    const recipientData = {};
+    if (firstName) recipientData.first_name = firstName;
+    if (lastName) recipientData.last_name = lastName;
+    if (dni) recipientData.dni = dni;
+    if (birthDate) recipientData.birth_date = new Date(birthDate).toISOString();
+    if (sex) recipientData.sex = sex;
+
+    // Construir el objeto de datos para la actualización de contact_info
+    const contactInfoData = {};
+    if (locality_id) contactInfoData.locality_id = locality_id;
+    if (street_id) contactInfoData.street_id = street_id;
+    if (street_number) contactInfoData.street_number = street_number;
+    if (email) contactInfoData.email = email;
+    if (phone) contactInfoData.phone = phone;
+
     // Transacción para actualizar el recipient y las relaciones sociales
     await prisma.$transaction(async (prisma) => {
-      // Actualizar datos del recipient
-      await prisma.recipient.update({
-        where: { id: id },
-        data: {
-          first_name: firstName,
-          last_name: lastName,
-          dni: dni,
-          birth_date: new Date(birthDate).toISOString(),
-          sex: sex,
-          contact_info: {
-            update: {
-              where: { id: id },
-              data: {
-                street_id: street_id,
-                locality_id: locality_id,
-                street_number: street_number,
-                email: email,
-                phone: phone,
-              },
-            },
-          },
-        },
-      });
+      // Actualizar datos del recipient si hay cambios
+      if (Object.keys(recipientData).length > 0) {
+        await prisma.recipient.update({
+          where: { id: id },
+          data: recipientData,
+        });
+      }
+
+      // Actualizar datos de contact_info si hay cambios
+      if (Object.keys(contactInfoData).length > 0) {
+        await prisma.contactInfo.updateMany({
+          where: { recipient_id: id },
+          data: contactInfoData,
+        });
+      }
 
       // Eliminar relaciones existentes en recipientSocialCondition
       await prisma.recipientSocialCondition.deleteMany({
@@ -194,35 +202,11 @@ export async function editRecipient(formData) {
 //   const phone = parseInt(formData.get("phone"));
 //   const selectedSocialConditions = JSON.parse(formData.get("social_conditions") || "[]");
 
-//   // if (!id || !firstName || !lastName || !locality_id || !street_id || !street_number || !email || !phone) {
-//   //   return;
-//   // }
+//   if (!id || !firstName || !lastName || !locality_id || !street_id || !street_number || !email || !phone) {
+//     return;
+//   }
 
 //   try {
-//     // Actualizar datos del recipient
-//     // await prisma.recipient.update({
-//     //   where: { id: id },
-//     //   data: {
-//     //     first_name: firstName,
-//     //     last_name: lastName,
-//     //     dni: dni,
-//     //     birth_date: new Date(birthDate).toISOString(),
-//     //     sex: sex,
-//     //     contact_info: {
-//     //       update: {
-//     //         where: { id: id },
-//     //         data: {
-//     //           street_id: street_id,
-//     //           locality_id: locality_id,
-//     //           street_number: street_number,
-//     //           email: email,
-//     //           phone: phone,
-//     //         },
-//     //       },
-//     //     },
-//     //   },
-//     // });
-
 //     // Obtener los IDs de las condiciones sociales seleccionadas
 //     const socialConditions = await prisma.socialCondition.findMany();
 //     const socialConditionIds = selectedSocialConditions.map(conditionName => {
@@ -230,12 +214,58 @@ export async function editRecipient(formData) {
 //       return condition ? condition.id : null;
 //     }).filter(id => id !== null);
 
-//     // Eliminar relaciones existentes en recipientSocialCondition
-//     await prisma.recipientSocialCondition.deleteMany({
-//       where: {
+//     // Transacción para actualizar el recipient y las relaciones sociales
+//     await prisma.$transaction(async (prisma) => {
+//       // Actualizar datos del recipient
+//       await prisma.recipient.update({
+//         where: { id: id },
+//         data: {
+//           first_name: firstName,
+//           last_name: lastName,
+//           dni: dni,
+//           birth_date: new Date(birthDate).toISOString(),
+//           sex: sex,
+//           contact_info: {
+//             update: {
+//               where: { id: id },
+//               data: {
+//                 street_id: street_id,
+//                 locality_id: locality_id,
+//                 street_number: street_number,
+//                 email: email,
+//                 phone: phone,
+//               },
+//             },
+//           },
+//         },
+//       });
+
+//       // Eliminar relaciones existentes en recipientSocialCondition
+//       await prisma.recipientSocialCondition.deleteMany({
+//         where: {
+//           recipient_id: id,
+//         },
+//       });
+
+//       // Crear nuevas relaciones
+//       const createSocialConditionRelations = socialConditionIds.map(conditionId => ({
 //         recipient_id: id,
-//       },
+//         social_condition_id: conditionId,
+//       }));
+
+//       if (createSocialConditionRelations.length > 0) {
+//         await prisma.recipientSocialCondition.createMany({
+//           data: createSocialConditionRelations,
+//         });
+//       }
 //     });
+
+//     revalidatePath("/dashboard/recipients/");
+//   } catch (error) {
+//     console.error('Error updating recipient:', error);
+//   }
+// }
+
 
 //     // Crear nuevas relaciones
 //     const createSocialConditionRelations = socialConditionIds.map(conditionId => ({
