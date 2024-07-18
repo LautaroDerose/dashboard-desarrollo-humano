@@ -46,8 +46,8 @@ function getInitials(firstName, lastName) {
 }
 
 export default function DetailView({ recipient }) {
-  
-  const contactInfo = recipient.contact_info[0] || {};
+  // console.log(recipient)
+  const contactInfo = recipient.contact_info || {};
   const socialConditions = recipient.recipientSocialConditions || {};
   const assignment = recipient.Assignment[0] 
   const benefits = assignment?.benefit || [];

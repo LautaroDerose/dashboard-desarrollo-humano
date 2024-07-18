@@ -14,7 +14,6 @@ import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, For
 
 import { Input } from "@/components/ui/input"
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-// import { DatePickerWithRange } from "./date-range-picker"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 import { ScrollArea } from "@/components/ui/scroll-area"
 
@@ -23,10 +22,7 @@ import { FiCalendar } from "react-icons/fi";
 import { LuChevronsUpDown } from "react-icons/lu";
 import { FaCheck } from "react-icons/fa";
 
-export default function FormModalAssignment({ data }) {
-  // console.log(data)
-  const recipients = data.recipients;
-  const benefits = data.benefits;
+export default function FormModalAssignment({ benefits, recipients }) {
 
   const [selectedBenefit, setSelectedBenefit] = useState("");
 

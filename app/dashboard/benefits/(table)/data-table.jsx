@@ -14,6 +14,7 @@ import { DataTableViewOptions } from "./table-viewOptions";
 import { FormModalBenefit } from "../form-modal-benefit";
 
 import { MdPersonAdd } from "react-icons/md";
+import FormActionBenefit from "../form-action-benefit";
 
 const FilterInput = ({ table }) => {
   const [inputValue, setInputValue] = useState(table.getColumn("name")?.getFilterValue() || "");
@@ -43,8 +44,9 @@ const FilterInput = ({ table }) => {
   );
 };
 
-export function DataTable({ columns, data }) {
-  console.log(data)
+export function DataTable({ benefits, benefitCategories, columns }) {
+// export function DataTable({ columns, data }) {
+  // console.log(data)
   const [sorting, setSorting] = useState([]);
   const [columnFilters, setColumnFilters] = useState([]);
   const [columnVisibility, setColumnVisibility] = useState({});
@@ -54,7 +56,7 @@ export function DataTable({ columns, data }) {
   // const [editData, setEditData] = useState({data})
 
   const table = useReactTable({
-    data:data.benefits,
+    data:benefits,
     columns,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
@@ -100,7 +102,9 @@ export function DataTable({ columns, data }) {
               <DialogTitle>Crear Persona</DialogTitle>
               <DialogDescription>Asegurese de que no se encuentre en la lista antes de agregar una persona</DialogDescription>
             </DialogHeader>
-            <FormModalBenefit data={data} />
+            {/* <FormModalBenefit benefits={benefits} benefitCategories={benefitCategories} /> */}
+            <FormActionBenefit benefits={benefits} benefitCategories={benefitCategories} />
+            {/* <FormModalBenefit data={data} /> */}
           </DialogContent>
         </Dialog>
       </div>

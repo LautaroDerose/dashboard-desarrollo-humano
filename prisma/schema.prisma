@@ -38,13 +38,28 @@ model Recipient {
   is_active         Boolean
   // family_group_id   Int
   // family_group      FamilyGroup       @relation(fields: [family_group_id], references: [id])
-  contact_info      ContactInfo[]
+    // contact_info_id Int
+    contact_info      ContactInfo?     
   //Modificar para que solo traiga un ContactInfo
   // risk_factors      RiskFactor[]
     recipientSocialConditions RecipientSocialCondition[]
 
   Assignment        Assignment[]
 }
+
+model ContactInfo {
+  id            Int       @id @default(autoincrement())
+  recipient_id  Int @unique
+  phone         Int
+  email         String
+  street_id     Int
+  street_number String
+  locality_id   Int
+  recipient     Recipient @relation(fields: [recipient_id], references: [id])
+  street        Street    @relation(fields: [street_id], references: [id])
+  locality      Locality  @relation(fields: [locality_id], references: [id])
+}
+
 model SocialCondition {
   id           Int        @id @default(autoincrement())
   name         String
@@ -70,18 +85,7 @@ model RecipientSocialCondition {
 //   recipient    Recipient @relation(fields: [recipient_id], references: [id])
 // }
 
-model ContactInfo {
-  id            Int       @id @default(autoincrement())
-  recipient_id  Int
-  phone         Int
-  email         String
-  street_id     Int
-  street_number String
-  locality_id   Int
-  recipient     Recipient @relation(fields: [recipient_id], references: [id])
-  street        Street    @relation(fields: [street_id], references: [id])
-  locality      Locality  @relation(fields: [locality_id], references: [id])
-}
+
 
 // model RiskFactor {
 //   id           Int       @id @default(autoincrement())

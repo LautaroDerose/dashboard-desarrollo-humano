@@ -9,30 +9,32 @@ import EditableCell from "./EditableCell";
 
 import { TbDots } from "react-icons/tb";
 import { TbArrowsUpDown } from "react-icons/tb";
+import BenefitDeleteButton from "@/components/benefit-delete-button"
+import { Separator } from "@/components/ui/separator"
 
 export const columns = [
-  {
-    id: "select",
-    header: ({ table }) => (
-      <Checkbox
-        checked={
-          table.getIsAllPageRowsSelected() ||
-          (table.getIsSomePageRowsSelected() && "indeterminate")
-        }
-        onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-        aria-label="Select all"
-      />
-    ),
-    cell: ({ row }) => (
-      <Checkbox
-        checked={row.getIsSelected()}
-        onCheckedChange={(value) => row.toggleSelected(!!value)}
-        aria-label="Select row"
-      />
-    ),
-    enableSorting: false,
-    enableHiding: false,
-  },
+  // {
+  //   id: "select",
+  //   header: ({ table }) => (
+  //     <Checkbox
+  //       checked={
+  //         table.getIsAllPageRowsSelected() ||
+  //         (table.getIsSomePageRowsSelected() && "indeterminate")
+  //       }
+  //       onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+  //       aria-label="Select all"
+  //     />
+  //   ),
+  //   cell: ({ row }) => (
+  //     <Checkbox
+  //       checked={row.getIsSelected()}
+  //       onCheckedChange={(value) => row.toggleSelected(!!value)}
+  //       aria-label="Select row"
+  //     />
+  //   ),
+  //   enableSorting: false,
+  //   enableHiding: false,
+  // },
   {
     id: "name",
     accessorKey: "name",
@@ -47,7 +49,7 @@ export const columns = [
   {
     id: "actions",
     cell: ({ row }) => {
-      const recipient = row.original
+      const benefit = row.original
       
       return (
         <DropdownMenu>
@@ -60,15 +62,18 @@ export const columns = [
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
-            <DropdownMenuLabel>Actions</DropdownMenuLabel>
+            <DropdownMenuLabel>Acciones</DropdownMenuLabel>
+            <Separator className="mb-2" />
             <DropdownMenuItem
               onClick={() => navigator.clipboard.writeText(benefit.id)}
             >
-              Copy recipient ID
+              Copiar ID de beneficio
             </DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem>View customer</DropdownMenuItem>
-            <DropdownMenuItem>View recipient details</DropdownMenuItem>
+            <DropdownMenuItem>
+              Editar de beneficio
+            </DropdownMenuItem>
+            {/* <DropdownMenuSeparator /> */}
+            <DropdownMenuItem><BenefitDeleteButton benefitId={benefit.id}/></DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       )

@@ -4,10 +4,13 @@ import prisma from "@/lib/prisma";
 // API para obtener datos
 export async function GET() {
   try {
-    const [contactInfos, localities, recipientSocialConditions, socialConditions] = await Promise.all([
-      prisma.contactInfo.findMany({
+    const [recipients, localities, recipientSocialConditions, socialConditions] = await Promise.all([
+      prisma.recipient.findMany({
+        where: {
+          is_active: true
+        },
         include: {
-          recipient: true,
+          contact_info: true,
           street: true,
           locality: true
         }
@@ -26,7 +29,7 @@ export async function GET() {
     ]);
 
     const result = {
-      contactInfos,
+      recipients,
       localities,
       recipientSocialConditions,
       socialConditions,

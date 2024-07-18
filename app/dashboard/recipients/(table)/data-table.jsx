@@ -55,7 +55,7 @@ import { FormModalRecipient } from "../form-modal-recipient";
 import FormActionRecipient from "../form-action-recipient";
 
 const FilterInput = ({ table }) => {
-  const [inputValue, setInputValue] = useState(table.getColumn("recipient.dni")?.getFilterValue() || "");
+  const [inputValue, setInputValue] = useState(table.getColumn("dni")?.getFilterValue() || "");
   const debounceTimeout = useRef(null);
 
   const handleInputChange = (event) => {
@@ -68,7 +68,7 @@ const FilterInput = ({ table }) => {
 
     debounceTimeout.current = setTimeout(() => {
       // console.log("Input value:", value, "Type", typeof value);
-      table.getColumn("recipient.dni")?.setFilterValue(value);
+      table.getColumn("dni")?.setFilterValue(value);
     }, 1000); // Ajusta el tiempo de espera según tus necesidades
   };
 
@@ -94,7 +94,7 @@ export function DataTable({ columns, data }) {
   
   // console.log(socialConditions)
   const table = useReactTable({
-    data:data.contactInfos,
+    data:data.recipients,
     columns,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),

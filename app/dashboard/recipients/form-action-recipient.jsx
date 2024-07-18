@@ -120,7 +120,7 @@ export default function FormActionRecipient({ recipient }) {
         >
            <option value="">
              {
-               recipient?.id ? <p>{recipient?.contact_info[0].locality.name}</p> : "Seleccione una localidad"
+               recipient?.id ? <p>{recipient?.contact_info.locality.name}</p> : "Seleccione una localidad"
              }
            </option>
           {localities.map((locality) => (
@@ -133,11 +133,11 @@ export default function FormActionRecipient({ recipient }) {
           name="street"
           className="w-full px-2 py-1 rounded-sm"
           disabled={!selectedLocality}
-          defaultValue={recipient?.contact_info[0]?.street?.id}
+          defaultValue={recipient?.contact_info?.street?.id}
         >
           <option value="">
             {
-              recipient?.id ? <p>{recipient?.contact_info[0].street.name}</p> : "Seleccione una calle"
+              recipient?.id ? <p>{recipient?.contact_info.street.name}</p> : "Seleccione una calle"
             }
           </option>
           {streets.map((street) => (
@@ -149,21 +149,21 @@ export default function FormActionRecipient({ recipient }) {
         <input
           type="text"
           name="street_number"
-          defaultValue={recipient?.contact_info[0]?.street_number}
+          defaultValue={recipient?.contact_info?.street_number}
           placeholder="Número de Calle"
           className="w-full px-2 py-1 rounded-sm"
         />
         <input
           type="text"
           name="email"
-          defaultValue={recipient?.contact_info[0]?.email}
+          defaultValue={recipient?.contact_info?.email}
           placeholder="Correo Electrónico"
           className="w-full px-2 py-1 rounded-sm"
         />
         <input
           type="text"
           name="phone"
-          defaultValue={recipient?.contact_info[0]?.phone}
+          defaultValue={recipient?.contact_info?.phone}
           placeholder="Teléfono"
           className="w-full px-2 py-1 rounded-sm"
         />

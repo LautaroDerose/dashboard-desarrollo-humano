@@ -1,30 +1,34 @@
+import prisma from "@/lib/prisma";
 import { PanelAssignment } from "./panel-assignment";
 
-async function getAssignments() {
-  try {
-    const res = await fetch('http://localhost:3000/api/assignment');
-    if (!res.ok) {
-      throw new Error(`HTTP error! status: ${res.status}`);
-    }
-    const data = await res.json();
-    return data;
-  } catch (error) {
-    console.error("Failed to fetch data:", error.message);
-    throw error;
-  }
-}
-
 export default async function AssignmentsPage() {
-  const data = await getAssignments();
-  // console.log(data)
-  if (!data) {
+  const [assignments, benefits, recipients] = await Promise.all([
+    prisma.assignment.findMany({
+      include: {
+        benefit: true,
+        recipient: true
+      }
+    }),
+    prisma.benefit.findMany(),
+    prisma.recipient.findMany(),
+
+  ]);
+
+  const result = {
+    assignments, benefits, recipients
+  }
+
+  // const benefit = data.benefit
+  // console.log(benefit)
+  if (!result) {
     return <div>Error loading data</div>;
   }
-  // console.log("Data passed to DataTable:", data);  // Aquí
 
   return (
+    // <div className="max-h-[90vh] overflow-hidden">
     <div>
-        <PanelAssignment data={data}/>
+        {/* <PanelAssignment data={data}/> */}
+        <PanelAssignment assignments={assignments} benefits={benefits} recipients={recipients} />
     </div>
  )
 }

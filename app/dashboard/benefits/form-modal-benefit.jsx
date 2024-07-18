@@ -18,12 +18,12 @@ import { toast } from "@/components/ui/use-toast"
 
 import { FiCalendar } from "react-icons/fi";
 
-export function FormModalBenefit({ data }) {
+export function FormModalBenefit({ benefits, benefitCategories }) {
 
-  console.log(data)
-  const benefits = data.benefits
-  const categories = data.benefitCategories
-  const benefitCategories = categories.map((category) => category.name);
+  // console.log(data)
+  // const benefits = data.benefits
+  // const categories = data.benefitCategories
+  const categories = benefitCategories.map((category) => category.name);
   const formSchema = z.object({
     category: z.enum(benefitCategories, { required_error: "Seleccione una categoria" }),
     benefit:z.string().min(3, { message: "El nombre debe tener al menos 3." }),
@@ -87,7 +87,7 @@ export function FormModalBenefit({ data }) {
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
-                    {benefitCategories.map((item, index) => (
+                    {categories.map((item, index) => (
                       <SelectItem key={index} value={item}>{item}</SelectItem>
                     ))}
                   </SelectContent>
