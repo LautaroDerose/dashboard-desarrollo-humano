@@ -1,5 +1,6 @@
 import { DataTable } from "./(table)/data-table";
 import { columns } from './(table)/columns'; // Importa columnas correctamente
+import prisma from "@/lib/prisma";
 
 // async function getBenefits() {
 //   const res = await fetch('http://localhost:3000/api/benefit');

@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 
 export async function GET() {
   try {
-    const [localities, recipientSocialConditions, socialConditions, recipients, benefits] = await Promise.all([
+    const [assigments, recipientSocialConditions, socialConditions, recipients, benefits] = await Promise.all([
       // prisma.contactInfo.findMany({
       //   include: {
       //     recipient: true,
@@ -11,29 +11,23 @@ export async function GET() {
       //     locality: true
       //   }
       // }),
-      prisma.locality.findMany({
-        include: { Street: true }
-      }),
-      prisma.recipientSocialCondition.findMany({
-        include: { 
-          social_condition: true, 
+      prisma.Assigment.findMany({
+        include: {
+          benefit: true,
           recipient: true 
         }
       }),
-      prisma.socialCondition.findMany(),
       prisma.recipient.findMany(),
       prisma.benefit.findMany(),
     ]);
 
     const result = {
-      localities,
-      recipientSocialConditions,
-      socialConditions, 
+      assigments,
       recipients,
       benefits
     };
     // console.log("API Result:", result); // Verificar los datos aquí
-
+    console.log(result)
     return new Response(JSON.stringify(result), {
       headers: { 'Content-Type': 'application/json' },
     });

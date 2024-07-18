@@ -18,8 +18,8 @@ export default async function AssignmentsPage() {
     assignments, benefits, recipients
   }
 
-  // const benefit = data.benefit
-  // console.log(benefit)
+  // const assigment = result.assigment
+  console.log(result)
   if (!result) {
     return <div>Error loading data</div>;
   }

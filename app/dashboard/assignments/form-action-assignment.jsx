@@ -132,7 +132,7 @@ export default function FormActionAssignment({ recipient, benefit, assignment })
           <option value="En Concretado">Concretado</option>
         </select>
         <Button type="submit">
-          {recipient?.id ? "Editar datos" : "Crear Beneficiario"}
+          Crear Asignacion
         </Button>
       </form>
     </div>

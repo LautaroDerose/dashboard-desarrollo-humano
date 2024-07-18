@@ -273,7 +273,7 @@ export function PanelAssignment({ assignments, benefits, recipients }) {
                 </CardDescription> */}
               </div>
               <Button asChild size="sm" className="ml-auto gap-1">
-                <Link href="#">
+                <Link href="/dashboard/assignments/list">
                   Ver mas
                   <MdArrowOutward  className="h-4 w-4" />
                 </Link>

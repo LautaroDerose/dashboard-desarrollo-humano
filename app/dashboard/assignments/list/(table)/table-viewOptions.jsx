@@ -13,12 +13,15 @@ export function DataTableViewOptions({ table }) {
   const columnNamesInSpanish = {
     "recipient.first_name": "Nombre",
     "recipient.last_name": "Apellido",
-    recipient_birth_date: "Fecha de Nacimiento",
-    recipient_dni: "DNI",
-    recipient_sex: "Sexo",
-    recipient_enrollment_date: "Fecha de Inscripción",
-    "locality.name": "Localidad",
-    street_name: "Calle"
+    "recipient.dni": "DNI",
+    "benefit.name": "Beneficios",
+    "status": "Estado",
+    "recipient.locality": "Localidad",
+    "enrollment_date": "Fecha de registro",
+    "expiry_date": "Fecha de vencimiento",
+    "withdrawal_date": "Fecha de Concrecion",
+    "amount": "Monto",
+    "quantity": "Cantidad"
   };
 
   return (

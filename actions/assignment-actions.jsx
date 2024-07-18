@@ -6,10 +6,9 @@ import { redirect } from "next/navigation";
 
 export async function getRecipientsAndBenefits() {
   const recipients = await prisma.recipient.findMany({ where: { is_active: true, } });
-  const benefits = await prisma.benefit.findMany();
+  const benefits = await prisma.benefit.findMany({ where: { is_active: true, } });
   return { recipients, benefits };
 }
-
 
 export async function createAssignment(formData) {
   
@@ -28,7 +27,7 @@ export async function createAssignment(formData) {
     },
   });
   
-  revalidatePath("dashboard/assignments");
+  revalidatePath("/");
 }
 
 export async function getInfoCards(){
@@ -67,7 +66,6 @@ export async function getInfoCards(){
     },
     take: 3
   });
-// console.log(recientes)
 
   const proximosVencimientos = await prisma.assignment.findMany({
     where: {
@@ -88,3 +86,12 @@ export async function getInfoCards(){
   return { rechazados, enProcesos, pendientes, concretados, recientes, proximosVencimientos }
 
 }
+
+// export async function getAllAssignments(){
+//   const assignments = await prisma.assignment.findMany({ 
+//     include: { 
+//       benefit: true, 
+//       recipient: true
+//     } 
+//   });
+// }

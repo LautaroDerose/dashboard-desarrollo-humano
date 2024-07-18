@@ -35,6 +35,47 @@ export async function editBenefit(formData) {
   revalidatePath("dashboard/benefits");
 }
 
+export async function desactivatedBenefit(formData){
+  const benefitId = parseInt(formData.get("benefitId"));
+  try {
+    await prisma.benefit.update({ 
+      where: { 
+        id: benefitId 
+      },
+      data:{
+        is_active: false
+      }
+
+    });
+    console.log(`Beneficio con ID ${benefitId} desactivado correctamente.`);
+    // Optionally return something meaningful after deletion
+    revalidatePath("dashboard/benefits");
+  } catch (error) {
+    console.error(`Error al desactivar beneficio con ID ${benefitId}:`, error);
+    throw error; // Propagate the error to handle it in the UI or caller
+  }
+}
+export async function activatedBenefit(formData){
+  const benefitId = parseInt(formData.get("benefitId"));
+  try {
+    await prisma.benefit.update({ 
+      where: { 
+        id: benefitId 
+      },
+      data:{
+        is_active: true
+      }
+
+    });
+    console.log(`Beneficio con ID ${benefitId} desactivado correctamente.`);
+    // Optionally return something meaningful after deletion
+    revalidatePath("dashboard/benefits");
+  } catch (error) {
+    console.error(`Error al desactivar beneficio con ID ${benefitId}:`, error);
+    throw error; // Propagate the error to handle it in the UI or caller
+  }
+}
+
 export async function deleteBenefit(formData) {
   const benefitId = parseInt(formData.get("benefitId"));
   try {
@@ -46,5 +87,5 @@ export async function deleteBenefit(formData) {
     throw error; // Propagate the error to handle it in the UI or caller
   }
   revalidatePath("dashboard/benefits");
-
 }
+

@@ -9,8 +9,10 @@ import EditableCell from "./EditableCell";
 
 import { TbDots } from "react-icons/tb";
 import { TbArrowsUpDown } from "react-icons/tb";
-import BenefitDeleteButton from "@/components/benefit-delete-button"
+import BenefitDeleteButton from "@/components/benefit-inactive-button"
 import { Separator } from "@/components/ui/separator"
+import BenefitInactiveButton from "@/components/benefit-inactive-button"
+import BenefitActiveButton from "@/components/benefit-active-button"
 
 export const columns = [
   // {
@@ -40,6 +42,20 @@ export const columns = [
     accessorKey: "name",
     // cell: EditableCell,
     header: "Beneficio",
+  },
+  {
+    id: "is_active",
+    accessorKey: "is_active",
+    // cell: EditableCell,
+    header: "Estado",
+    cell: (props) => {
+      const value = props.getValue();
+      return value ? (
+        <p className='text-green-400 p-2'>Activo</p>
+      ) : (
+        <p className='text-red-400 p-2'>Inactivo</p>
+      );
+    }
   },
   {
     accessorKey: 'category.name',
@@ -73,7 +89,8 @@ export const columns = [
               Editar de beneficio
             </DropdownMenuItem>
             {/* <DropdownMenuSeparator /> */}
-            <DropdownMenuItem><BenefitDeleteButton benefitId={benefit.id}/></DropdownMenuItem>
+            <DropdownMenuItem><BenefitInactiveButton benefitId={benefit.id}/></DropdownMenuItem>
+            <DropdownMenuItem><BenefitActiveButton benefitId={benefit.id}/></DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       )
