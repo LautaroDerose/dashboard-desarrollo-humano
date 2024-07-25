@@ -99,7 +99,7 @@ export default function RecentsTableAssignments() {
                        </Badge>
                      </TableCell>
                      <TableCell className="">
-                       {new Date(item.expiry_date).toLocaleDateString()}
+                       {new Date(item.enrollment_date).toLocaleDateString()}
                      </TableCell>
                      <TableCell className="">
                        {item.amount}

@@ -6,21 +6,6 @@ import { z } from "zod";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
-export async function getCounter(){
-  const now = new Date();
-  const oneMonthAgo = new Date();
-  oneMonthAgo.setMonth(now.getMonth() - 1);
-
-  const assignmentCount = await prisma.assignment.count({
-    where: {
-      enrollment_date: {
-        gte: oneMonthAgo,
-        lte: now
-      }
-    }
-  })
-}
-
 
 export async function getFilteredAssignmentsCount({ benefitId, timeFilter, withWithdrawal }) {
   console.log('Received parameters:', { benefitId, timeFilter, withWithdrawal });
@@ -143,26 +128,160 @@ export async function getInfoForGraphics(localityId) {
   return { totalAssignmentsByLocality };
 }
 
-const localities = [1, 2, 3, 4, 5];
-
 export async function getAssignmentsForLocalities() {
+  const localities = await prisma.locality.findMany({
+    select: {
+      id: true,
+      name: true,
+    },
+  });
+
+  // Obtener el total de asignaciones para cada localidad
   const results = await Promise.all(
-    localities.map(async (localityId) => {
+    localities.map(async (locality) => {
       const count = await prisma.assignment.count({
         where: {
           recipient: {
             contact_info: {
-              locality_id: localityId,
+              locality_id: locality.id,
             },
           },
         },
       });
-      return { localityId, count };
+      return { localityId: locality.id, name: locality.name, count };
     })
   );
-  console.log('Results:', results);
+
   return results;
 }
+
+// export async function getBenefitsAssignments() {
+//   // Obtener los beneficios
+//   const benefits = await prisma.benefit.findMany({
+//     select: {
+//       id: true,
+//       name: true,
+//     },
+//   });
+
+//   // Obtener las asignaciones por mes para cada beneficio
+//   const now = new Date();
+//   const results = await Promise.all(
+//     benefits.map(async (benefit) => {
+//       const assignments = await prisma.assignment.findMany({
+//         where: {
+//           benefit_id: benefit.id,
+//         },
+//         select: {
+//           amount: true,
+//           enrollment_date: true,
+//         },
+//       });
+
+//       // Agrupar asignaciones por mes y sumar los amounts
+//       const monthlyAssignments = Array.from({ length: 12 }, (_, index) => {
+//         const month = index + 1;
+//         const totalAmount = assignments
+//           .filter(assignment => new Date(assignment.enrollment_date).getMonth() + 1 === month)
+//           .reduce((sum, assignment) => sum + assignment.amount, 0);
+
+//         return {
+//           month,
+//           amount: totalAmount,
+//         };
+//       });
+
+//       return { benefitId: benefit.id, benefitName: benefit.name, monthlyAssignments };
+//     })
+//   );
+
+//   return results;
+// }
+export async function getBenefitsAssignments(year, localityId = null) {
+  // Obtener los beneficios
+  const benefits = await prisma.benefit.findMany({
+    select: {
+      id: true,
+      name: true,
+    },
+  });
+
+  const now = new Date();
+
+  // Obtener las asignaciones por mes para cada beneficio
+  const results = await Promise.all(
+    benefits.map(async (benefit) => {
+      const assignments = await prisma.assignment.findMany({
+        where: {
+          benefit_id: benefit.id,
+          enrollment_date: {
+            gte: new Date(`${year}-01-01T00:00:00.000Z`),
+            lt: new Date(`${year + 1}-01-01T00:00:00.000Z`),
+          },
+        },
+        include: {
+          recipient: {
+            include: {
+              contact_info: {
+                select: {
+                  locality_id: true,
+                },
+              },
+            },
+          },
+        },
+      });
+
+      // Filtrar por localidad si se proporciona
+      const filteredAssignments = localityId
+        ? assignments.filter(
+            (assignment) =>
+              assignment.recipient.contact_info.locality_id === localityId
+          )
+        : assignments;
+
+      // Agrupar asignaciones por mes y sumar los amounts
+      const monthlyAssignments = Array.from({ length: 12 }, (_, index) => {
+        const month = index + 1;
+        const totalAmount = filteredAssignments
+          .filter(
+            (assignment) => new Date(assignment.enrollment_date).getMonth() + 1 === month
+          )
+          .reduce((sum, assignment) => sum + assignment.amount, 0);
+
+        return {
+          month,
+          amount: totalAmount,
+        };
+      });
+
+      const totalAmount = monthlyAssignments.reduce((sum, item) => sum + item.amount, 0);
+
+      return { benefitId: benefit.id, benefitName: benefit.name, monthlyAssignments, totalAmount };
+    })
+  );
+
+  // Calcular la suma total de todos los beneficios por mes
+  const monthlyTotals = Array.from({ length: 12 }, (_, index) => {
+    const month = index + 1;
+    const totalAmount = results
+      .flatMap((benefit) => benefit.monthlyAssignments)
+      .filter((assignment) => assignment.month === month)
+      .reduce((sum, assignment) => sum + assignment.amount, 0);
+
+    return {
+      month,
+      amount: totalAmount,
+    };
+  });
+
+  return {
+    benefits: results,
+    monthlyTotals,
+  };
+}
+
+
 
 // export async function getInfoForGraphics() {
 //   const now = new Date();
