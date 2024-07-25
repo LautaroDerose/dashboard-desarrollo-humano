@@ -1,58 +1,25 @@
 "use client";
 
-import {
-  // ColumnDef,
-  ColumnFiltersState,
-  SortingState,
-  VisibilityState,
-  flexRender,
-  getCoreRowModel,
-  getPaginationRowModel,
-  getSortedRowModel,
-  getFilteredRowModel,
-  useReactTable,
-} from "@tanstack/react-table";
-
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-import {
-  DropdownMenu,
-  DropdownMenuCheckboxItem,
-  DropdownMenuContent,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
-import { Button } from "@/components/ui/button"
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-
 import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
-import { CirclePlus } from "lucide-react";
 
+import { Button } from "@/components/ui/button"
+import { DropdownMenu, DropdownMenuCheckboxItem, DropdownMenuContent, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 
+import { ColumnFiltersState, SortingState, VisibilityState, flexRender,getCoreRowModel, getPaginationRowModel, getSortedRowModel, getFilteredRowModel, useReactTable } from "@tanstack/react-table";
 import { DataTablePagination } from "./table-pagination";
 import { DataTableViewOptions } from "./table-viewOptions";
+import { FormModalRecipient } from "../form-modal-recipient";
+import FormActionRecipient from "../form-action-recipient";
 
+import { CirclePlus } from "lucide-react";
 import { MdPersonAdd } from "react-icons/md";
 import { IoMdPersonAdd } from "react-icons/io";
 import { TbLeaf } from "react-icons/tb";
-import { FormModalRecipient } from "../form-modal-recipient";
-import FormActionRecipient from "../form-action-recipient";
 
 const FilterInput = ({ table }) => {
   const [inputValue, setInputValue] = useState(table.getColumn("dni")?.getFilterValue() || "");

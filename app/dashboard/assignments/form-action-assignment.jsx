@@ -129,6 +129,7 @@ export default function FormActionAssignment({ recipient, benefit, assignment })
           <option value="Rechazado">Rechazado</option>
           <option value="Pendiente"  >Pendiente</option>
           <option value="En proceso">En proceso</option>
+          <option value="En revision">En revision</option>
           <option value="En Concretado">Concretado</option>
         </select>
         <Button type="submit">

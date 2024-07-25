@@ -37,15 +37,25 @@ model Recipient {
   sex               String
   enrollment_date   DateTime
   is_active         Boolean
-  // family_group_id   Int
-  // family_group      FamilyGroup       @relation(fields: [family_group_id], references: [id])
-    // contact_info_id Int
-    contact_info      ContactInfo?     
-  //Modificar para que solo traiga un ContactInfo
-  // risk_factors      RiskFactor[]
-    recipientSocialConditions RecipientSocialCondition[]
-
+  family_group_id   Int?
+  family_group      FamilyGroup?       @relation(fields: [family_group_id], references: [id])
+  contact_info      ContactInfo?     
+  recipientSocialConditions RecipientSocialCondition[]
   Assignment        Assignment[]
+  observations      Observation[]
+}
+
+model Observation {
+  id           Int      @id @default(autoincrement())
+  text         String
+  created_at   DateTime @default(now())
+  recipient_id Int
+  recipient    Recipient @relation(fields: [recipient_id], references: [id])
+}
+
+model FamilyGroup {
+  id          Int         @id @default(autoincrement())
+  Recipient   Recipient[]
 }
 
 model ContactInfo {
@@ -77,26 +87,6 @@ model RecipientSocialCondition {
   social_condition    SocialCondition @relation(fields: [social_condition_id], references: [id])
 }
 
-// model SocialCondition {
-//   id           Int       @id @default(autoincrement())
-//   name         String
-//   gravity      String
-//   type         String
-//   recipient_id Int
-//   recipient    Recipient @relation(fields: [recipient_id], references: [id])
-// }
-
-
-
-// model RiskFactor {
-//   id           Int       @id @default(autoincrement())
-//   name         String
-//   gravity      String
-//   type         String
-//   recipient_id Int
-//   recipient    Recipient @relation(fields: [recipient_id], references: [id])
-// }
-
 
 model Locality {
   id          Int           @id @default(autoincrement())
@@ -108,8 +98,8 @@ model Assignment {
   id              Int       @id @default(autoincrement())
   benefit_id      Int
   recipient_id    Int
-  quantity        Int
-  amount          Int
+  quantity        Int?
+  amount          Int?
   status          String
   enrollment_date DateTime
   expiry_date     DateTime
@@ -126,9 +116,15 @@ model Street {
   ContactInfo ContactInfo[]
 }
 
-// model FamilyGroup {
-//   id          Int         @id @default(autoincrement())
-//   family_name String
-//   // Recipient   Recipient[]
+
+// model RiskFactor {
+//   id           Int       @id @default(autoincrement())
+//   name         String
+//   gravity      String
+//   type         String
+//   recipient_id Int
+//   recipient    Recipient @relation(fields: [recipient_id], references: [id])
 // }
 
+  //Modificar para que solo traiga un ContactInfo
+  // risk_factors      RiskFactor[]

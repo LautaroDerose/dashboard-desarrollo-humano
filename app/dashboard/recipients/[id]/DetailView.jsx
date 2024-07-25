@@ -205,7 +205,7 @@ export default function DetailView({ recipient }) {
                   <Separator />
                   <p className="font-thin ">Fecha de Registro: 
                   <span className="font-bold ml-2">
-                    {new Date(assignment.enrollment_date).toLocaleDateString("es-ES", {
+                    {new Date(assignment?.enrollment_date).toLocaleDateString("es-ES", {
                       day: "2-digit",
                       month: "2-digit",
                       year: "numeric",
@@ -214,7 +214,7 @@ export default function DetailView({ recipient }) {
                   <Separator />
                   <p className="font-thin ">Fecha de Vencimiento: 
                   <span className="font-bold ml-2">
-                    {new Date(assignment.expiry_date).toLocaleDateString("es-ES", {
+                    {new Date(assignment?.expiry_date).toLocaleDateString("es-ES", {
                       day: "2-digit",
                       month: "2-digit",
                       year: "numeric",
@@ -223,8 +223,8 @@ export default function DetailView({ recipient }) {
                   <Separator />
                   <p className="font-thin">
                     Estado de Asignación:
-                    <span className={`font-bold ml-2 ${getStatusClass(assignment.status)}`}>
-                      {assignment.status}
+                    <span className={`font-bold ml-2 ${getStatusClass(assignment?.status)}`}>
+                      {assignment?.status}
                     </span>
                   </p>
                   <Separator />

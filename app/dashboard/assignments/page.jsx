@@ -19,7 +19,7 @@ export default async function AssignmentsPage() {
   }
 
   // const assigment = result.assigment
-  console.log(result)
+  // console.log(result)
   if (!result) {
     return <div>Error loading data</div>;
   }

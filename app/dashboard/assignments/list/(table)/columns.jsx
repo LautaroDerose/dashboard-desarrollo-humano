@@ -1,24 +1,13 @@
 "use client"
+
 import { TbDots } from "react-icons/tb";
 import { TbArrowsUpDown } from "react-icons/tb";
 import { Checkbox } from "@/components/ui/checkbox"
 
 import { Button } from "@/components/ui/button"
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip"
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
 import Link from "next/link";
  
 export const columns = [
@@ -53,30 +42,26 @@ export const columns = [
   // },
   {
     id: "recipient.first_name",
-    accessorKey: "recipient.first_name",
     header: ({ column }) => (
       <Button variant="ghost" onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}>
         Nombre
         <TbArrowsUpDown className="ml-2 h-4 w-4" />
       </Button>
     ),
-  },
-  {
-    id: 'recipient.last_name',
-    accessorKey: 'recipient.last_name',
-    header: 'Apellido',
-    cell: (props) => <p>{props.getValue()}</p>,
-  },
-  {
-    id: 'recipient.dni',
-    accessorKey: 'recipient.dni',
-    header: 'DNI',
+    accessorFn: row => row.recipient.last_name + ' ' + row.recipient.first_name,
     cell: (props) => {
-      const value = props.getValue();
-      return <p>{value}</p>;
-    },
-    filterFn: 'includesString'
+      return <p className=''>{props.getValue()}</p>;
+    }
   },
+  // {
+  //   id: 'Direccion',
+  //   header: 'Direccion',
+  //   accessorFn: row => row.contact_info.street.name + ' ' + row.contact_info.street_number,
+  //   cell: (props) => {
+  //     return <p className=''>{props.getValue()}</p>;
+  //   }
+  // },
+ 
   {
     id: 'benefit.name',
     accessorKey: 'benefit.name',
@@ -97,6 +82,16 @@ export const columns = [
     }
   },
   {
+    id: 'recipient.dni',
+    accessorKey: 'recipient.dni',
+    header: 'DNI',
+    cell: (props) => {
+      const value = props.getValue();
+      return <p>{value}</p>;
+    },
+    filterFn: 'includesString'
+  },
+  {
     id: 'recipient.locality',
     accessorKey: 'recipient.contact_info.locality.name',
     header: 'Localidad',
@@ -104,17 +99,27 @@ export const columns = [
   },
   {
     accessorKey: 'enrollment_date',
-    header: 'Fecha de Registro',
+    header: ({ column }) => (
+      <Button variant="ghost" onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}>
+        Registro
+        <TbArrowsUpDown className="ml-2 h-4 w-4" />
+      </Button>
+    ),
     cell: (props) => <p>{new Date(props.getValue()).toLocaleDateString()}</p>,
   },
   {
     accessorKey: 'expiry_date',
-    header: 'Fecha de Vencimiento',
+    header: ({ column }) => (
+      <Button variant="ghost" onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}>
+        Vencimiento
+        <TbArrowsUpDown className="ml-2 h-4 w-4" />
+      </Button>
+    ),
     cell: (props) => <p>{new Date(props.getValue()).toLocaleDateString()}</p>,
   },
   {
     accessorKey: 'withdrawal_date',
-    header: 'Fecha de Concresion',
+    header: 'F. de Concresion',
     cell: (props) => { null ? "" : <p>{new Date(props.getValue()).toLocaleDateString()}</p>},
   },
   {
@@ -132,7 +137,7 @@ export const columns = [
   {
     id: "actions",
     cell: ({ row }) => {
-      const recipient = row.original;
+      const assignment = row.original;
       return (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -149,7 +154,7 @@ export const columns = [
             <DropdownMenuSeparator />
             <DropdownMenuItem>Editar</DropdownMenuItem>
             <DropdownMenuItem>Eliminar</DropdownMenuItem>
-            <Link href={`/dashboard/recipients/${recipient.id}`}>
+            <Link href={`/dashboard/assignments/${assignment.id}`}>
               <DropdownMenuItem>Ver en detalle</DropdownMenuItem>
             </Link>
           </DropdownMenuContent>

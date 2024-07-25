@@ -1,6 +1,8 @@
 "use server";
 
 import prisma from "@/lib/prisma";
+import { z } from "zod";
+
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
@@ -55,6 +57,12 @@ export async function getInfoCards(){
       status:"Concretado"
     }
   })
+
+  const enRevision = await prisma.assignment.count({
+    where:{
+      status:"En revision"
+    }
+  })
   
   const recientes = await prisma.assignment.findMany({
     orderBy: {
@@ -83,8 +91,28 @@ export async function getInfoCards(){
     take: 4
   });
 
-  return { rechazados, enProcesos, pendientes, concretados, recientes, proximosVencimientos }
+  return { rechazados, enProcesos, pendientes, concretados, enRevision, recientes, proximosVencimientos }
 
+}
+
+export async function getSingleAssignment(req, res) {
+  const id  = req.query;
+  try {
+    const assignment = await prisma.assignment.findUnique({
+      where: { id: parseInt(id) },
+      include: {
+        benefit: true,
+        recipient: true
+      }
+    });
+    if (assignment) {
+      res.status(200).json(assignment);
+    } else {
+      res.status(404).json({ error: "Assignment not found" });
+    }
+  } catch (error) {
+    res.status(500).json({ error: "Error fetching assignment: " + error.message });
+  }
 }
 
 // export async function getAllAssignments(){

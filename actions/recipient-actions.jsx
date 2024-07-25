@@ -23,44 +23,6 @@ export async function getData() {
   return { localities, socialConditions };
 }
 
-
-// export async function createRecipient(formData) {
-//   const socialConditions = await prisma.socialCondition.findMany();
-
-//   const social_conditions = JSON.parse(formData.get("social_conditions"));
-//   const socialConditionIds = social_conditions.map(conditionName => {
-//     const condition = socialConditions.find(cond => cond.name === conditionName);
-//     return condition ? condition.id : null;
-//   }).filter(id => id !== null);
-
-//   await prisma.recipient.create({
-//     data: {
-//       first_name: formData.get("first_name"),
-//       last_name: formData.get("last_name"),
-//       dni: parseInt(formData.get("dni")),
-//       birth_date: new Date(formData.get("birth_date")),
-//       sex: formData.get("sex"),
-//       enrollment_date: new Date(),
-//       is_active: true,
-//       contact_info: {
-//         create: {
-//           locality_id: parseInt(formData.get("locality")),
-//           street_id: parseInt(formData.get("street")),
-//           street_number: formData.get("street_number"),
-//           email: formData.get("email"),
-//           phone: parseInt(formData.get("phone")),
-//         },
-//       },
-//       recipientSocialConditions: {
-//         create: socialConditionIds.map((conditionId) => ({
-//           social_condition_id: conditionId,
-//         })),
-//       },
-//     },
-//   });
-//   revalidatePath("dashboard/recipients/prueba");
-// }
-
 export async function createRecipient(formData) {
   const socialConditions = await prisma.socialCondition.findMany();
 
@@ -188,8 +150,6 @@ export async function editRecipient(formData) {
   }
 }
 
-
-
 export async function desactivatedRecipient(formData) {
     const recipientId = parseInt(formData.get("recipientId"));
   try {
@@ -231,3 +191,77 @@ export async function activatedRecipient(formData) {
     throw error; // Propagate the error to handle it in the UI or caller
   }
 }
+
+// export async function GetRecicpients(){
+//   const [recipients, localities, recipientSocialConditions, socialConditions] = await Promise.all([
+//     prisma.recipient.findMany({
+//       where: {
+//         is_active: true
+//       },
+//       include: {
+//         contact_info: {
+//           include: {
+//             street: true,
+//             locality: true
+//           }
+//         }
+//       }
+//     }),
+//     prisma.locality.findMany({
+//       include: { Street: true }
+//     }),
+//     prisma.recipientSocialCondition.findMany({
+//       include: { 
+//         social_condition: true, 
+//         recipient: true 
+//       }
+//     }),
+//     prisma.socialCondition.findMany(),
+//     // prisma.benefits.findMany()
+//   ]);
+
+//   const result = {
+//     recipients,
+//     localities,
+//     recipientSocialConditions,
+//     socialConditions,
+//     // benefits
+//   };
+// }
+
+// export async function createRecipient(formData) {
+//   const socialConditions = await prisma.socialCondition.findMany();
+
+//   const social_conditions = JSON.parse(formData.get("social_conditions"));
+//   const socialConditionIds = social_conditions.map(conditionName => {
+//     const condition = socialConditions.find(cond => cond.name === conditionName);
+//     return condition ? condition.id : null;
+//   }).filter(id => id !== null);
+
+//   await prisma.recipient.create({
+//     data: {
+//       first_name: formData.get("first_name"),
+//       last_name: formData.get("last_name"),
+//       dni: parseInt(formData.get("dni")),
+//       birth_date: new Date(formData.get("birth_date")),
+//       sex: formData.get("sex"),
+//       enrollment_date: new Date(),
+//       is_active: true,
+//       contact_info: {
+//         create: {
+//           locality_id: parseInt(formData.get("locality")),
+//           street_id: parseInt(formData.get("street")),
+//           street_number: formData.get("street_number"),
+//           email: formData.get("email"),
+//           phone: parseInt(formData.get("phone")),
+//         },
+//       },
+//       recipientSocialConditions: {
+//         create: socialConditionIds.map((conditionId) => ({
+//           social_condition_id: conditionId,
+//         })),
+//       },
+//     },
+//   });
+//   revalidatePath("dashboard/recipients/prueba");
+// }

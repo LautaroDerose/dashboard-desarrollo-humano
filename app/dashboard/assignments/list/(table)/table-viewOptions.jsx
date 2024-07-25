@@ -17,9 +17,9 @@ export function DataTableViewOptions({ table }) {
     "benefit.name": "Beneficios",
     "status": "Estado",
     "recipient.locality": "Localidad",
-    "enrollment_date": "Fecha de registro",
-    "expiry_date": "Fecha de vencimiento",
-    "withdrawal_date": "Fecha de Concrecion",
+    "enrollment_date": "F. de registro",
+    "expiry_date": "F. de vencimiento",
+    "withdrawal_date": "F. de Concrecion",
     "amount": "Monto",
     "quantity": "Cantidad"
   };

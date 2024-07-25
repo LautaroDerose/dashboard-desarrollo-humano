@@ -1,34 +1,6 @@
-import AdminTable from "@/components/RecipientTable/AdminTable";
 import { DataTable } from "./(table)/data-table";
 import { columns } from './(table)/columns'; // Importa columnas correctamente
 import prisma from "@/lib/prisma";
-import { getAllAssignments } from "@/actions/assignment-actions";
-
-// async function getUsers() {
-//     const res = await fetch('http://localhost:3000/api/assignment');
-//   if (!res.ok) {
-//     throw new Error("Failed to fetch data");
-//   }
-//   const data = await res.json();
-//   console.log("Fetched recipients data:", data);  
-//   return data;
-// }
-// export default async function RecipientsListPage() {
-//   const data = await getUsers();
-//   console.log(data)
-//   if (!data || !columns) {
-//     return <div>Error loading data</div>;
-//   }
-  
-//   console.log("Data passed to DataTable:", data);  // Aquís
-
-//   return (
-//     <div>
-//       <DataTable data={data} columns={columns} />
-//     </div>
-//   );
-// }
-
 
 export default async function RecipientsListPage() {
   try {
@@ -62,7 +34,7 @@ export default async function RecipientsListPage() {
     // console.log("Data passed to DataTable:", data);
 
     return (
-      <div>
+      <div className="flex flex-1 flex-col md:px-8 ">
         <DataTable assignments={assignments} benefits={benefits} recipients={recipients} columns={columns} />
       </div>
     );
