@@ -29,38 +29,38 @@ model Benefit {
 }
 
 model Recipient {
-  id                Int               @id @default(autoincrement())
-  first_name        String
-  last_name         String
-  birth_date        DateTime
-  dni               Int               @unique
-  sex               String
-  enrollment_date   DateTime
-  is_active         Boolean
-  family_group_id   Int?
-  family_group      FamilyGroup?       @relation(fields: [family_group_id], references: [id])
-  contact_info      ContactInfo?     
+  id                        Int                        @id @default(autoincrement())
+  first_name                String
+  last_name                 String
+  birth_date                DateTime
+  dni                       Int                        @unique
+  sex                       String
+  enrollment_date           DateTime
+  is_active                 Boolean
+  family_group_id           Int?
+  family_group              FamilyGroup?               @relation(fields: [family_group_id], references: [id])
+  contact_info              ContactInfo?
   recipientSocialConditions RecipientSocialCondition[]
-  Assignment        Assignment[]
-  observations      Observation[]
+  Assignment                Assignment[]
+  observations              Observation[]
 }
 
 model Observation {
-  id           Int      @id @default(autoincrement())
+  id           Int       @id @default(autoincrement())
   text         String
-  created_at   DateTime @default(now())
+  created_at   DateTime  @default(now())
   recipient_id Int
   recipient    Recipient @relation(fields: [recipient_id], references: [id])
 }
 
 model FamilyGroup {
-  id          Int         @id @default(autoincrement())
-  Recipient   Recipient[]
+  id        Int         @id @default(autoincrement())
+  Recipient Recipient[]
 }
 
 model ContactInfo {
   id            Int       @id @default(autoincrement())
-  recipient_id  Int @unique
+  recipient_id  Int       @unique
   phone         Int
   email         String
   street_id     Int
@@ -72,40 +72,26 @@ model ContactInfo {
 }
 
 model SocialCondition {
-  id           Int        @id @default(autoincrement())
-  name         String
-  gravity      String
-  type         String
+  id                        Int                        @id @default(autoincrement())
+  name                      String
+  gravity                   String
+  type                      String
   recipientSocialConditions RecipientSocialCondition[]
 }
 
 model RecipientSocialCondition {
-  id                  Int      @id @default(autoincrement())
+  id                  Int             @id @default(autoincrement())
   recipient_id        Int
   social_condition_id Int
-  recipient           Recipient @relation(fields: [recipient_id], references: [id])
+  recipient           Recipient       @relation(fields: [recipient_id], references: [id])
   social_condition    SocialCondition @relation(fields: [social_condition_id], references: [id])
 }
-
 
 model Locality {
   id          Int           @id @default(autoincrement())
   name        String
   ContactInfo ContactInfo[]
   Street      Street[]
-}
-model Assignment {
-  id              Int       @id @default(autoincrement())
-  benefit_id      Int
-  recipient_id    Int
-  quantity        Int?
-  amount          Int?
-  status          String
-  enrollment_date DateTime
-  expiry_date     DateTime
-  withdrawal_date DateTime?
-  benefit         Benefit   @relation(fields: [benefit_id], references: [id])
-  recipient       Recipient @relation(fields: [recipient_id], references: [id])
 }
 
 model Street {
@@ -116,6 +102,99 @@ model Street {
   ContactInfo ContactInfo[]
 }
 
+// model Assignment {
+//   id              Int       @id @default(autoincrement())
+//   benefit_id      Int
+//   detail_benefit  String?
+//   recipient_id    Int
+//   quantity        Int?
+//   amount          Int?
+//   status          String
+//   enrollment_date DateTime
+//   expiry_date     DateTime
+//   withdrawal_date DateTime?
+//   benefit         Benefit   @relation(fields: [benefit_id], references: [id])
+//   recipient       Recipient @relation(fields: [recipient_id], references: [id])
+// }
+
+model Assignment {
+  id              Int       @id @default(autoincrement())
+  benefit_id      Int
+  detail_benefit  String?
+  recipient_id    Int
+  quantity        Int?
+  amount          Int?
+  status          String
+  enrollment_date DateTime
+  expiry_date     DateTime
+  withdrawal_date DateTime?
+  benefit         Benefit   @relation(fields: [benefit_id], references: [id])
+  recipient       Recipient @relation(fields: [recipient_id], references: [id])
+
+  // Relación con SubsidyStage
+  subsidy_stage SubsidyStage?
+
+  // Relación directa con Docs
+  docs Doc[]
+}
+
+model SubsidyStage {
+  id            Int        @id @default(autoincrement())
+  assignment_id Int        @unique
+  assignment    Assignment @relation(fields: [assignment_id], references: [id])
+
+  created_at DateTime @default(now())
+
+  // Relación con los documentos
+  note_doc    Doc? @relation("NoteDoc", fields: [note_doc_id], references: [id])
+  decree_doc  Doc? @relation("DecreeDoc", fields: [decree_doc_id], references: [id])
+  expense_doc Doc? @relation("ExpenseDoc", fields: [expense_doc_id], references: [id])
+  payment_doc Doc? @relation("PaymentDoc", fields: [payment_doc_id], references: [id])
+  check_doc   Doc? @relation("CheckDoc", fields: [check_doc_id], references: [id])
+
+  // IDs de documentos
+  note_doc_id    Int? @unique
+  decree_doc_id  Int? @unique
+  expense_doc_id Int? @unique
+  payment_doc_id Int? @unique
+  check_doc_id   Int? @unique
+
+  // Estado general de confirmación
+  all_confirmed_data DateTime?
+  Doc                Doc[]
+}
+
+model Doc {
+  id             Int          @id @default(autoincrement())
+  doc_type       DocumentType
+  doc_number     String
+  doc_created_at DateTime     @default(now())
+  is_confirm     Boolean      @default(false)
+  confirmed_at   DateTime?
+
+  // Relación con SubsidyStage
+  subsidy_stage_id Int?
+  subsidy_stage    SubsidyStage? @relation(fields: [subsidy_stage_id], references: [id])
+
+  // Relación directa con Assignment
+  assignment_id    Int?
+  assignment       Assignment?    @relation(fields: [assignment_id], references: [id])
+
+  // Relaciones inversas
+  note_subsidy_stage    SubsidyStage? @relation("NoteDoc")
+  decree_subsidy_stage  SubsidyStage? @relation("DecreeDoc")
+  expense_subsidy_stage SubsidyStage? @relation("ExpenseDoc")
+  payment_subsidy_stage SubsidyStage? @relation("PaymentDoc")
+  check_subsidy_stage   SubsidyStage? @relation("CheckDoc")
+}
+
+enum DocumentType {
+  NOTE_DOC
+  DECREE_DOC
+  EXPENSE_DOC
+  PAYMENT_RECEIPT_DOC
+  CHECK_DOC
+}
 
 // model RiskFactor {
 //   id           Int       @id @default(autoincrement())
@@ -126,5 +205,90 @@ model Street {
 //   recipient    Recipient @relation(fields: [recipient_id], references: [id])
 // }
 
-  //Modificar para que solo traiga un ContactInfo
-  // risk_factors      RiskFactor[]
+//Modificar para que solo traiga un ContactInfo
+// risk_factors      RiskFactor[]
+
+enum Role {
+  user
+  admin
+  subsecretaria
+  contaduria
+  tesoreria
+  caja
+  user_ts
+  provedor
+}
+
+model User {
+  id       String  @id @default(cuid())
+  name     String?
+  username String? @unique
+  email    String? @unique
+  // emailVerified DateTime?
+  password String?
+  image    String?
+  // Account       Account?
+  role     Role    @default(user)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// model Account {
+//   id                       String  @id @default(cuid())
+//   userId                   String  @unique
+//   type                     String
+//   provider                 String
+//   providerAccountId        String
+//   refresh_token            String? @db.Text
+//   access_token             String? @db.Text
+//   expires_at               Int?
+//   token_type               String?
+//   scope                    String?
+//   id_token                 String? @db.Text
+//   session_state            String?
+//   refresh_token_expires_in Int?
+//   user                     User?   @relation(fields: [userId], references: [id])
+
+//   createdAt DateTime @default(now())
+//   updatedAt DateTime @updatedAt
+
+//   @@unique([provider, providerAccountId])
+//   @@index([userId])
+// }
+
+// model VerificationToken {
+//   identifier String  @unique
+//   token      String
+//   expires    DateTime
+
+//   @@id([identifier])
+// }
+// model Session {
+//   id           String   @id @default(cuid())
+//   sessionToken String   @unique
+//   userId       String
+//   expires      DateTime
+//   user         User     @relation(fields: [userId], references: [id])
+
+//   createdAt DateTime @default(now())
+//   updatedAt DateTime @updatedAt
+
+//   @@index([userId])
+// }
+
+// Optional for WebAuthn support
+// model Authenticator {
+//   credentialID         String  @unique
+//   userId               String
+//   providerAccountId    String
+//   credentialPublicKey  String
+//   counter              Int
+//   credentialDeviceType String
+//   credentialBackedUp   Boolean
+//   transports           String?
+
+//   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+//   @@id([userId, credentialID])
+// }

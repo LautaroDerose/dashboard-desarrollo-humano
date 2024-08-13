@@ -1,5 +1,5 @@
 import { activatedRecipient, deleteRecipient, desactivatedRecipient } from "@/actions/recipient-actions";
-import { Button } from "../ui/button";
+import { Button } from "./ui/button";
 
 export default function RecipientDeleteButton({recipientId}) {
 

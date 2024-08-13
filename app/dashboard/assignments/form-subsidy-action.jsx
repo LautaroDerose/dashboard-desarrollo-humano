@@ -1,23 +1,21 @@
 'use client'
-
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
+import {  createSubsidyAssignment, getRecipientsAndBenefits } from "@/actions/assignment-actions";
 import { Popover, PopoverTrigger, PopoverContent } from "@/components/ui/popover";
 import { FiCalendar } from "react-icons/fi";
 import { Calendar } from "@/components/ui/calendar";
 import { format } from "date-fns";
 import { cn } from "@/lib/utils"; // Asegúrate de tener esta utilidad
-import { es } from "date-fns/locale"
-import { createAssignment, getRecipientsAndBenefits } from "@/actions/assignment-actions";
 
-
-export default function FormActionAssignment({ recipient, benefit, assignment }) {
+export default function FormActionSubsidy({ recipient, benefit, assignment }) {
   const [recipients, setRecipients] = useState([]);
   const [selectedRecipient, setSelectedRecipient] = useState(recipient?.id || "");
   const [benefits, setBenefits] = useState([]);
   const [selectedBenefit, setSelectedBenefit] = useState(benefit?.id || "");
   const [enrollmentDate, setEnrollmentDate] = useState(null);
   const [expiryDate, setExpiryDate] = useState(null);
+  const [selectedBenefitCategory, setSelectedBenefitCategory] = useState(null);
 
   useEffect(() => {
     async function fetchData() {
@@ -27,42 +25,48 @@ export default function FormActionAssignment({ recipient, benefit, assignment })
     }
     fetchData();
   }, []);
-// console.log(selectedBenefit)
+
+  useEffect(() => {
+    const selectedBenefitObj = benefits.find(b => b.id === selectedBenefit);
+    if (selectedBenefitObj) {
+      setSelectedBenefitCategory(selectedBenefitObj.category_id);
+    }
+  }, [selectedBenefit, benefits]);
+
+  // Filtrar los beneficios que tienen category_id 1
+  const filteredBenefits = benefits.filter(benefit => benefit.category_id === 1);
+
   return (
     <div>
-      <form action={createAssignment} className=" flex flex-col gap-4" >
-        <div className="grid grid-cols-2 gap-4" >
+      <form action={createSubsidyAssignment} className="flex flex-col gap-4">
+        <div className="grid grid-cols-2 gap-4">
           <select
-              name="recipient"
-              className="w-full px-2 py-1 rounded-sm"
-              value={selectedRecipient}
-              onChange={(e) => setSelectedRecipient(e.target.value)}
-            >
-              <option value="">
-                {
-                  recipient ? <p>{recipient?.first_name} {recipient?.laast_name}</p> : "Seleccione un Beneficiario"
-                }
-              </option>
+            name="recipient"
+            className="w-full px-2 py-1 rounded-sm"
+            value={selectedRecipient}
+            onChange={(e) => setSelectedRecipient(e.target.value)}
+          >
+            <option value="">
+              {recipient ? `${recipient?.first_name} ${recipient?.last_name}` : "Seleccione un Beneficiario"}
+            </option>
             {recipients.map((recipient) => (
               <option key={recipient.id} value={recipient.id}>
-                <p>{recipient.first_name}{" "}{recipient.last_name}</p>
+                {recipient.first_name} {recipient.last_name}
               </option>
             ))}
           </select>
           <select
-              name="benefit"
-              className="w-full px-2 py-1 rounded-sm"
-              value={selectedBenefit}
-              onChange={(e) => setSelectedBenefit(e.target.value)}
-            >
-              <option value="">
-                {
-                  benefit ? <p>{benefit?.name} </p> : "Seleccione un Beneficio"
-                }
-              </option>
-            {benefits.map((benefit) => (
+            name="benefit"
+            className="w-full px-2 py-1 rounded-sm"
+            value={selectedBenefit}
+            onChange={(e) => setSelectedBenefit(e.target.value)}
+          >
+            <option value="">
+              {benefit ? `${benefit?.name}` : "Seleccione un Beneficio"}
+            </option>
+            {filteredBenefits.map((benefit) => (
               <option key={benefit.id} value={benefit.id}>
-                <p>{benefit.name}</p>
+                {benefit.name}
               </option>
             ))}
           </select>
@@ -117,24 +121,49 @@ export default function FormActionAssignment({ recipient, benefit, assignment })
             </PopoverContent>
           </Popover>
           
-        </div>       
-        
+          {/* input para SubsidyStage */}
+          <input
+            type="hidden"
+            name="doc_type"
+            value="NOTE_DOC"
+          />
+          <input
+            type="text"
+            name="detail_benefit"
+            placeholder="Detalle de subsidio"
+            className="w-full px-2 py-1 rounded-sm"
+          />
+          <input
+            type="text"
+            name="doc_number"
+            placeholder="Número de nota"
+            className="w-full px-2 py-1 rounded-sm"
+          />
+          <input
+            type="hidden"
+            name="created_at"
+            value={new Date().toISOString()}
+          />
+          <input
+            type="hidden"
+            name="doc_created_at"
+            value={new Date().toISOString()}
+          />
+        </div>
 
-        <label>Indique el estado de la asignacion</label>
-        <select name="status" className="w-full px-2 py-1 rounded-sm" >
+        <label>Indique el estado de la asignación</label>
+        <select name="status" className="w-full px-2 py-1 rounded-sm">
           <option selected>
-              {
-                assignment?.id ? <p>{assignment?.status}</p> : "Indique el estado de la asignacion"
-              }
-           </option>
+            {assignment?.id ? assignment?.status : "Indique el estado de la asignación"}
+          </option>
           <option value="Rechazado">Rechazado</option>
-          <option value="Pendiente"  >Pendiente</option>
+          <option value="Pendiente">Pendiente</option>
           <option value="En proceso">En proceso</option>
-          <option value="En revision">En revision</option>
-          <option value="En Concretado">Concretado</option>
+          <option value="En revision">En revisión</option>
+          <option value="Concretado">Concretado</option>
         </select>
         <Button type="submit">
-          Crear Asignacion
+          Crear Asignación
         </Button>
       </form>
     </div>

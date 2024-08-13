@@ -22,7 +22,7 @@ import { FormModalRecipient } from "../form-modal-recipient";
 import FormActionRecipient from "../form-action-recipient";
 import { format } from "date-fns";
 import { es } from "date-fns/locale"
-import RecipientDeleteButton from "@/components/recipient-components/recipient-delete-button";
+import RecipientDeleteButton from "@/components/recipient-delete-button";
 
 
 function calculateAge(birthDateString) {

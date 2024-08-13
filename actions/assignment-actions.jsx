@@ -184,11 +184,87 @@ export async function getSingleAssignment(req, res) {
   }
 }
 
-// export async function getAllAssignments(){
-//   const assignments = await prisma.assignment.findMany({ 
-//     include: { 
-//       benefit: true, 
-//       recipient: true
-//     } 
+// subsidios-actions
+export async function createSubsidyAssignment(formData) {
+  const enrollmentDate = new Date(formData.get("enrollment_date"));
+  const expiryDate = new Date(formData.get("expiry_date"));
+
+  // Crear el Assignment
+  const newAssignment = await prisma.assignment.create({
+    data: {
+      recipient_id: parseInt(formData.get("recipient")),
+      benefit_id: parseInt(formData.get("benefit")),
+      amount: parseInt(formData.get("amount")),
+      quantity: parseInt(formData.get("quantity")),
+      enrollment_date: enrollmentDate.toISOString(),
+      expiry_date: expiryDate.toISOString(),
+      status: formData.get("status"),
+      detail_benefit: formData.get("detail"),
+    },
+  });
+
+  // Crear el Doc con referencia a Assignment
+  const newDoc = await prisma.doc.create({
+    data: {
+      doc_type: 'NOTE_DOC',
+      doc_number: formData.get("doc_number"),
+      doc_created_at: new Date(),
+      assignment_id: newAssignment.id, // Relacionar con el assignment
+    },
+  });
+
+  // Crear el SubsidyStage
+  const newSubsidyStage = await prisma.subsidyStage.create({
+    data: {
+      assignment_id: newAssignment.id,
+      note_doc_id: newDoc.id,
+      created_at: new Date(),
+    },
+  });
+
+  // Actualizar el Doc con el subsidy_stage_id
+  await prisma.doc.update({
+    where: { id: newDoc.id },
+    data: { subsidy_stage_id: newSubsidyStage.id },
+  });
+
+  revalidatePath("/");
+}
+
+// export async function createSubsidyAssignment(formData) {
+//   const enrollmentDate = new Date(formData.get("enrollment_date"));
+//   const expiryDate = new Date(formData.get("expiry_date"));
+
+//   // Crear el Doc
+//   const newDoc = await prisma.doc.create({
+//     data: {
+//       doc_type: 'NOTE_DOC',
+//       doc_number: formData.get("doc_number"),
+//       doc_created_at: new Date(),
+//     },
 //   });
+
+//   // Crear el Assignment
+//   const newAssignment = await prisma.assignment.create({
+//     data: {
+//       recipient_id: parseInt(formData.get("recipient")),
+//       benefit_id: parseInt(formData.get("benefit")),
+//       amount: parseInt(formData.get("amount")),
+//       quantity: parseInt(formData.get("quantity")),
+//       enrollment_date: enrollmentDate.toISOString(),
+//       expiry_date: expiryDate.toISOString(),
+//       status: formData.get("status"),
+//     },
+//   });
+
+//   // Crear el SubsidyStage
+//   await prisma.subsidyStage.create({
+//     data: {
+//       assignment_id: newAssignment.id,
+//       note_doc_id: newDoc.id,
+//       created_at: new Date(),
+//     },
+//   });
+
+//   revalidatePath("/");
 // }

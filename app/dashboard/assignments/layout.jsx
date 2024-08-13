@@ -7,11 +7,13 @@ import { MdAssignmentAdd, MdOutlineInsertDriveFile } from "react-icons/md";
 import { useState } from "react";
 import FormActionAssignment from "./form-action-assignment";
 import { Card } from "@/components/ui/card";
+import FormActionSubsidy from "./form-subsidy-action";
 
 
 export default function AssignmentLayout({ children }) {
 
   const [openModalCreate, setOpenModalCreate] = useState(false)
+  const [openModalSubsidy, setOpenModalSubsidy] = useState(false)
 
   return (
     <div className="flex flex-col mt-4 " >
@@ -62,6 +64,23 @@ export default function AssignmentLayout({ children }) {
                   </DialogHeader>
                   {/* <FormModalAssignment benefits={benefits} recipients={recipients} /> */}
                   <FormActionAssignment  />
+                  {/* <FormActionAssignment benefits={benefits} recipients={recipients} /> */}
+                </DialogContent>
+              </Dialog>
+              <Dialog className="max-w-4xl" open={openModalSubsidy} onOpenChange={setOpenModalSubsidy} >
+                <DialogTrigger asChild>
+                  <Button>
+                    <MdAssignmentAdd className="h-5 w-5 mr-2" />
+                    <p>Crear Subsidio</p>
+                  </Button>
+                </DialogTrigger>
+                <DialogContent className="z-50">
+                  <DialogHeader>
+                    <DialogTitle>Crear asignacion de subsidio</DialogTitle>
+                    <DialogDescription>Una ddescripcion pertinente</DialogDescription>
+                  </DialogHeader>
+                  {/* <FormModalAssignment benefits={benefits} recipients={recipients} /> */}
+                  <FormActionSubsidy  />
                   {/* <FormActionAssignment benefits={benefits} recipients={recipients} /> */}
                 </DialogContent>
               </Dialog>

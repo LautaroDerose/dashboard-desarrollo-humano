@@ -133,22 +133,6 @@ export function DataTable({ columns, assignments, benefits, recipients }) {
     <>
       <div className="flex items-center gap-4 py-4">
         <FilterInput table={table} />
-        <Dialog className="max-w-4xl" open={openModalCreate} onOpenChange={setOpenModalCreate} >
-              <DialogTrigger asChild>
-                <Button>
-                  <MdAssignmentAdd className="h-5 w-5 mr-2" />
-                  <p>Agregar Asignacion</p>
-                </Button>
-              </DialogTrigger>
-              <DialogContent className="z-50">
-                <DialogHeader>
-                  <DialogTitle>Crear Asignacion</DialogTitle>
-                  <DialogDescription>Una ddescripcion pertinente</DialogDescription>
-                </DialogHeader>
-                {/* <FormModalAssignment benefits={benefits} recipients={recipients} /> */}
-                <FormActionAssignment benefits={benefits} recipients={recipients} />
-              </DialogContent>
-            </Dialog>
         <DataTableViewOptions table={table} />
       </div>
       <div className="rounded-md border">
