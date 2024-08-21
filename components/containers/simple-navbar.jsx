@@ -35,31 +35,69 @@ const styles = {
   containerActive: ' bg-slate-600  ', 
 };
 
-const nasvLinks = [
-  {
-    id: 1,
-    label: "Panel",
-    href: "/subsecretaria"
-  },
-  {
-    id: 2,
-    label: "Lista",
-    href: "/subsecretaria/list"
-  },
-]
+// const nasvLinks = [
+//   {
+//     id: 1,
+//     label: "Panel",
+//     href: "/subsecretaria"
+//   },
+//   {
+//     id: 2,
+//     label: "Lista",
+//     href: "/subsecretaria/list"
+//   },
+// ]
 
 export default async function SimpleNavbar () {
   const session = await auth();
   const user =  session?.user
+
+   // Determina el contenido basado en el rol del usuario
+   const getRoleContent = () => {
+    switch (user?.role) {
+      case 'subsecretaria':
+        return <span className="align-middle">SSG</span>;
+      case 'contaduria':
+        return <span className="align-middle">CNT</span>;
+      default:
+        return <span className="align-middle">DH</span>; // Default case or handle unrecognized roles
+    }
+  };
+
+  // Genera los enlaces dinámicos basados en el rol del usuario
+  const generateNavLinks = () => {
+    const baseHref = `/${user?.role || 'default'}`;
+    return [
+      { id: 1, label: "Panel", href: `${baseHref}` },
+      { id: 2, label: "Lista", href: `${baseHref}/list` },
+    ];
+  };
+
+  const navLinks = generateNavLinks();
 
   return (
       <header className="sticky z-10 top-0 flex h-16 items-center gap-4 border-b bg-background px-4 md:px-6 mb-2 ">
         <nav className="hidden flex-col gap-6 text-lg font-medium md:flex md:flex-row md:items-center md:gap-5 md:text-sm lg:gap-6">
           <Link href="#" className="flex items-center gap-2 text-lg font-semibold md:text-base" >
             {/* <Package2 className="h-6 w-6" /> <span className="sr-only">Acme Inc</span> */}
-            <div className="w-fit flex items-center justify-center border-4 rounded-full p-2"><span className=" align-middle ">SSG</span></div>
+            <div className="w-fit flex items-center justify-center border-4 rounded-full p-2">
+            {getRoleContent()}
+          </div>
           </Link>
-          {nasvLinks.map((link) => {
+          {navLinks.map((link) => {
+            return (
+              <Link
+                key={link.id}
+                href={link.href}
+                className={clsx(
+                  'text-muted-foreground transition-colors hover:text-foreground',
+                )}
+              >
+              <p className="hidden md:block">{link.label}</p>
+              </Link>
+            );
+          })}
+          {/* {nasvLinks.map((link) => {
             return (
               <Link
                 key={link.label}
@@ -74,7 +112,7 @@ export default async function SimpleNavbar () {
               <p className="hidden md:block">{link.label}</p>
               </Link>
             );
-          })}
+          })} */}
         </nav>
         <Sheet>
           <SheetTrigger asChild>

@@ -143,7 +143,7 @@ const FilterInput = ({ table }) => {
   );
 };
 
-export function DataTable({ columns, assignments }) {
+export function DataTable({ columns, assignments, benefits, recipients }) {
   const [sorting, setSorting] = useState([]);
   const [columnFilters, setColumnFilters] = useState([]);
   const [columnVisibility, setColumnVisibility] = useState({});

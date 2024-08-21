@@ -12,6 +12,7 @@ import { BsArrowRepeat } from "react-icons/bs";
 import Link from "next/link";
 import { useState } from "react";
 import { confirmDoc } from "@/actions/doc-actions/doc-subse-actions";
+import { confirmDecreeDoc } from "@/actions/doc-actions/doc-contaduria-actions";
  
 export const columns = [
   // {
@@ -89,8 +90,14 @@ export const columns = [
     cell: (props) => <p>{props.getValue()}</p>,
   },
   {
+    id: "Núm. de Decreto",
+    accessorKey: 'subsidy_stage.decree_doc.doc_number', // Para el documento de tipo nota
+    header: 'Número de Decreto',
+    cell: (props) => <p>{props.getValue()}</p>,
+  },
+  {
     id: "papeleo",
-    accessorKey: 'subsidy_stage.note_doc.is_confirm',
+    accessorKey: 'subsidy_stage.decree_doc.is_confirm',
     header: 'Papeleo',
     cell: (props) => {
       const [isConfirmed, setIsConfirmed] = useState(props.getValue());
@@ -98,7 +105,7 @@ export const columns = [
   
       const handleToggleConfirmation = async () => {
         try {
-          await confirmDoc(assignmentId, isConfirmed);
+          await confirmDecreeDoc(assignmentId, isConfirmed);
           setIsConfirmed(!isConfirmed);
         } catch (error) {
           console.error("Error updating document confirmation:", error);
@@ -160,7 +167,7 @@ export const columns = [
               Copiar Id de Asignación
             </DropdownMenuItem>
             <DropdownMenuSeparator />
-            <Link href={`/subsecretaria/${assignment.id}`}>
+            <Link href={`/contaduria/${assignment.id}`}>
               <DropdownMenuItem>Ver en detalle</DropdownMenuItem>
             </Link>
           </DropdownMenuContent>

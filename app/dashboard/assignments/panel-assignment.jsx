@@ -3,7 +3,8 @@ import StatusCardAssignments from "./(assignmentsOrganisms)/statusCards-assignme
 import RecentsTableAssignments from "./(assignmentsOrganisms)/recentsTable-assignments";
 import NextCardAssignments from "./(assignmentsOrganisms)/nextCard-ssignments";
 
-export function PanelAssignment({ assignments, benefits, recipients }) {
+export function PanelAssignment() {
+// export function PanelAssignment({ assignments, benefits, recipients }) {
 
   return (
     <div className="flex  w-full flex-col">

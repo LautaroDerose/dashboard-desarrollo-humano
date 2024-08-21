@@ -11,7 +11,7 @@ import { es } from "date-fns/locale"
 import { createAssignment, getRecipientsAndBenefits } from "@/actions/assignment-actions";
 
 
-export default function FormActionAssignment({ recipient, benefit, assignment }) {
+export default function FormActionOther({ recipient, benefit, assignment }) {
   const [recipients, setRecipients] = useState([]);
   const [selectedRecipient, setSelectedRecipient] = useState(recipient?.id || "");
   const [benefits, setBenefits] = useState([]);
@@ -28,6 +28,10 @@ export default function FormActionAssignment({ recipient, benefit, assignment })
     fetchData();
   }, []);
 // console.log(selectedBenefit)
+
+  // Filtrar los beneficios que tienen category_id 1
+  const filteredBenefits = benefits.filter(benefit => benefit.category_id === 4);
+
   return (
     <div>
       <form action={createAssignment} className=" flex flex-col gap-4" >
@@ -60,7 +64,7 @@ export default function FormActionAssignment({ recipient, benefit, assignment })
                   benefit ? <p>{benefit?.name} </p> : "Seleccione un Beneficio"
                 }
               </option>
-            {benefits.map((benefit) => (
+            {filteredBenefits.map((benefit) => (
               <option key={benefit.id} value={benefit.id}>
                 <p>{benefit.name}</p>
               </option>

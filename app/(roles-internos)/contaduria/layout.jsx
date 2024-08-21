@@ -12,13 +12,13 @@ export const metadata = {
 };
 
 
-export default async function SubSeLayout({ children }) {
+export default async function ContaduriaLayout({ children }) {
   
-  // const session = await auth()
+  const session = await auth()
   
-  // if (session?.user?.role !== "subsecretaria") {
-  //  return <div>No eres administrador</div>
-  // }
+  if (session?.user?.role !== "contaduria") {
+   return <div>No eres del area de Contduria</div>
+  }
 
   return (
     <html lang="en">

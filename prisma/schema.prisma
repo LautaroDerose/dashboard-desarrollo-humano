@@ -125,8 +125,8 @@ model Assignment {
   quantity        Int?
   amount          Int?
   status          String
-  enrollment_date DateTime
-  expiry_date     DateTime
+  enrollment_date DateTime?
+  expiry_date     DateTime?
   withdrawal_date DateTime?
   benefit         Benefit   @relation(fields: [benefit_id], references: [id])
   recipient       Recipient @relation(fields: [recipient_id], references: [id])

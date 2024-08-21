@@ -16,6 +16,11 @@ export async function getInfoCards(){
 const luz = await prisma.assignment.count({
   where: {
     benefit_id: 1 ,
+    subsidy_stage:{
+      decree_doc_id: { not: null },
+      payment_doc_id:null,
+      expense_doc_id:null,
+    },
     OR: [
       { withdrawal_date: null },
       { withdrawal_date: undefined },
@@ -32,6 +37,11 @@ const luz = await prisma.assignment.count({
 const gas = await prisma.assignment.count({
   where: {
     benefit_id: 2 ,
+    subsidy_stage:{
+      decree_doc_id: { not: null },
+      payment_doc_id:null,
+      expense_doc_id:null,
+    },
     OR: [
       { withdrawal_date: null },
       { withdrawal_date: undefined },
@@ -48,6 +58,11 @@ const gas = await prisma.assignment.count({
 const consulta = await prisma.assignment.count({
   where: {
     benefit_id: 3 ,
+    subsidy_stage:{
+      decree_doc_id: { not: null },
+      payment_doc_id:null,
+      expense_doc_id:null,
+    },
     OR: [
       { withdrawal_date: null },
       { withdrawal_date: undefined },
@@ -64,6 +79,11 @@ const consulta = await prisma.assignment.count({
 const estudio = await prisma.assignment.count({
   where: {
     benefit_id: 4 ,
+    subsidy_stage:{
+      decree_doc_id: { not: null },
+      payment_doc_id:null,
+      expense_doc_id:null,
+    },
     OR: [
       { withdrawal_date: null },
       { withdrawal_date: undefined },
@@ -80,6 +100,11 @@ const estudio = await prisma.assignment.count({
 const traslados = await prisma.assignment.count({
   where: {
     benefit_id: 5 ,
+    subsidy_stage:{
+      decree_doc_id: { not: null },
+      payment_doc_id:null,
+      expense_doc_id:null,
+    },
     OR: [
       { withdrawal_date: null },
       { withdrawal_date: undefined },
@@ -96,6 +121,11 @@ const traslados = await prisma.assignment.count({
 const materiales = await prisma.assignment.count({
   where: {
     benefit_id: 6 ,
+    subsidy_stage:{
+      decree_doc_id: { not: null },
+      payment_doc_id:null,
+      expense_doc_id:null,
+    },
     OR: [
       { withdrawal_date: null },
       { withdrawal_date: undefined },
@@ -112,6 +142,11 @@ const materiales = await prisma.assignment.count({
 const alquiler = await prisma.assignment.count({
   where: {
     benefit_id: 7 ,
+    subsidy_stage:{
+      decree_doc_id: { not: null },
+      payment_doc_id:null,
+      expense_doc_id:null,
+    },
     OR: [
       { withdrawal_date: null },
       { withdrawal_date: undefined },
@@ -128,6 +163,11 @@ const alquiler = await prisma.assignment.count({
 const necesidades = await prisma.assignment.count({
   where: {
     benefit_id: 8 ,
+    subsidy_stage:{
+      decree_doc_id: { not: null },
+      payment_doc_id:null,
+      expense_doc_id:null,
+    },
     OR: [
       { withdrawal_date: null },
       { withdrawal_date: undefined },
@@ -163,6 +203,11 @@ const proximosVencimientos = await prisma.assignment.findMany({
     benefit: {
       category_id: 1,
     },
+    subsidy_stage: {
+      decree_doc_id: { not: null },
+      payment_doc_id:null,
+      expense_doc_id:null,
+    },
     OR: [
       { withdrawal_date: null },
       { withdrawal_date: undefined },
@@ -177,6 +222,15 @@ const proximosVencimientos = await prisma.assignment.findMany({
   include: {
     benefit: true,
     recipient: true, // Incluye información del `Recipient` relacionado, si es necesario
+    subsidy_stage: {
+      include: {
+        note_doc: true,
+        decree_doc: true,
+        // expense_doc: true,
+        // payment_doc: true,
+        // check_doc: true,
+      },
+    },
   },
   orderBy: {
     expiry_date: 'asc' // Ordenar de vencimientos más cercanos a más lejanos

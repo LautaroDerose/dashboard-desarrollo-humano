@@ -5,15 +5,22 @@ import { Button } from "@/components/ui/button"
 import { IoFilterSharp } from "react-icons/io5";
 import { MdAssignmentAdd, MdOutlineInsertDriveFile } from "react-icons/md";
 import { useState } from "react";
-import FormActionAssignment from "./form-action-assignment";
+import FormActionAssignment from "./(forms)/form-action-assignment";
 import { Card } from "@/components/ui/card";
-import FormActionSubsidy from "./form-subsidy-action";
+import FormActionSubsidy from "./(forms)/form-subsidy-action";
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import NavigationMenuAssignments from "./navigation-menu";
+import FormActionProvider from "./(forms)/form-providers-action";
+import FormActionOther from "./(forms)/form-other-action";
+import Link from "next/link";
 
 
 export default function AssignmentLayout({ children }) {
 
   const [openModalCreate, setOpenModalCreate] = useState(false)
   const [openModalSubsidy, setOpenModalSubsidy] = useState(false)
+  const [openModalProvider, setOpenModalProvider] = useState(false)
+  const [openModalOther, setOpenModalOther] = useState(false)
 
   return (
     <div className="flex flex-col mt-4 " >
@@ -21,7 +28,8 @@ export default function AssignmentLayout({ children }) {
         <Sidebar />
       </div> */}
       
-      <Card  className="p-4 mx-12">
+      <Card  className="p-4 mx-12 flex">
+        <NavigationMenuAssignments />
         <div className="ml-auto flex items-center gap-2">
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
@@ -50,23 +58,6 @@ export default function AssignmentLayout({ children }) {
                   Export
                 </span>
               </Button>
-              <Dialog className="max-w-4xl" open={openModalCreate} onOpenChange={setOpenModalCreate} >
-                <DialogTrigger asChild>
-                  <Button>
-                    <MdAssignmentAdd className="h-5 w-5 mr-2" />
-                    <p>Agregar Asignacion</p>
-                  </Button>
-                </DialogTrigger>
-                <DialogContent className="z-50">
-                  <DialogHeader>
-                    <DialogTitle>Crear Asignacion</DialogTitle>
-                    <DialogDescription>Una ddescripcion pertinente</DialogDescription>
-                  </DialogHeader>
-                  {/* <FormModalAssignment benefits={benefits} recipients={recipients} /> */}
-                  <FormActionAssignment  />
-                  {/* <FormActionAssignment benefits={benefits} recipients={recipients} /> */}
-                </DialogContent>
-              </Dialog>
               <Dialog className="max-w-4xl" open={openModalSubsidy} onOpenChange={setOpenModalSubsidy} >
                 <DialogTrigger asChild>
                   <Button>
@@ -84,6 +75,66 @@ export default function AssignmentLayout({ children }) {
                   {/* <FormActionAssignment benefits={benefits} recipients={recipients} /> */}
                 </DialogContent>
               </Dialog>
+              <Dialog className="max-w-4xl" open={openModalProvider} onOpenChange={setOpenModalProvider} >
+                <DialogTrigger asChild>
+                  <Button>
+                    <MdAssignmentAdd className="h-5 w-5 mr-2" />
+                    <p>Subsidio de Proveedores</p>
+                  </Button>
+                </DialogTrigger>
+                <DialogContent className="z-50">
+                  <DialogHeader>
+                    <DialogTitle>Crear asignacion de Provedores</DialogTitle>
+                    <DialogDescription>Una descripcion pertinente</DialogDescription>
+                  </DialogHeader>
+                  <FormActionProvider />
+                </DialogContent>
+              </Dialog>
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button  className=" gap-1">
+                    <MdAssignmentAdd className="h-5 w-5 mr-2" />
+                    <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">
+                      Otras asignaciones
+                    </span>
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="center">
+                  <DropdownMenuLabel>Formularios</DropdownMenuLabel>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem >
+                    <Link href='/dashboard/assignments/formulario-consulta'>
+                      Credencial Hospitalaria
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem>
+                    <Link href='/dashboard/assignments/formulario-agua'>
+                      Agua
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem>
+                    <Link href='/dashboard/assignments/formulario-atmosferico'>
+                      Atmosferico
+                    </Link>
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+              {/* <Dialog className="max-w-4xl" open={openModalCreate} onOpenChange={setOpenModalCreate} >
+                <DialogTrigger asChild>
+                  <Button>
+                    <MdAssignmentAdd className="h-5 w-5 mr-2" />
+                    <p>Agregar Asignacion</p>
+                  </Button>
+                </DialogTrigger>
+                <DialogContent className="z-50">
+                  <DialogHeader>
+                    <DialogTitle>Crear Asignacion</DialogTitle>
+                    <DialogDescription>Una ddescripcion pertinente</DialogDescription>
+                  </DialogHeader>
+                  <FormActionAssignment  />
+                </DialogContent>
+              </Dialog> */}
+              
           </div>
         </Card>
       <div className=" flex-auto px-4">

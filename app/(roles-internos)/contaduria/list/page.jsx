@@ -11,7 +11,9 @@ export default async function RecipientsListPage() {
             category_id: 1,
           },
           subsidy_stage: {
-            decree_doc_id: null, // Asegura que el decree_doc_id sea null
+            decree_doc_id: { not: null },
+            expense_doc_id: null, 
+            payment_doc_id: null, 
           },
           OR: [
             { withdrawal_date: null },
@@ -32,7 +34,7 @@ export default async function RecipientsListPage() {
           subsidy_stage: {
             include: {
               note_doc: true,
-              // decree_doc: true,
+              decree_doc: true,
               // expense_doc: true,
               // payment_doc: true,
               // check_doc: true,

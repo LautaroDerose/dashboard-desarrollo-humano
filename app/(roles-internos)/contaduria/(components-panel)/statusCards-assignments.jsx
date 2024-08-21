@@ -2,7 +2,8 @@
 import { useEffect, useState } from "react"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { MdCheck, MdClose, MdMoreHoriz, MdOutlinePause, MdOutlinePriorityHigh } from "react-icons/md"
-import { getInfoCards } from "@/actions/roles-actions/subse-actions"
+import { getInfoCards } from "@/actions/roles-actions/conta-actions"
+// import { getInfoCards } from "@/actions/subse-actions"
 
 export default function StatusCardAssignments() {
 
