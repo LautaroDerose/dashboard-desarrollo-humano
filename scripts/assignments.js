@@ -42,11 +42,14 @@ async function main() {
   try {
     // Obtener IDs de Recipients y Benefits
     const recipientIds = await getIds('Recipient');
-    const benefitIds = await getIds('Benefit');
+    let benefitIds = await getIds('Benefit');
+
+    // Filtrar el benefit_id 16
+    benefitIds = benefitIds.filter(id => id !== 16);
 
     // Generar Assignments
     const assignments = [];
-    for (let i = 0; i < 2000; i++) { // Generar 2000 assignments
+    for (let i = 0; i < 1000; i++) { // Generar 1000 assignments
       const year = chance.pickone([2022, 2023, 2024]);
 
       const enrollmentDate = getRandomDate(year);
@@ -54,7 +57,7 @@ async function main() {
       const withdrawalDate = chance.bool() ? getRandomDate(year) : null;
 
       assignments.push({
-        benefit_id: chance.pickone(benefitIds),
+        benefit_id: chance.pickone(benefitIds), // Usar un benefit_id que no sea 16
         recipient_id: chance.pickone(recipientIds),
         quantity: chance.integer({ min: 1, max: 10 }),
         amount: chance.integer({ min: 100, max: 1000 }),
@@ -110,6 +113,13 @@ main();
 //   }));
 // }
 
+// // Función para generar una fecha aleatoria en un año específico
+// function getRandomDate(year) {
+//   const start = new Date(`${year}-01-01`);
+//   const end = new Date(`${year}-12-31`);
+//   return chance.date({ min: start, max: end }).toISOString().slice(0, 10);
+// }
+
 // async function main() {
 //   try {
 //     // Obtener IDs de Recipients y Benefits
@@ -118,16 +128,22 @@ main();
 
 //     // Generar Assignments
 //     const assignments = [];
-//     for (let i = 0; i < 1000; i++) { // Generar 100 assignments
+//     for (let i = 0; i < 1000; i++) { // Generar 2000 assignments
+//       const year = chance.pickone([2022, 2023, 2024]);
+
+//       const enrollmentDate = getRandomDate(year);
+//       const expiryDate = getRandomDate(year);
+//       const withdrawalDate = chance.bool() ? getRandomDate(year) : null;
+
 //       assignments.push({
 //         benefit_id: chance.pickone(benefitIds),
 //         recipient_id: chance.pickone(recipientIds),
 //         quantity: chance.integer({ min: 1, max: 10 }),
 //         amount: chance.integer({ min: 100, max: 1000 }),
 //         status: chance.pickone(['Rechazado', 'Pendiente', 'En proceso', 'En revision', 'Concretado']),
-//         enrollment_date: chance.date({ year: 2024 }).toISOString().slice(0, 10),
-//         expiry_date: chance.date({ year: 2024 }).toISOString().slice(0, 10),
-//         withdrawal_date: chance.bool() ? chance.date({ year: 2024 }).toISOString().slice(0, 10) : null
+//         enrollment_date: enrollmentDate,
+//         expiry_date: expiryDate,
+//         withdrawal_date: withdrawalDate
 //       });
 //     }
 

@@ -16,7 +16,21 @@ export default async function RecipientsListPage() {
                 }
               }
             }
-          }
+          },
+          docs:true,
+          HospitalCredential:true,
+          WaterSubsidy:true,
+          TravelSubsidy:true,
+          Observation:true,
+          subsidy_stage: {
+            include: {
+              note_doc: true,
+              decree_doc: true,
+              expense_doc: true,
+              payment_doc: true,
+              check_doc: true,
+            },
+          },
         },
       }),
       prisma.benefit.findMany(),

@@ -1,6 +1,6 @@
 import { Inter } from "next/font/google";
 import "../../globals.css";
-import { ThemeProvider } from "@/components/theme-provider";
+import { ThemeProvider } from "@/components/theme/theme-provider";
 import SimpleNavbar from "@/components/containers/simple-navbar";
 import { auth } from "@/auth"
 
@@ -16,8 +16,8 @@ export default async function ContaduriaLayout({ children }) {
   
   const session = await auth()
   
-  if (session?.user?.role !== "contaduria") {
-   return <div>No eres del area de Contduria</div>
+  if (session?.user?.role !== "contaduria" && session?.user?.role !== "admin") {
+    return <div>No eres del área de Secretaria de Desarrollo Humano</div>
   }
 
   return (
@@ -35,7 +35,7 @@ export default async function ContaduriaLayout({ children }) {
           enableSystem
           disableTransitionOnChange
         >
-        <SimpleNavbar />
+        <SimpleNavbar baseHref={"/contaduria"} />
           {children}
         </ThemeProvider>
       </body>

@@ -1,6 +1,6 @@
 import { Inter } from "next/font/google";
 import "../../globals.css";
-import { ThemeProvider } from "@/components/theme-provider";
+import { ThemeProvider } from "@/components/theme/theme-provider";
 import SimpleNavbar from "@/components/containers/simple-navbar";
 import { auth } from "@/auth"
 
@@ -14,11 +14,14 @@ export const metadata = {
 
 export default async function SubSeLayout({ children }) {
   
-  // const session = await auth()
+  const session = await auth()
   
   // if (session?.user?.role !== "subsecretaria") {
   //  return <div>No eres administrador</div>
   // }
+  if (session?.user?.role !== "subsecretaria" && session?.user?.role !== "admin") {
+    return <div>No eres del área de Secretaria de Desarrollo Humano</div>
+ }
 
   return (
     <html lang="en">
@@ -35,7 +38,7 @@ export default async function SubSeLayout({ children }) {
           enableSystem
           disableTransitionOnChange
         >
-        <SimpleNavbar />
+        <SimpleNavbar baseHref={"/subsecretaria"} />
           {children}
         </ThemeProvider>
       </body>

@@ -4,8 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import Link from "next/link";
 import { MdArrowOutward } from "react-icons/md";
-import Stepper from "./stepper";
-// import Stepper from "@/components/Stepper";  // Asegúrate de importar el Stepper
+import StepperSubsidy from "../../../../../components/stepper-subsidyStage";
 
 export default async function SubsidiosPage() {
 
@@ -31,8 +30,8 @@ export default async function SubsidiosPage() {
           expiry_date: 'asc'
         },
         include: { 
-          benefit: true,
           recipient: true,
+          benefit: true,
           subsidy_stage: {
             include: {
               note_doc: true,
@@ -74,6 +73,7 @@ export default async function SubsidiosPage() {
             <Table>
               <TableHeader>
                 <TableRow>
+                  <TableHead>ID</TableHead>
                   <TableHead>Tipo de Beneficios</TableHead>
                   <TableHead>Persona</TableHead>
                   <TableHead>Registro</TableHead>
@@ -83,6 +83,9 @@ export default async function SubsidiosPage() {
               <TableBody>
                 {assignments.map((item) => (
                   <TableRow key={item.id}>
+                    <TableCell>
+                      <div className="font-medium">{item.id}</div>
+                    </TableCell>
                     <TableCell>
                       <div className="font-medium">{item.benefit.name}</div>
                     </TableCell>
@@ -94,7 +97,7 @@ export default async function SubsidiosPage() {
                     </TableCell>
                     <TableCell>
                       {item.subsidy_stage ? (
-                        <Stepper subsidyStage={item.subsidy_stage} />
+                        <StepperSubsidy subsidyStage={item.subsidy_stage} />
                       ) : (
                         <p className="text-gray-500">Sin documentos</p>
                       )}

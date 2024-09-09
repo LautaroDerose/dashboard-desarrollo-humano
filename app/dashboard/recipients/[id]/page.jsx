@@ -1,5 +1,6 @@
 import { TooltipProvider } from "@/components/ui/tooltip";
 import DetailView from "./DetailView";
+import prisma from "@/lib/prisma";
 
 export default async function RecipientDetail({ params }) {
 
@@ -26,11 +27,15 @@ export default async function RecipientDetail({ params }) {
 
   return (
     <div className="h-[86vh]">
-      <TooltipProvider>
-        {/* <div>{recipientId}</div> */}
-        <DetailView recipient={recipient} />
-        {/* <DetailView recipient={recipient} dataSelect={dataSelect} /> */}
-      </TooltipProvider>
+      <DetailView recipient={recipient} />
     </div>
   );
 }
+
+    // <div className="h-[86vh]">
+    //   {/* <TooltipProvider> */}
+    //     {/* <div>{recipientId}</div> */}
+    //     <DetailView recipient={recipient} />
+    //     {/* <DetailView recipient={recipient} dataSelect={dataSelect} /> */}
+    //   {/* </TooltipProvider> */}
+    // </div>

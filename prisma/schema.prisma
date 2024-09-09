@@ -47,10 +47,16 @@ model Recipient {
 
 model Observation {
   id           Int       @id @default(autoincrement())
+  author       String
   text         String
+  subject      String
   created_at   DateTime  @default(now())
+  is_active    Boolean
+
   recipient_id Int
   recipient    Recipient @relation(fields: [recipient_id], references: [id])
+  assignment_id Int        
+  assignment    Assignment @relation(fields: [assignment_id], references: [id])
 }
 
 model FamilyGroup {
@@ -102,42 +108,6 @@ model Street {
   ContactInfo ContactInfo[]
 }
 
-// model Assignment {
-//   id              Int       @id @default(autoincrement())
-//   benefit_id      Int
-//   detail_benefit  String?
-//   recipient_id    Int
-//   quantity        Int?
-//   amount          Int?
-//   status          String
-//   enrollment_date DateTime
-//   expiry_date     DateTime
-//   withdrawal_date DateTime?
-//   benefit         Benefit   @relation(fields: [benefit_id], references: [id])
-//   recipient       Recipient @relation(fields: [recipient_id], references: [id])
-// }
-
-model Assignment {
-  id              Int       @id @default(autoincrement())
-  benefit_id      Int
-  detail_benefit  String?
-  recipient_id    Int
-  quantity        Int?
-  amount          Int?
-  status          String
-  enrollment_date DateTime?
-  expiry_date     DateTime?
-  withdrawal_date DateTime?
-  benefit         Benefit   @relation(fields: [benefit_id], references: [id])
-  recipient       Recipient @relation(fields: [recipient_id], references: [id])
-
-  // Relación con SubsidyStage
-  subsidy_stage SubsidyStage?
-
-  // Relación directa con Docs
-  docs Doc[]
-}
-
 model SubsidyStage {
   id            Int        @id @default(autoincrement())
   assignment_id Int        @unique
@@ -177,8 +147,8 @@ model Doc {
   subsidy_stage    SubsidyStage? @relation(fields: [subsidy_stage_id], references: [id])
 
   // Relación directa con Assignment
-  assignment_id    Int?
-  assignment       Assignment?    @relation(fields: [assignment_id], references: [id])
+  assignment_id Int?
+  assignment    Assignment? @relation(fields: [assignment_id], references: [id])
 
   // Relaciones inversas
   note_subsidy_stage    SubsidyStage? @relation("NoteDoc")
@@ -196,13 +166,144 @@ enum DocumentType {
   CHECK_DOC
 }
 
+model HospitalCredential {
+  id            Int        @id @default(autoincrement())
+  assignment_id Int        @unique
+  assignment    Assignment @relation(fields: [assignment_id], references: [id])
+
+  // Información de la trabajadora social
+  ts_name String
+
+  // Información de la visita
+  visiting_shift String?  // Turno de la visita (mañana, tarde, noche)
+  visit_date     DateTime? @db.Date // Fecha de la visita
+  visit_status   String?   // Estado de la visita (realizada, reprogramada, no se encontró al recipient, otro)
+  visit_confirm  Boolean?  // Constancia de que el ususario confirmo la fecha y horario de visita
+
+  // Informe socioeconómico
+  report_soc_eco_issued    Boolean?  // Indica si se completó la visita y el informe socioeconómico (emitido por TS)
+  report_soc_eco_issue_date DateTime? // Fecha de emisión del informe socioeconómico
+
+  // Secretaría
+  report_soc_eco_received    Boolean?  // Indica si la secretaria recibió el informe socioeconómico
+  report_soc_eco_receive_date DateTime? // Fecha de recepción del informe socioeconómico
+
+  // Credencial
+  credential_number Int?   // Número de credencial asignado si se aprueba
+}
+
+model WaterSubsidy {
+  id            Int        @id @default(autoincrement())
+  assignment_id Int        @unique
+  assignment    Assignment @relation(fields: [assignment_id], references: [id])
+
+  // Información de la factura de agua
+  supply_number String // Número de la factura de agua
+  supply_value  Float // Valor total de la factura
+
+  // Información del período de pago
+  // payment_due_date DateTime? // Fecha de vencimiento de la factura
+  period String? // Alternativa: Periodo del pago (por ejemplo, "Julio 2024")
+
+  // Valor de la asignación/cuota de pago
+  value_assignment Float // Valor asignado manualmente para cubrir la factura
+}
+model Assignment {
+  id              Int       @id @default(autoincrement())
+  benefit_id      Int
+  detail_benefit  String?
+  recipient_id    Int
+  quantity        Int?
+  amount          Int?
+  status          String?
+  enrollment_date DateTime?
+  expiry_date     DateTime?
+  withdrawal_date DateTime?
+  benefit         Benefit   @relation(fields: [benefit_id], references: [id])
+  recipient       Recipient @relation(fields: [recipient_id], references: [id])
+
+  // Relación con SubsidyStage
+  subsidy_stage SubsidyStage?
+
+  // Relación directa con Docs
+  docs               Doc[]
+  HospitalCredential HospitalCredential?
+  WaterSubsidy       WaterSubsidy?
+  TravelSubsidy      TravelSubsidy[]
+  Observation        Observation[]
+}
+
+// model TravelSubsidy {
+//   id            Int        @id @default(autoincrement())
+//   assignment_id Int        
+//   assignment    Assignment @relation(fields: [assignment_id], references: [id])
+
+//   // Información del viaje
+//   destination  String // Destino del viaje (constante)
+//   // Información de la fecha y dirección del viaje
+//   date      DateTime // Fecha del viaje
+//   direction String // Dirección del viaje: ida o vuelta
+
+//   // Información del pasajero
+//   passenger_type String // Enum para determinar si es pasajero principal o acompañante
+//   name           String // Nombre del pasajero
+//   dni            Int // DNI del pasajero
+//   // Monto por pasaje
+//   amount       Float // Monto del subsidio por pasaje
+
+//   provider     String // Empresa proveedora del viaje  
+// }
+
+model TravelSubsidy {
+  id            Int        @id @default(autoincrement())
+  assignment_id Int        
+  assignment    Assignment @relation(fields: [assignment_id], references: [id])
+
+  // Información del viaje (Tique 1)
+  destination1    String
+  date1           DateTime
+  passenger_type1 String
+  name1           String
+  dni1            Int
+  amount1         Float
+  provider1       String
+
+  // Información del viaje (Tique 2)
+  destination2    String?
+  date2           DateTime?
+  passenger_type2 String?
+  name2           String?
+  dni2            Int?
+  amount2         Float?
+  provider2       String?
+
+  // Información del viaje (Tique 3)
+  destination3    String?
+  date3           DateTime?
+  passenger_type3 String?
+  name3           String?
+  dni3            Int?
+  amount3         Float?
+  provider3       String?
+
+  // Información del viaje (Tique 4)
+  destination4    String?
+  date4           DateTime?
+  passenger_type4 String?
+  name4           String?
+  dni4            Int?
+  amount4         Float?
+  provider4       String?
+}
+
+
 // model RiskFactor {
 //   id           Int       @id @default(autoincrement())
 //   name         String
 //   gravity      String
 //   type         String
 //   recipient_id Int
-//   recipient    Recipient @relation(fields: [recipient_id], references: [id])
+//   // recipient    Recipient @relation(fields: [recipient_id], references: [id])
 // }
 
 //Modificar para que solo traiga un ContactInfo
@@ -215,7 +316,8 @@ enum Role {
   contaduria
   tesoreria
   caja
-  user_ts
+  trabajador_social
+  secretaria_dh
   provedor
 }
 

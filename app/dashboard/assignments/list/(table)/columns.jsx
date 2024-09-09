@@ -9,37 +9,41 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel,
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 
 import Link from "next/link";
+import FacetedFilter from "./table-faceted-filter";
+import StepperSubsidy from "@/components/stepper-subsidyStage";
+import StepperHospital from "@/components/stepper-hospital";
  
+
 export const columns = [
-  {
-    id: "select",
-    header: ({ table }) => (
-      <Checkbox
-        checked={table.getIsAllPageRowsSelected() || (table.getIsSomePageRowsSelected() && "indeterminate")}
-        onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-        aria-label="Select all"
-      />
-    ),
-    cell: ({ row }) => (
-      <Checkbox
-        checked={row.getIsSelected()}
-        onCheckedChange={(value) => row.toggleSelected(!!value)}
-        aria-label="Select row"
-      />
-    ),
-    enableSorting: false,
-    enableHiding: false,
-  },
   // {
-  //   id: "id",
-  //   accessorKey: "id",
-  //   header: ({ column }) => (
-  //     <Button variant="ghost" onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}>
-  //       ID Beneficiario
-  //       <TbArrowsUpDown className="ml-2 h-4 w-4" />
-  //     </Button>
+  //   id: "select",
+  //   header: ({ table }) => (
+  //     <Checkbox
+  //       checked={table.getIsAllPageRowsSelected() || (table.getIsSomePageRowsSelected() && "indeterminate")}
+  //       onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+  //       aria-label="Select all"
+  //     />
   //   ),
+  //   cell: ({ row }) => (
+  //     <Checkbox
+  //       checked={row.getIsSelected()}
+  //       onCheckedChange={(value) => row.toggleSelected(!!value)}
+  //       aria-label="Select row"
+  //     />
+  //   ),
+  //   enableSorting: false,
+  //   enableHiding: false,
   // },
+  {
+    id: "id",
+    accessorKey: "id",
+    header: ({ column }) => (
+      <Button variant="ghost" onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}>
+        ID Beneficiario
+        <TbArrowsUpDown className="ml-2 h-4 w-4" />
+      </Button>
+    ),
+  },
   {
     id: "recipient.first_name",
     header: ({ column }) => (
@@ -62,11 +66,55 @@ export const columns = [
   //   }
   // },
  
+  // {
+  //   id: 'benefit.name',
+  //   accessorKey: 'benefit.name',
+  //   header: 'Beneficio',
+  //   cell: (props) => <p>{props.getValue()}</p>,
+  // },
   {
     id: 'benefit.name',
     accessorKey: 'benefit.name',
     header: 'Beneficio',
     cell: (props) => <p>{props.getValue()}</p>,
+    filterFn: (row, columnId, filterValues) => {
+      // Si filterValues está vacío, mostrar todos los resultados
+      if (!filterValues.length) return true;
+      const cellValue = row.getValue(columnId);
+      return filterValues.includes(cellValue);
+    },
+    filterComponent: (table) => (
+      <FacetedFilter
+        table={table}
+        columnId="benefit.name"
+        options={['Beneficio 1', 'Beneficio 2', 'Beneficio 3']} // Cambia estas opciones según tu data
+      />
+    ),
+  },
+  {
+    id: "benefit.id",
+    accessorKey: "benefit.id",
+    header: "Estado",
+    cell: (props) => {
+      const value = props.getValue();
+      switch (value) {
+        case 1:
+        case 2:
+        case 3:
+        case 4:
+        case 5:
+        case 6:
+        case 7:
+        case 8:
+          return <StepperSubsidy subsidyStage={props.row.original.subsidy_stage} />;
+        case 16:
+          return <StepperHospital credential={props.row.original.HospitalCredential}/>;
+        case 13:
+          return <p>Pasajes</p>;
+        default:
+          return null; // Devuelve null si no hay un caso que coincida
+      }
+    }
   },
   {
     id: 'status',

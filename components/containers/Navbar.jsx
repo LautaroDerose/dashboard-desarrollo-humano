@@ -26,7 +26,7 @@ import { Input } from "@/components/ui/input"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 
 import { MdCheck, MdClose, MdInfoOutline, MdMoreHoriz, MdOutlinePause, MdOutlinePauseCircle, MdOutlinePriorityHigh } from "react-icons/md"
-import { ModeToggle } from "../mode-toggle";
+import { ModeToggle } from "../theme/mode-toggle";
 import { nasvLinks } from "@/constants";
 import clsx from "clsx";
 

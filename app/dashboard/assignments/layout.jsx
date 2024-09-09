@@ -25,7 +25,7 @@ export default function AssignmentLayout({ children }) {
   return (
     <div className="flex flex-col mt-4 " >
       {/* <div className="h-screen flex bg-slate-800 p-5">
-        <Sidebar />
+        < />
       </div> */}
       
       <Card  className="p-4 mx-12 flex">
@@ -75,7 +75,7 @@ export default function AssignmentLayout({ children }) {
                   {/* <FormActionAssignment benefits={benefits} recipients={recipients} /> */}
                 </DialogContent>
               </Dialog>
-              <Dialog className="max-w-4xl" open={openModalProvider} onOpenChange={setOpenModalProvider} >
+              {/* <Dialog className="max-w-4xl" open={openModalProvider} onOpenChange={setOpenModalProvider} >
                 <DialogTrigger asChild>
                   <Button>
                     <MdAssignmentAdd className="h-5 w-5 mr-2" />
@@ -89,7 +89,7 @@ export default function AssignmentLayout({ children }) {
                   </DialogHeader>
                   <FormActionProvider />
                 </DialogContent>
-              </Dialog>
+              </Dialog> */}
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <Button  className=" gap-1">
@@ -115,6 +115,21 @@ export default function AssignmentLayout({ children }) {
                   <DropdownMenuItem>
                     <Link href='/dashboard/assignments/formulario-atmosferico'>
                       Atmosferico
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem>
+                    <Link href='/dashboard/assignments/formulario-pasajes'>
+                      Pasajes
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem>
+                    <Link href='/dashboard/assignments/formulario-lena'>
+                      Lena
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem>
+                    <Link href='/dashboard/assignments/formulario-garrafa'>
+                      Garrafa
                     </Link>
                   </DropdownMenuItem>
                 </DropdownMenuContent>
