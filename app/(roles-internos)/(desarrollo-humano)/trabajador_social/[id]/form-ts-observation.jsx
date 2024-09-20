@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { createCredentialObservation } from "@/actions/other-actions/credencial-actions"; // Tu server action
+import { createCredentialObservation } from "@/actions/subsidy-actions/credencial-actions"; // Tu server action
 import { Button } from "@/components/ui/button";
 
 export default function FormTsObservation({ assignmentId, recipientId, closeModal }) {

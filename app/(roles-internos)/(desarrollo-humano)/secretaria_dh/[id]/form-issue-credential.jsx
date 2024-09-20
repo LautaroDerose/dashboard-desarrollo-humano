@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { issueCredential } from "@/actions/other-actions/credencial-actions"; // Tu server action
+import { issueCredential } from "@/actions/subsidy-actions/credencial-actions"; // Tu server action
 import { Button } from "@/components/ui/button";
 
 export default function FormIssueCredential({ assignmentId, recipientId, closeModal }) {

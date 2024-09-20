@@ -1,6 +1,6 @@
 'use client';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { GetTsData } from "@/actions/other-actions/credencial-actions";
+import { GetTsData } from "@/actions/subsidy-actions/credencial-actions";
 import { useEffect, useState } from "react";
 
 export default function ClientHomeSec() {

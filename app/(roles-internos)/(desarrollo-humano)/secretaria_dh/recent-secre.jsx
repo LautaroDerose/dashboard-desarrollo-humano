@@ -1,6 +1,7 @@
 'use client'
 
-import { GetTsData } from "@/actions/other-actions/credencial-actions"
+import { GetTsData } from "@/actions/roles-actions/secretariaDH-actions"
+// import { GetTsData } from "@/actions/other-actions/credencial-actions"
 import FormattedDate from "@/components/formatted-data"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
@@ -65,12 +66,12 @@ export default function RecentsCredentials() {
               <TableHead className="">
                 Registro
               </TableHead>
-              <TableHead className="">
+              {/* <TableHead className="">
                 TS Asignado
               </TableHead>
               <TableHead className="">
                 Fecha de visita
-              </TableHead>
+              </TableHead> */}
               {/* <TableHead className="">
                 Visita confirmada
               </TableHead> */}
@@ -103,7 +104,7 @@ export default function RecentsCredentials() {
                     <TableCell className="">
                       {new Date(item.enrollment_date).toLocaleDateString()}
                     </TableCell>
-                    <TableCell className="">
+                    {/* <TableCell className="">
                       {item.HospitalCredential?.ts_name}
                     </TableCell>
                     <TableCell className="">
@@ -116,7 +117,7 @@ export default function RecentsCredentials() {
                         </div>
                         : "Sin definir"
                       }
-                    </TableCell>
+                    </TableCell> */}
                     {/* <TableCell className="">
                       {
                         item.HospitalCredential?.is_confirm

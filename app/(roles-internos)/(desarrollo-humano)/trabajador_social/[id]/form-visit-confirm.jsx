@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { confirmVisit } from "@/actions/other-actions/credencial-actions"; // Tu server action
+import { confirmVisit } from "@/actions/subsidy-actions/credencial-actions"; // Tu server action
 import { Button } from "@/components/ui/button";
 
 export default function FormVisitConfirm({ assignmentId, recipientId, closeModal }) {

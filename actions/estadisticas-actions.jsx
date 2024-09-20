@@ -61,25 +61,25 @@ export async function getInfoCards(){
   
   const rechazados = await prisma.assignment.count({
     where:{
-      status:"Rechazado"
+      // status:"Rechazado"
     }
   })
   
   const enProcesos = await prisma.assignment.count({
     where:{
-      status:"En Proceso"
+      // status:"En Proceso"
     }
   })
   
   const pendientes = await prisma.assignment.count({
     where:{
-      status:"Pendiente"
+      // status:"Pendiente"
     }
   })
   
   const concretados = await prisma.assignment.count({
     where:{
-      status:"Concretado"
+      // status:"Concretado"
     }
   })
   
@@ -96,9 +96,9 @@ export async function getInfoCards(){
 
   const proximosVencimientos = await prisma.assignment.findMany({
     where: {
-      status: {
-        not: "Concretado"
-      }
+      // status: {
+      //   not: "Concretado"
+      // }
     },
     orderBy: {
       expiry_date: 'asc'

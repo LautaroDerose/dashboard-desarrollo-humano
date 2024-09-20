@@ -4,6 +4,7 @@ import prisma from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
+// -----------------------   ACTIONS AUXIULIARES   --------------------------------
 export async function getLocalities(){
   return prisma.locality.findMany({
     include:{
@@ -22,6 +23,8 @@ export async function getData() {
 
   return { localities, socialConditions };
 }
+
+// -----------------------   CRUD   --------------------------------
 
 export async function createRecipient(formData) {
   const socialConditions = await prisma.socialCondition.findMany();
@@ -78,76 +81,41 @@ export async function editRecipient(formData) {
   const phone = parseInt(formData.get("phone"));
   const selectedSocialConditions = JSON.parse(formData.get("social_conditions") || "[]");
 
-  if (!id) {
-    return;
-  }
+  if (!id) return;
 
-  try {
-    // Obtener los IDs de las condiciones sociales seleccionadas
-    const socialConditions = await prisma.socialCondition.findMany();
-    const socialConditionIds = selectedSocialConditions.map(conditionName => {
-      const condition = socialConditions.find(cond => cond.name === conditionName);
-      return condition ? condition.id : null;
-    }).filter(id => id !== null);
+  const socialConditions = await prisma.socialCondition.findMany();
+  const socialConditionIds = selectedSocialConditions.map(conditionName => {
+    const condition = socialConditions.find(cond => cond.name === conditionName);
+    return condition ? condition.id : null;
+  }).filter(id => id !== null);
 
-    // Construir el objeto de datos para la actualización del recipient
-    const recipientData = {};
-    if (firstName) recipientData.first_name = firstName;
-    if (lastName) recipientData.last_name = lastName;
-    if (dni) recipientData.dni = dni;
-    if (birthDate) recipientData.birth_date = new Date(birthDate).toISOString();
-    if (sex) recipientData.sex = sex;
-
-    // Construir el objeto de datos para la actualización de contact_info
-    const contactInfoData = {};
-    if (locality_id) contactInfoData.locality_id = locality_id;
-    if (street_id) contactInfoData.street_id = street_id;
-    if (street_number) contactInfoData.street_number = street_number;
-    if (email) contactInfoData.email = email;
-    if (phone) contactInfoData.phone = phone;
-
-    // Transacción para actualizar el recipient y las relaciones sociales
-    await prisma.$transaction(async (prisma) => {
-      // Actualizar datos del recipient si hay cambios
-      if (Object.keys(recipientData).length > 0) {
-        await prisma.recipient.update({
-          where: { id: id },
-          data: recipientData,
-        });
-      }
-
-      // Actualizar datos de contact_info si hay cambios
-      if (Object.keys(contactInfoData).length > 0) {
-        await prisma.contactInfo.updateMany({
-          where: { recipient_id: id },
-          data: contactInfoData,
-        });
-      }
-
-      // Eliminar relaciones existentes en recipientSocialCondition
-      await prisma.recipientSocialCondition.deleteMany({
-        where: {
-          recipient_id: id,
+  await prisma.recipient.update({
+    where: { id },
+    data: {
+      first_name: firstName,
+      last_name: lastName,
+      dni,
+      birth_date: birthDate ? new Date(birthDate).toISOString() : null,
+      sex,
+      contact_info: {
+        update: {
+          locality_id,
+          street_id,
+          street_number,
+          email,
+          phone,
         },
-      });
+      },
+      recipientSocialConditions: {
+        deleteMany: {}, // Clear existing social conditions
+        create: socialConditionIds.map((conditionId) => ({
+          social_condition_id: conditionId,
+        })),
+      },
+    },
+  });
 
-      // Crear nuevas relaciones
-      const createSocialConditionRelations = socialConditionIds.map(conditionId => ({
-        recipient_id: id,
-        social_condition_id: conditionId,
-      }));
-
-      if (createSocialConditionRelations.length > 0) {
-        await prisma.recipientSocialCondition.createMany({
-          data: createSocialConditionRelations,
-        });
-      }
-    });
-
-    revalidatePath("/dashboard/recipients/");
-  } catch (error) {
-    console.error('Error updating recipient:', error);
-  }
+  revalidatePath("/dashboard/recipients");
 }
 
 export async function desactivatedRecipient(formData) {
@@ -191,77 +159,275 @@ export async function activatedRecipient(formData) {
     throw error; // Propagate the error to handle it in the UI or caller
   }
 }
+// -----------------------   RECIPIENT DETAIL   --------------------------------
 
-// export async function GetRecicpients(){
-//   const [recipients, localities, recipientSocialConditions, socialConditions] = await Promise.all([
-//     prisma.recipient.findMany({
-//       where: {
-//         is_active: true
-//       },
-//       include: {
-//         contact_info: {
-//           include: {
-//             street: true,
-//             locality: true
-//           }
-//         }
-//       }
-//     }),
-//     prisma.locality.findMany({
-//       include: { Street: true }
-//     }),
-//     prisma.recipientSocialCondition.findMany({
-//       include: { 
-//         social_condition: true, 
-//         recipient: true 
-//       }
-//     }),
-//     prisma.socialCondition.findMany(),
-//     // prisma.benefits.findMany()
-//   ]);
+export async function getRecipientDetails(id) {
+  try {
+    const today = new Date().toISOString();
+    const startOfMonth = new Date(new Date().getFullYear(), new Date().getMonth(), 1).toISOString();
+    const startOfYear = new Date(new Date().getFullYear(), 0, 1).toISOString();
+    
+    // Obtener el beneficiario para usar su `family_group_id`
+    const recipient = await prisma.recipient.findUnique({
+      where: { id },
+      select: { family_group_id: true }
+    });
 
-//   const result = {
-//     recipients,
-//     localities,
-//     recipientSocialConditions,
-//     socialConditions,
-//     // benefits
-//   };
-// }
+    if (!recipient) {
+      throw new Error('Recipient not found');
+    }
 
-// export async function createRecipient(formData) {
-//   const socialConditions = await prisma.socialCondition.findMany();
+    // Cantidad de asignaciones del último mes y año
+    const assignmentsLastMonth = await prisma.assignment.count({
+      where: {
+        recipient_id: id,
+        enrollment_date: { gte: startOfMonth, lte: today },
+      },
+    });
 
-//   const social_conditions = JSON.parse(formData.get("social_conditions"));
-//   const socialConditionIds = social_conditions.map(conditionName => {
-//     const condition = socialConditions.find(cond => cond.name === conditionName);
-//     return condition ? condition.id : null;
-//   }).filter(id => id !== null);
+    const assignmentsLastYear = await prisma.assignment.count({
+      where: {
+        recipient_id: id,
+        enrollment_date: { gte: startOfYear, lte: today },
+      },
+    });
 
-//   await prisma.recipient.create({
-//     data: {
-//       first_name: formData.get("first_name"),
-//       last_name: formData.get("last_name"),
-//       dni: parseInt(formData.get("dni")),
-//       birth_date: new Date(formData.get("birth_date")),
-//       sex: formData.get("sex"),
-//       enrollment_date: new Date(),
-//       is_active: true,
-//       contact_info: {
-//         create: {
-//           locality_id: parseInt(formData.get("locality")),
-//           street_id: parseInt(formData.get("street")),
-//           street_number: formData.get("street_number"),
-//           email: formData.get("email"),
-//           phone: parseInt(formData.get("phone")),
-//         },
-//       },
-//       recipientSocialConditions: {
-//         create: socialConditionIds.map((conditionId) => ({
-//           social_condition_id: conditionId,
-//         })),
-//       },
-//     },
-//   });
-//   revalidatePath("dashboard/recipients/prueba");
-// }
+    const assignmentsByBenefit = await prisma.assignment.groupBy({
+      by: ['benefit_id'],
+      where: {
+        recipient_id: id,
+        enrollment_date: {
+          gte: startOfMonth, // Solo asignaciones desde el comienzo del mes
+          lte: today,        // Hasta la fecha actual
+        },
+      },
+      _count: {
+        _all: true,
+      },
+    });
+    
+    const benefitIds = assignmentsByBenefit.map(item => item.benefit_id);
+    
+    const benefitNames = await prisma.benefit.findMany({
+      where: {
+        id: {
+          in: benefitIds,
+        },
+      },
+      select: {
+        id: true,
+        name: true,
+      },
+    });
+    
+    const assignmentsWithBenefitNames = assignmentsByBenefit.map(assignment => {
+      const benefit = benefitNames.find(b => b.id === assignment.benefit_id);
+      return {
+        ...assignment,
+        benefitName: benefit ? benefit.name : 'Beneficio Desconocido',
+      };
+    });
+
+    // Recipients asociados al family_group_id
+    const familyGroup = await prisma.recipient.findMany({
+      where: { family_group_id: recipient.family_group_id },
+      include: { Assignment: true },
+    });
+
+    // Observaciones relacionadas al recipient
+    const observations = await prisma.observation.findMany({
+      where: { recipient_id: id },
+      include: { assignment: true },
+    });
+
+    // return { assignmentsLastMonth, assignmentsLastYear, familyGroup, observations };
+    return { assignmentsLastMonth, assignmentsLastYear, assignmentsByBenefit, assignmentsWithBenefitNames, familyGroup, observations };
+  } catch (error) {
+    console.error('Error fetching recipient details:', error);
+    throw new Error('Failed to load recipient details');
+  }
+}
+// -----------------------   ID GRUPO FAMILIAR   --------------------------------
+
+export async function getFamilyData() {
+  const recipients = await prisma.recipient.findMany({
+    where: {
+      is_active: true,
+      family_group_id: null
+    },
+  });
+  
+  const recipientsWithFamilyId = await prisma.recipient.findMany({
+    where: {
+      is_active: true,
+      family_group_id:{ not: null}
+    },
+  });
+
+  return { recipients, recipientsWithFamilyId };
+}
+
+export async function createFamilyGroup(formData) {
+  // Obtener los destinatarios seleccionados desde el formulario
+  const selectedRecipients = JSON.parse(formData.get("selected_recipients") || "[]");
+
+  // Crear un nuevo grupo familiar
+  const newFamilyGroup = await prisma.familyGroup.create({
+    data: {}, // Puedes agregar más datos si los tienes
+  });
+
+  // Actualizar los destinatarios seleccionados con el ID del nuevo grupo familiar
+  await prisma.recipient.updateMany({
+    where: {
+      id: {
+        in: selectedRecipients,
+      },
+    },
+    data: {
+      family_group_id: newFamilyGroup.id,
+    },
+  });
+
+  return { newFamilyGroup };
+}
+
+export async function updateFamilyGroup(formData) {
+  const selectedRecipients = JSON.parse(formData.get("selected_recipients") || "[]");
+  const familyGroupId = parseInt(formData.get("family_group_id"), 10);
+
+  if (!familyGroupId) {
+    throw new Error("No se seleccionó un grupo familiar existente.");
+  }
+
+  if (selectedRecipients.length === 0) {
+    throw new Error("No se seleccionaron destinatarios.");
+  }
+
+  // Verificar si el family_group_id existe
+  const familyGroupExists = await prisma.familyGroup.findUnique({
+    where: { id: familyGroupId },
+  });
+
+  if (!familyGroupExists) {
+    throw new Error(`El grupo familiar con ID ${familyGroupId} no existe.`);
+  }
+
+  // Actualizar los destinatarios seleccionados con el ID del grupo familiar
+  await prisma.recipient.updateMany({
+    where: {
+      id: {
+        in: selectedRecipients,
+      },
+    },
+    data: {
+      family_group_id: familyGroupId,
+    },
+  });
+
+  return { message: "Destinatarios agregados al grupo familiar." };
+}
+
+// -----------------------   STATUS CARDS   --------------------------------
+
+export async function getRecipientStats() {
+  try {
+    const today = new Date();
+    const eighteenYearsAgo = new Date(today.setFullYear(today.getFullYear() - 18));
+    // const twentyFiveYearsAgo = new Date(today.setFullYear(today.getFullYear() - 25));
+    const thirtyFiveYearsAgo = new Date(today.setFullYear(today.getFullYear() - 35));
+    const fiftyYearsAgo = new Date(today.setFullYear(today.getFullYear() - 50));
+    const sixtyYearsAgo = new Date(today.setFullYear(today.getFullYear() - 60));
+
+    // Contador por edades
+    const menoresDe18 = await prisma.recipient.count({
+      where: { birth_date: { gt: eighteenYearsAgo } },
+    });
+    // const entre18Y25 = await prisma.recipient.count({
+    //   where: { birth_date: { lte: eighteenYearsAgo, gt: twentyFiveYearsAgo } },
+    // });
+    const entre18Y35 = await prisma.recipient.count({
+      where: { birth_date: { lte: eighteenYearsAgo, gt: thirtyFiveYearsAgo } },
+    });
+    // const entre26Y35 = await prisma.recipient.count({
+    //   where: { birth_date: { lte: twentyFiveYearsAgo, gt: thirtyFiveYearsAgo } },
+    // });
+    const entre36Y50 = await prisma.recipient.count({
+      where: { birth_date: { lte: thirtyFiveYearsAgo, gt: fiftyYearsAgo } },
+    });
+    const entre50Y60 = await prisma.recipient.count({
+      where: { birth_date: { lte: fiftyYearsAgo, gt: sixtyYearsAgo } },
+    });
+    const mayoresDe60 = await prisma.recipient.count({
+      where: { birth_date: { lte: sixtyYearsAgo } },
+    });
+
+    // Contador por sexo
+    const masculino = await prisma.recipient.count({
+      where: {
+        OR: [
+          { sex: "Masculino" },
+          { sex: "Male" },
+        ],
+      },
+    });
+    
+    const femenino = await prisma.recipient.count({
+      where: {
+        OR: [
+          { sex: "Femenino" },
+          { sex: "Female" },
+        ],
+      },
+    });
+
+    const recipientsByLocalities = await prisma.contactInfo.findMany({
+      select: {
+        locality_id: true,
+      },
+    });
+    
+    // Contar cuántos recipients hay por cada `locality_id` usando `reduce`
+    const localityCounts = recipientsByLocalities.reduce((acc, item) => {
+      acc[item.locality_id] = (acc[item.locality_id] || 0) + 1;
+      return acc;
+    }, {});
+    
+    const localityIds = Object.keys(localityCounts).map(Number); // Obtener los IDs de las localidades
+    
+    // Obtener los nombres de las localidades relacionadas con esos IDs
+    const localityNames = await prisma.locality.findMany({
+      where: {
+        id: {
+          in: localityIds,
+        },
+      },
+      select: {
+        id: true,
+        name: true,
+      },
+    });
+    
+    // Mapear los nombres de las localidades con los resultados de conteo
+    const recipientsWithLocalitiesNames = localityNames.map(locality => ({
+      localityId: locality.id,
+      localityName: locality.name,
+      count: localityCounts[locality.id] || 0, // Contador por localidad
+    }));
+
+    return {
+      menoresDe18,
+      entre18Y35,
+      // entre18Y25,
+      // entre26Y35,
+      entre36Y50,
+      entre50Y60,
+      mayoresDe60,
+      masculino,
+      femenino,
+      recipientsWithLocalitiesNames
+    };
+  } catch (error) {
+    console.error('Error fetching recipient stats:', error);
+    throw new Error('Failed to load recipient stats');
+  }
+}

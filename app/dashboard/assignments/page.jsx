@@ -1,35 +1,36 @@
-import prisma from "@/lib/prisma";
-import { PanelAssignment } from "./panel-assignment";
+import { getInfoCards } from "@/actions/assignment-actions";
+import StatusCardAssignments from "./(assignmentsOrganisms)/statusCards-assignments";
+import RecentsTableAssignments from "./(assignmentsOrganisms)/recentsTable-assignments";
+import NextCardAssignments from "./(assignmentsOrganisms)/nextCard-ssignments";
+
 
 export default async function AssignmentsPage() {
-  const [assignments, benefits, recipients] = await Promise.all([
-    prisma.assignment.findMany({
-      include: {
-        benefit: true,
-        recipient: true
-      }
-    }),
-    prisma.benefit.findMany(),
-    prisma.recipient.findMany(),
-
-  ]);
-
-  const result = {
-    assignments, benefits, recipients
+  let data;
+  try {
+    // Llamada a la API en el componente de servidor
+    data = await getInfoCards();
+  } catch (error) {
+    console.error("Error loading assignment data:", error);
+    return <div>Error en la carga de datos por favor intente mas tarde.</div>;
   }
 
-  // const assigment = result.assigment
-  // console.log(result)
-  if (!result) {
-    return <div>Error loading data</div>;
-  }
+  const { rechazados, enProceso, pendientes, concretados, enRevision, recientes, proximosVencimientos } = data;
 
   return (
-    // <div className="max-h-[90vh] overflow-hidden">
-    <div>
-        {/* <PanelAssignment data={data}/> */}
-        <PanelAssignment assignments={assignments} benefits={benefits} recipients={recipients} />
+    <div className="flex w-full flex-col">
+      <main className="flex flex-1 flex-col gap-4 md:gap-4 md:px-8 ">
+        <StatusCardAssignments
+          rechazados={rechazados}
+          enProceso={enProceso}
+          pendientes={pendientes}
+          concretados={concretados}
+          enRevision={enRevision}
+        />
+        <div className="grid gap-4 md:gap-8 lg:grid-cols-2 xl:grid-cols-3">
+          <RecentsTableAssignments recents={recientes} />
+          <NextCardAssignments proximos={proximosVencimientos} />
+        </div>
+      </main>
     </div>
- )
+  );
 }
-

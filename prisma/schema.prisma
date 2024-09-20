@@ -45,20 +45,6 @@ model Recipient {
   observations              Observation[]
 }
 
-model Observation {
-  id           Int       @id @default(autoincrement())
-  author       String
-  text         String
-  subject      String
-  created_at   DateTime  @default(now())
-  is_active    Boolean
-
-  recipient_id Int
-  recipient    Recipient @relation(fields: [recipient_id], references: [id])
-  assignment_id Int        
-  assignment    Assignment @relation(fields: [assignment_id], references: [id])
-}
-
 model FamilyGroup {
   id        Int         @id @default(autoincrement())
   Recipient Recipient[]
@@ -75,6 +61,20 @@ model ContactInfo {
   recipient     Recipient @relation(fields: [recipient_id], references: [id])
   street        Street    @relation(fields: [street_id], references: [id])
   locality      Locality  @relation(fields: [locality_id], references: [id])
+}
+
+model Observation {
+  id           Int       @id @default(autoincrement())
+  author       String
+  text         String
+  subject      String
+  created_at   DateTime  @default(now())
+  is_active    Boolean
+
+  recipient_id Int
+  recipient    Recipient @relation(fields: [recipient_id], references: [id])
+  assignment_id Int        
+  assignment    Assignment @relation(fields: [assignment_id], references: [id])
 }
 
 model SocialCondition {
@@ -198,66 +198,25 @@ model WaterSubsidy {
   assignment    Assignment @relation(fields: [assignment_id], references: [id])
 
   // Información de la factura de agua
-  supply_number String // Número de la factura de agua
+  supply_number Int // Número de Suministro en la factura de agua
   supply_value  Float // Valor total de la factura
-
-  // Información del período de pago
-  // payment_due_date DateTime? // Fecha de vencimiento de la factura
-  period String? // Alternativa: Periodo del pago (por ejemplo, "Julio 2024")
+  user_number   Int // Numero de Usuario en catura
+  
+  period DateTime @db.Date // Alternativa: Periodo del pago (por ejemplo, "Julio 2024")
+  first_expiry DateTime @db.Date // Fecha de vencimiento de la factura
+  second_expiry DateTime @db.Date // Fecha de vencimiento de la factura
 
   // Valor de la asignación/cuota de pago
-  value_assignment Float // Valor asignado manualmente para cubrir la factura
+  assignment_value Float? // Valor asignado manualmente para cubrir la factura
+  is_completed      Boolean?
 }
-model Assignment {
-  id              Int       @id @default(autoincrement())
-  benefit_id      Int
-  detail_benefit  String?
-  recipient_id    Int
-  quantity        Int?
-  amount          Int?
-  status          String?
-  enrollment_date DateTime?
-  expiry_date     DateTime?
-  withdrawal_date DateTime?
-  benefit         Benefit   @relation(fields: [benefit_id], references: [id])
-  recipient       Recipient @relation(fields: [recipient_id], references: [id])
-
-  // Relación con SubsidyStage
-  subsidy_stage SubsidyStage?
-
-  // Relación directa con Docs
-  docs               Doc[]
-  HospitalCredential HospitalCredential?
-  WaterSubsidy       WaterSubsidy?
-  TravelSubsidy      TravelSubsidy[]
-  Observation        Observation[]
-}
-
-// model TravelSubsidy {
-//   id            Int        @id @default(autoincrement())
-//   assignment_id Int        
-//   assignment    Assignment @relation(fields: [assignment_id], references: [id])
-
-//   // Información del viaje
-//   destination  String // Destino del viaje (constante)
-//   // Información de la fecha y dirección del viaje
-//   date      DateTime // Fecha del viaje
-//   direction String // Dirección del viaje: ida o vuelta
-
-//   // Información del pasajero
-//   passenger_type String // Enum para determinar si es pasajero principal o acompañante
-//   name           String // Nombre del pasajero
-//   dni            Int // DNI del pasajero
-//   // Monto por pasaje
-//   amount       Float // Monto del subsidio por pasaje
-
-//   provider     String // Empresa proveedora del viaje  
-// }
 
 model TravelSubsidy {
   id            Int        @id @default(autoincrement())
   assignment_id Int        
   assignment    Assignment @relation(fields: [assignment_id], references: [id])
+
+  is_complete     Boolean
 
   // Información del viaje (Tique 1)
   destination1    String
@@ -296,6 +255,80 @@ model TravelSubsidy {
   provider4       String?
 }
 
+model Assignment {
+  id              Int       @id @default(autoincrement())
+  benefit_id      Int
+  detail_benefit  String?
+  recipient_id    Int
+  quantity        Int?
+  amount          Int?
+  status          Status?
+  enrollment_date DateTime?
+  expiry_date     DateTime?
+  withdrawal_date DateTime?
+  benefit         Benefit   @relation(fields: [benefit_id], references: [id])
+  recipient       Recipient @relation(fields: [recipient_id], references: [id])
+
+  
+
+  // Relación con SubsidyStage
+  subsidy_stage SubsidyStage?
+
+  // Relación directa con Docs
+  docs               Doc[]
+  HospitalCredential HospitalCredential?
+  WaterSubsidy       WaterSubsidy?
+  TravelSubsidy      TravelSubsidy[]
+  Observation        Observation[]
+  AtmosphericOrder   AtmosphericOrder?
+  GarrafaSubsidy     GarrafaSubsidy?
+}
+
+model AtmosphericOrder {
+  id                Int        @id @default(autoincrement())
+  assignment_id     Int        @unique
+  assignment        Assignment @relation(fields: [assignment_id], references: [id])
+
+  // Fecha deseada por el recipient para el servicio
+  desired_service_date DateTime
+  address           String
+  phone             String?
+  // Información del pago
+  payment_confirmed Boolean   // Indica si el pago ha sido confirmado
+  payment_date      DateTime? // Fecha en que se confirmó el pago
+
+  // Estado de la tarea
+  // task_status       String    // Estado actual de la tarea (pendiente, realizada, complicación)
+  complication_desc String?   // Descripción de cualquier complicación
+
+  // Confirmación del conductor
+  task_confirmed    Boolean?  // Indica si el conductor confirma que se realizó la tarea
+  task_date         DateTime? // Fecha en que se completó la tarea
+}
+
+model GarrafaSubsidy {
+  id             Int        @id @default(autoincrement())
+  assignment_id  Int        @unique
+  assignment     Assignment @relation(fields: [assignment_id], references: [id])
+
+  provider_name  String
+  verification_dni Int
+}
+
+model Status {
+  id           Int       @id @default(autoincrement())
+  assignment   Assignment @relation(fields: [assignment_id], references: [id])
+  assignment_id Int      @unique
+  status        StatusType @relation(fields: [status_type_id], references: [id])
+  status_type_id Int
+  updated_at   DateTime  @default(now()) // Fecha de la última actualización del estado
+}
+
+model StatusType {
+  id       Int      @id @default(autoincrement())
+  name     String   @unique // Valores como: 'Rechazado', 'Pendiente', 'En Proceso', 'En Revisión', 'Concretado'
+  statuses Status[]
+}
 
 // model RiskFactor {
 //   id           Int       @id @default(autoincrement())

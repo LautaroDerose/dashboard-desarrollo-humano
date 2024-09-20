@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { createHomeVisit } from "@/actions/other-actions/credencial-actions";
+import { createHomeVisit } from "@/actions/subsidy-actions/credencial-actions";
 import { format } from "date-fns";
 import { cn } from "@/lib/utils"; // Asegúrate de tener esta utilidad
 

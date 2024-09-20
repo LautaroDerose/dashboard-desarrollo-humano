@@ -10,7 +10,7 @@ import FormattedDate from "@/components/formatted-data";
 import FormTsObservation from "./form-ts-observation";
 import ReusableDialogForm from "./reusable-dialog-form";
 import FormTsVisit from "./form-ts-visit";
-import { disableObservation } from "@/actions/other-actions/credencial-actions";
+import { disableObservation } from "@/actions/subsidy-actions/credencial-actions";
 import ObservationCard from "./observation-card";
 import FormVisitConfirm from "./form-visit-confirm";
 

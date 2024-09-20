@@ -5,13 +5,11 @@ import { ColumnFiltersState, SortingState, VisibilityState, flexRender, getCoreR
 
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
-import { DropdownMenu, DropdownMenuCheckboxItem, DropdownMenuContent, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { Input } from "@/components/ui/input"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 
 import { DataTablePagination } from "./table-pagination";
 import { DataTableViewOptions } from "./table-viewOptions";
-import { FormModalBenefit } from "../form-modal-benefit";
 
 import { MdPersonAdd } from "react-icons/md";
 import FormActionBenefit from "../form-action-benefit";
@@ -45,8 +43,7 @@ const FilterInput = ({ table }) => {
 };
 
 export function DataTable({ benefits, benefitCategories, columns }) {
-// export function DataTable({ columns, data }) {
-  // console.log(data)
+
   const [sorting, setSorting] = useState([]);
   const [columnFilters, setColumnFilters] = useState([]);
   const [columnVisibility, setColumnVisibility] = useState({});
@@ -99,12 +96,24 @@ export function DataTable({ benefits, benefitCategories, columns }) {
           </DialogTrigger>
           <DialogContent className="z-50">
             <DialogHeader>
-              <DialogTitle>Crear Persona</DialogTitle>
-              <DialogDescription>Asegurese de que no se encuentre en la lista antes de agregar una persona</DialogDescription>
+              <DialogTitle>Crear Subsidio</DialogTitle>
+              <DialogDescription>
+                <div>
+                  <p>Asegurese de que no se encuentre en la lista antes de agregar un beneficio</p>
+                  <div>
+                    <h2>Descripsion de las categorias</h2>
+                    <h3>1- Subsidios</h3>
+                    <p>Esta categoria se debe asignar a aquellos beneficios que tienen el mismo procedimiento de entrega: <span className="italic">Crear Nota, se envia a subsecretaria y contaduria como procedimiento.</span><br/>Por ejemplo: Luz, Agua, Alquiler, etc...</p>
+                    <h3>2- Provedores</h3>
+                    <p>Esta categoria se debe asignar a aquellos beneficios que dependen de un provedor<br/>Por ejemplo: Leña, Garrafa, Pasajes</p>
+                    <p>Esta categoria se debe asignar a aquellos beneficios que cuenta con stock el municipio.<br/>Por ejemplo: Alimentos y materiales de construccion</p>
+                    <h3>4- Otros</h3>
+                    <p>Esta categoria se debe asignar a aquellos beneficios que tienen un procedimiento particular de entrega: <span className="block h-fit italic text-red-700 ">Para estos casos se recomienda asistencia, por lo que es probable que se deba agregar codigo y crear tablas nuevas</span>Por ejemplo: Credencial Hospitalaria, Agua, Atmosferico</p>
+                  </div>
+                </div>
+              </DialogDescription>
             </DialogHeader>
-            {/* <FormModalBenefit benefits={benefits} benefitCategories={benefitCategories} /> */}
             <FormActionBenefit benefits={benefits} benefitCategories={benefitCategories} />
-            {/* <FormModalBenefit data={data} /> */}
           </DialogContent>
         </Dialog>
       </div>
@@ -152,8 +161,7 @@ export function DataTable({ benefits, benefitCategories, columns }) {
             )}
           </TableBody>
         </Table>
-      </div>
-     
+      </div>  
       <DataTablePagination table={table} />
     </div>
   );

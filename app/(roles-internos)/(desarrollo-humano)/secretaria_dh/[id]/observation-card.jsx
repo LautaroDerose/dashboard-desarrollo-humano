@@ -2,7 +2,7 @@
 import FormattedDate from '@/components/formatted-data';
 import { Button } from '@/components/ui/button';
 import { useState } from 'react';
-import { disableObservation } from "@/actions/other-actions/credencial-actions";
+import { disableObservation } from "@/actions/subsidy-actions/credencial-actions";
 
 export default function ObservationCard({ observation }) {
   const [error, setError] = useState(null);

@@ -1,52 +1,38 @@
-import { DataTable } from "./(table)/data-table";
-import { columns } from './(table)/columns'; 
-import prisma from "@/lib/prisma";
+import Link from "next/link";
+import StatusCardRecipients from "./(recipientsOrganisms)/statusCards-recipients";
+import { getRecipientStats } from "@/actions/recipient-actions";
+import { Separator } from "@/components/ui/separator";
 
-export default async function RecipientsPage() {
-  
-  const [recipients, localities, recipientSocialConditions, socialConditions] = await Promise.all([
-    prisma.recipient.findMany({
-      where: {
-        is_active: true
-      },
-      include: {
-        contact_info: {
-          include: {
-            street: true,
-            locality: true
-          }
-        }
-      }
-    }),
-    prisma.locality.findMany({
-      include: { Street: true }
-    }),
-    prisma.recipientSocialCondition.findMany({
-      include: { 
-        social_condition: true, 
-        recipient: true 
-      }
-    }),
-    prisma.socialCondition.findMany(),
-    // prisma.benefits.findMany()
-  ]);
+export default async function PersonasHomePage() {
 
-  const result = {
-    recipients,
-    localities,
-    recipientSocialConditions,
-    socialConditions,
-    // benefits
-  };
-  
-  if (!result || !columns) {
-    return <div>Error loading data</div>;
+  let data;
+  try {
+    data = await getRecipientStats();
+  } catch (error) {
+    console.error("Error loading assignment data:", error);
+    return <div>Error en la carga de datos por favor intente mas tarde.</div>;
   }
 
-  return (
-    <div>
-      <DataTable data={result} columns={columns} />
-    </div>
-  );
-}
+  const { menoresDe18, entre18Y25, entre18Y35, entre26Y35, entre36Y50, entre50Y60, mayoresDe60, masculino, femenino, recipientsWithLocalitiesNames } = data
 
+  return(
+    <div className="mt-4">
+    <Separator/>
+      <main>
+        <StatusCardRecipients 
+          menoresDe18={menoresDe18}
+          entre18Y35={entre18Y35}
+          // entre18Y25={entre18Y25}
+          // entre26Y35={entre26Y35}
+          entre36Y50={entre36Y50}
+          entre50Y60={entre50Y60}
+          mayoresDe60={mayoresDe60}
+          masculino={masculino}
+          femenino={femenino}
+          recipientsWithLocalitiesNames={recipientsWithLocalitiesNames}
+          // localidades={localidades}
+        />
+      </main>
+    </div>
+  )
+}

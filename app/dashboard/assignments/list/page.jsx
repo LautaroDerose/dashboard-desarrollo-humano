@@ -44,6 +44,7 @@ export default async function RecipientsListPage() {
     if (!result || !columns) {
       return <div>Error loading data</div>;
     }
+    
 
     // console.log("Data passed to DataTable:", data);
 

@@ -26,9 +26,9 @@ const luz = await prisma.assignment.count({
     expiry_date: {
       gte: new Date(), // gte significa 'greater than or equal', es decir, hoy o en el futuro
     },
-    status: {
-      notIn: ["Concretado", "En Revision", "Rechazado"],
-    },
+    // status: {
+    //   notIn: ["Concretado", "En Revision", "Rechazado"],
+    // },
   },
 });
 
@@ -45,9 +45,9 @@ const gas = await prisma.assignment.count({
     expiry_date: {
       gte: new Date(), // gte significa 'greater than or equal', es decir, hoy o en el futuro
     },
-    status: {
-      notIn: ["Concretado", "En Revision", "Rechazado"],
-    },
+    // status: {
+    //   notIn: ["Concretado", "En Revision", "Rechazado"],
+    // },
   },
 });
 
@@ -64,9 +64,9 @@ const consulta = await prisma.assignment.count({
     expiry_date: {
       gte: new Date(), // gte significa 'greater than or equal', es decir, hoy o en el futuro
     },
-    status: {
-      notIn: ["Concretado", "En Revision", "Rechazado"],
-    },
+    // status: {
+    //   notIn: ["Concretado", "En Revision", "Rechazado"],
+    // },
   },
 });
 
@@ -83,9 +83,9 @@ const estudio = await prisma.assignment.count({
     expiry_date: {
       gte: new Date(), // gte significa 'greater than or equal', es decir, hoy o en el futuro
     },
-    status: {
-      notIn: ["Concretado", "En Revision", "Rechazado"],
-    },
+    // status: {
+    //   notIn: ["Concretado", "En Revision", "Rechazado"],
+    // },
   },
 });
 
@@ -102,9 +102,9 @@ const traslados = await prisma.assignment.count({
     expiry_date: {
       gte: new Date(), // gte significa 'greater than or equal', es decir, hoy o en el futuro
     },
-    status: {
-      notIn: ["Concretado", "En Revision", "Rechazado"],
-    },
+    // status: {
+    //   notIn: ["Concretado", "En Revision", "Rechazado"],
+    // },
   },
 });
 
@@ -121,9 +121,9 @@ const materiales = await prisma.assignment.count({
     expiry_date: {
       gte: new Date(), // gte significa 'greater than or equal', es decir, hoy o en el futuro
     },
-    status: {
-      notIn: ["Concretado", "En Revision", "Rechazado"],
-    },
+    // status: {
+    //   notIn: ["Concretado", "En Revision", "Rechazado"],
+    // },
   },
 });
 
@@ -140,9 +140,9 @@ const alquiler = await prisma.assignment.count({
     expiry_date: {
       gte: new Date(), // gte significa 'greater than or equal', es decir, hoy o en el futuro
     },
-    status: {
-      notIn: ["Concretado", "En Revision", "Rechazado"],
-    },
+    // status: {
+    //   notIn: ["Concretado", "En Revision", "Rechazado"],
+    // },
   },
 });
 
@@ -159,9 +159,9 @@ const necesidades = await prisma.assignment.count({
     expiry_date: {
       gte: new Date(), // gte significa 'greater than or equal', es decir, hoy o en el futuro
     },
-    status: {
-      notIn: ["Concretado", "En Revision", "Rechazado"],
-    },
+    // status: {
+    //   notIn: ["Concretado", "En Revision", "Rechazado"],
+    // },
   },
 });
 
@@ -197,9 +197,9 @@ const proximosVencimientos = await prisma.assignment.findMany({
     expiry_date: {
       gte: new Date(), // gte significa 'greater than or equal', es decir, hoy o en el futuro
     },
-    status: {
-      notIn: ["Concretado", "En Revision", "Rechazado"],
-    },
+    // status: {
+    //   notIn: ["Concretado", "En Revision", "Rechazado"],
+    // },
   },
   include: {
     benefit: true,

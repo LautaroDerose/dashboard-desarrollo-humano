@@ -1,6 +1,6 @@
 'use client'
 
-import { GetTsData } from "@/actions/other-actions/credencial-actions"
+import { GetTsData } from "@/actions/subsidy-actions/credencial-actions"
 import FormattedDate from "@/components/formatted-data"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
