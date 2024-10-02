@@ -65,9 +65,7 @@ export async function createRecipient(formData) {
     },
   });
   revalidatePath("dashboard/recipients");
-}
-
-export async function editRecipient(formData) {
+}export async function editRecipient(formData) {
   const id = parseInt(formData.get("id"));
   const firstName = formData.get("first_name");
   const lastName = formData.get("last_name");
@@ -99,8 +97,8 @@ export async function editRecipient(formData) {
       sex,
       contact_info: {
         update: {
-          locality_id,
-          street_id,
+          locality: locality_id ? { connect: { id: locality_id } } : undefined,  // Correctly connect locality
+          street: street_id ? { connect: { id: street_id } } : undefined,  // Correctly connect street
           street_number,
           email,
           phone,
