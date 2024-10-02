@@ -5,37 +5,7 @@ import { MdCheck, MdClose, MdMoreHoriz, MdOutlinePause, MdOutlinePriorityHigh } 
 import { getInfoCards } from "@/actions/roles-actions/conta-actions"
 // import { getInfoCards } from "@/actions/subse-actions"
 
-export default function StatusCardAssignments() {
-
-  const [luz, setLuz] = useState()
-  const [gas, setGas] = useState()
-  const [consulta, setConsulta] = useState()
-  const [estudio, setEstudio] = useState()
-  const [traslados, setTraslados] = useState()
-  const [materiales, setMateriales] = useState()
-  const [alquiler, setAlquiler] = useState()
-  const [necesidades, setNecesidades] = useState()
-
-
-  useEffect(() => {
-    async function fetchData(){
-      try {
-        const data = await getInfoCards();
-        setLuz(data.luz)
-        setGas(data.gas)
-        setConsulta(data.consulta)
-        setEstudio(data.estudio)
-        setTraslados(data.traslados)
-        setTraslados(data.traslados)
-        setMateriales(data.materiales)
-        setAlquiler(data.alquiler)
-        setNecesidades(data.necesidades)
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    }
-    fetchData();
-  }, [])
+export default function StatusCardAssignments({ luz, gas, consulta, estudio, traslados, materiales, alquiler, necesidades }) {
 
   return(
     // <div className="grid gap-4 md:grid-cols-2 md:gap-4 lg:grid-cols-5 mt-4">

@@ -27,7 +27,7 @@ export default function FormCredencial({recipients}) {
   };
 
   return (
-    <div className="mt-6">
+    <div className="">
       <form onSubmit={handleSubmit} className="flex flex-col gap-4">
         <div className="flex flex-col w-fit gap-2">
           <select

@@ -1,5 +1,4 @@
 // import { auth } from "@/auth"
-import ClientPanelSubsecretaria from "@/app/(roles-internos)/subsecretaria/client-panel-subse"
 import LogoutButton from "@/components/auth/logout-button"
 import StatusCardAssignments from "./(components-panel)/statusCards-assignments"
 import TablaSubseVencimientos from "./(components-panel)/vencimientos-subse"

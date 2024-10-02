@@ -313,6 +313,9 @@ model GarrafaSubsidy {
 
   provider_name  String
   verification_dni Int
+
+  is_confirm     Boolean      @default(false)
+  confirmed_at   DateTime?
 }
 
 model Status {
@@ -344,6 +347,7 @@ model StatusType {
 
 enum Role {
   user
+  user_dh
   admin
   subsecretaria
   contaduria

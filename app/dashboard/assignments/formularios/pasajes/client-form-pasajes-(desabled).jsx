@@ -88,7 +88,7 @@ export default function AssignmentForm() {
 
           <select name={`passenger_${index}`} value={subsidy.passenger} onChange={(e) => handleInputChange(index, e)}>
             <option value="">Seleccione tipo de acompañante</option>
-            <option value="unico">Único</option>
+            <option value="titular">Titular</option>
             <option value="acompanante">Acompañante</option>
           </select>
 

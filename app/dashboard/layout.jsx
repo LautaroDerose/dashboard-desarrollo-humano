@@ -1,8 +1,14 @@
 import Navbar from "@/components/containers/Navbar";
-import Sidebar from "@/components/containers/sidebar/Sidebar";
-import Link from "next/link";
+import { auth } from "@/auth"
 
-export default function DashboardLayout({ children }) {
+export default async function DashboardLayout({ children }) {
+
+//   const session = await auth()
+  
+//   if (session?.user?.role !== "user_dh" && session?.user?.role !== "admin") {
+//     return <div>No eres del área de Desarrollo Humano</div>
+//  }
+
   return (
     <div className="flex" >
       {/* <div className="h-screen flex bg-slate-800 p-5">

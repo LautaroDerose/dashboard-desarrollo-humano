@@ -62,12 +62,12 @@ export default function AssignmentLayout({ children }) {
               <DropdownMenuLabel>Formularios</DropdownMenuLabel>
               <DropdownMenuSeparator />
               <DropdownMenuItem >
-                <Link href='/dashboard/recipients/grupo-familiar'>
+                <Link href='/dashboard/recipients/grupo-familiar/crear'>
                   Crear Grupo Familiar
                 </Link>
               </DropdownMenuItem>
               <DropdownMenuItem>
-                <Link href='/dashboard/assignments/formulario-atmosferico'>
+                <Link href='/dashboard/recipients/grupo-familiar/agregar'>
                   Agregar a Grupo Existente
                 </Link>
               </DropdownMenuItem>

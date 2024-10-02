@@ -1,5 +1,5 @@
-import CreateFamilyGroup from "./form-createIdFamiliar";
-import UpdateFamilyGroup from "./form-updateIdFamiliar";
+import UpdateFamilyGroup from "./agregar/form-updateIdFamiliar";
+
 
 export default function GrupoFamiliarPage() {
   return(

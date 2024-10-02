@@ -75,7 +75,7 @@ export default function FormPassages({ recipients }) {
       {/* Recipient select */}
       <select
         name="recipient_id"
-        className="w-full px-2 py-1 rounded-sm my-4"
+        className="w-full px-2 py-1 rounded-sm mb-4"
         value={selectedRecipient}
         onChange={(e) => setSelectedRecipient(e.target.value)}
       >
@@ -101,7 +101,7 @@ export default function FormPassages({ recipients }) {
             <input type="date" name={`date${suffix}`} />
             <select name={`passenger_type${suffix}`}>
               <option value="">Seleccione tipo de acompañante</option>
-              <option value="unico">Único</option>
+              <option value="titular">Titular</option>
               <option value="acompanante">Acompañante</option>
             </select>
             <input type="text" name={`name${suffix}`} placeholder="Name" />

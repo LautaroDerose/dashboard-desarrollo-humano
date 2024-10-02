@@ -20,9 +20,7 @@ export default async function RecipientsListPage() {
           expiry_date: {
             gte: new Date(), // gte significa 'greater than or equal', es decir, hoy o en el futuro
           },
-          status: {
-            notIn: ["Concretado", "En Revision", "Rechazado"],
-          },
+         
         },
         orderBy: {
           expiry_date: 'asc' // Ordenar de vencimientos más cercanos a más lejanos

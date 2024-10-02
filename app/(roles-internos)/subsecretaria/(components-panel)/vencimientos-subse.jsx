@@ -5,6 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import Link from "next/link"
 import { useState } from "react"
+import { BsArrowRepeat } from "react-icons/bs"
 import { MdArrowOutward } from "react-icons/md"
 
 
@@ -72,16 +73,19 @@ export default function TablaSubseVencimientos({ proximosVencimientos = [] }) {
                     {`${item.recipient.first_name} ${item.recipient.last_name}`}
                   </TableCell>
                   <TableCell>
-                    {item.subsidy_stage && item.subsidy_stage.note_doc ? (
-                      <button
-                        onClick={() => handleToggleConfirmation(item.id, item.subsidy_stage.note_doc.is_confirm)}
-                        className={item.subsidy_stage.note_doc.is_confirm ? "text-green-400 font-bold p-2 rounded" : "text-red-400 font-bold p-2 rounded"}
-                      >
-                        {item.subsidy_stage.note_doc.is_confirm ? "Disponible" : "En espera"}
-                      </button>
-                    ) : (
-                      <p className="text-gray-500">No disponible</p>
-                    )}
+                    <div className="flex items-center">
+                      <BsArrowRepeat />  
+                      {item.subsidy_stage && item.subsidy_stage.note_doc ? (
+                        <button
+                          onClick={() => handleToggleConfirmation(item.id, item.subsidy_stage.note_doc.is_confirm)}
+                          className={item.subsidy_stage.note_doc.is_confirm ? "text-green-400 font-bold p-2 rounded" : "text-red-400 font-bold p-2 rounded"}
+                        >
+                          {item.subsidy_stage.note_doc.is_confirm ? "Disponible" : "En espera"}
+                        </button>
+                      ) : (
+                        <p className="text-gray-500">No disponible</p>
+                      )}
+                    </div>
                   </TableCell>
                   <TableCell>
                     {new Date(item.enrollment_date).toLocaleDateString()}

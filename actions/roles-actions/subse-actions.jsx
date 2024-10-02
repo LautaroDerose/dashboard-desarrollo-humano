@@ -19,17 +19,20 @@ const luz = await prisma.assignment.count({
     subsidy_stage:{
       decree_doc_id:null
     },
-    OR: [
-      { withdrawal_date: null },
-      { withdrawal_date: undefined },
-    ],
-    expiry_date: {
-      gte: new Date(), // gte significa 'greater than or equal', es decir, hoy o en el futuro
-    },
+    // OR: [
+    //   { withdrawal_date: null },
+    //   { withdrawal_date: undefined },
+    // ],
+    // expiry_date: {
+    //   gte: new Date(), // gte significa 'greater than or equal', es decir, hoy o en el futuro
+    // },
     // status: {
     //   notIn: ["Concretado", "En Revision", "Rechazado"],
     // },
   },
+  orderBy:{
+    expiry_date: 'desc'
+  }
 });
 
 const gas = await prisma.assignment.count({
@@ -38,13 +41,13 @@ const gas = await prisma.assignment.count({
     subsidy_stage:{
       decree_doc_id:null
     },
-    OR: [
-      { withdrawal_date: null },
-      { withdrawal_date: undefined },
-    ],
-    expiry_date: {
-      gte: new Date(), // gte significa 'greater than or equal', es decir, hoy o en el futuro
-    },
+    // OR: [
+    //   { withdrawal_date: null },
+    //   { withdrawal_date: undefined },
+    // ],
+    // expiry_date: {
+    //   gte: new Date(), // gte significa 'greater than or equal', es decir, hoy o en el futuro
+    // },
     // status: {
     //   notIn: ["Concretado", "En Revision", "Rechazado"],
     // },
@@ -57,13 +60,13 @@ const consulta = await prisma.assignment.count({
     subsidy_stage:{
       decree_doc_id:null
     },
-    OR: [
-      { withdrawal_date: null },
-      { withdrawal_date: undefined },
-    ],
-    expiry_date: {
-      gte: new Date(), // gte significa 'greater than or equal', es decir, hoy o en el futuro
-    },
+    // OR: [
+    //   { withdrawal_date: null },
+    //   { withdrawal_date: undefined },
+    // ],
+    // expiry_date: {
+    //   gte: new Date(), // gte significa 'greater than or equal', es decir, hoy o en el futuro
+    // },
     // status: {
     //   notIn: ["Concretado", "En Revision", "Rechazado"],
     // },
@@ -76,13 +79,13 @@ const estudio = await prisma.assignment.count({
     subsidy_stage:{
       decree_doc_id:null
     },
-    OR: [
-      { withdrawal_date: null },
-      { withdrawal_date: undefined },
-    ],
-    expiry_date: {
-      gte: new Date(), // gte significa 'greater than or equal', es decir, hoy o en el futuro
-    },
+    // OR: [
+    //   { withdrawal_date: null },
+    //   { withdrawal_date: undefined },
+    // ],
+    // expiry_date: {
+    //   gte: new Date(), // gte significa 'greater than or equal', es decir, hoy o en el futuro
+    // },
     // status: {
     //   notIn: ["Concretado", "En Revision", "Rechazado"],
     // },
@@ -95,13 +98,13 @@ const traslados = await prisma.assignment.count({
     subsidy_stage:{
       decree_doc_id:null
     },
-    OR: [
-      { withdrawal_date: null },
-      { withdrawal_date: undefined },
-    ],
-    expiry_date: {
-      gte: new Date(), // gte significa 'greater than or equal', es decir, hoy o en el futuro
-    },
+    // OR: [
+    //   { withdrawal_date: null },
+    //   { withdrawal_date: undefined },
+    // ],
+    // expiry_date: {
+    //   gte: new Date(), // gte significa 'greater than or equal', es decir, hoy o en el futuro
+    // },
     // status: {
     //   notIn: ["Concretado", "En Revision", "Rechazado"],
     // },
@@ -114,13 +117,13 @@ const materiales = await prisma.assignment.count({
     subsidy_stage:{
       decree_doc_id:null
     },
-    OR: [
-      { withdrawal_date: null },
-      { withdrawal_date: undefined },
-    ],
-    expiry_date: {
-      gte: new Date(), // gte significa 'greater than or equal', es decir, hoy o en el futuro
-    },
+    // OR: [
+    //   { withdrawal_date: null },
+    //   { withdrawal_date: undefined },
+    // ],
+    // expiry_date: {
+    //   gte: new Date(), // gte significa 'greater than or equal', es decir, hoy o en el futuro
+    // },
     // status: {
     //   notIn: ["Concretado", "En Revision", "Rechazado"],
     // },
@@ -133,13 +136,13 @@ const alquiler = await prisma.assignment.count({
     subsidy_stage:{
       decree_doc_id:null
     },
-    OR: [
-      { withdrawal_date: null },
-      { withdrawal_date: undefined },
-    ],
-    expiry_date: {
-      gte: new Date(), // gte significa 'greater than or equal', es decir, hoy o en el futuro
-    },
+    // OR: [
+    //   { withdrawal_date: null },
+    //   { withdrawal_date: undefined },
+    // ],
+    // expiry_date: {
+    //   gte: new Date(), // gte significa 'greater than or equal', es decir, hoy o en el futuro
+    // },
     // status: {
     //   notIn: ["Concretado", "En Revision", "Rechazado"],
     // },
@@ -152,13 +155,13 @@ const necesidades = await prisma.assignment.count({
     subsidy_stage:{
       decree_doc_id:null
     },
-    OR: [
-      { withdrawal_date: null },
-      { withdrawal_date: undefined },
-    ],
-    expiry_date: {
-      gte: new Date(), // gte significa 'greater than or equal', es decir, hoy o en el futuro
-    },
+    // OR: [
+    //   { withdrawal_date: null },
+    //   { withdrawal_date: undefined },
+    // ],
+    // expiry_date: {
+    //   gte: new Date(), // gte significa 'greater than or equal', es decir, hoy o en el futuro
+    // },
     // status: {
     //   notIn: ["Concretado", "En Revision", "Rechazado"],
     // },
@@ -168,9 +171,9 @@ const necesidades = await prisma.assignment.count({
 
 const recientes = await prisma.assignment.findMany({
   where: {
-    enrollment_date: {
-      lte: today // Menor o igual a la fecha actual
-    }
+    // enrollment_date: {
+    //   lte: today // Menor o igual a la fecha actual
+    // }
   },
   orderBy: {
     enrollment_date: 'desc' // Ordenar de más reciente a menos reciente

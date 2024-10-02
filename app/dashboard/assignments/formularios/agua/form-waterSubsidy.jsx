@@ -89,7 +89,7 @@ export default function FormWaterSubsidy({recipients, benefits}) {
   const [expiryDate, setExpiryDate] = useState(null);
   
   return (
-    <div className="mt-6">
+    <div className="">
       <form action={createWaterSubsidy} className="flex flex-col gap-4">
         <select
           name="recipient"

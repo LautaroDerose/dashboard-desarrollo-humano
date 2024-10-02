@@ -11,7 +11,7 @@ export default function AssignmentLayout({ children }) {
 
   return (
     <div className="flex flex-col mt-4 " >
-      <Card  className="p-4 mx-12 flex">
+      <Card  className="p-4 mx-12 flex mb-4">
         <NavigationMenuAssignments />
         <div className="ml-auto flex items-center gap-2">       
           <Button>

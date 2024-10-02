@@ -36,7 +36,7 @@ export default function FormGarrafa({ recipients }) {
   };
 
   return (
-    <div className="mt-6">
+    <div className="">
       <form action={createGarrafaAssignment}className="flex flex-col gap-4">
       {/* <form onSubmit={handleSubmit} className="flex flex-col gap-4"> */}
         {/* Selección de beneficiario */}
