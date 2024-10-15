@@ -6,7 +6,7 @@
     "dev": "next dev",
     "build": "next build",
     "export": "next build && next export",
-    "start": "next start",
+    "start": "NODE_ENV=production node server.js",
     "lint": "next lint"
   },
   "dependencies": {
@@ -59,9 +59,12 @@
     "zod": "^3.23.8"
   },
   "devDependencies": {
+    "@types/node": "^22.7.5",
+    "@types/react": "^18.3.11",
     "eslint": "^8",
     "postcss": "^8",
     "prisma": "^5.18.0",
-    "tailwindcss": "^3.4.1"
+    "tailwindcss": "^3.4.1",
+    "typescript": "^5.6.3"
   }
 }

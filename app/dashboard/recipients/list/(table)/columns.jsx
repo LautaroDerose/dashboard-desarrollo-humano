@@ -9,6 +9,7 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/comp
 
 import { TbDots } from "react-icons/tb";
 import { TbArrowsUpDown } from "react-icons/tb";
+import FacetedFilter from "./table-faceted-filter";
  
 export const columns = [
  

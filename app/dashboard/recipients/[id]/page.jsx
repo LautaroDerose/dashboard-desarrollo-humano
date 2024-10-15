@@ -82,3 +82,16 @@ export default async function RecipientDetail({ params }) {
     </div>
   );
 }
+
+
+export async function generateStaticParams() {
+  // Fetch all recipient IDs from your database
+  const recipients = await prisma.recipient.findMany({
+    select: { id: true }
+  });
+
+  // Map over the recipients to generate the params
+  return recipients.map((recipient) => ({
+    id: recipient.id.toString(),
+  }));
+}

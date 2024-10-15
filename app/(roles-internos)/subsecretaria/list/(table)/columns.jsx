@@ -12,6 +12,7 @@ import { BsArrowRepeat } from "react-icons/bs";
 import Link from "next/link";
 import { useState } from "react";
 import { confirmDoc } from "@/actions/doc-actions/doc-subse-actions";
+import { PapeleoCell } from "@/components/papeleo-column";
  
 export const columns = [
   // {
@@ -90,45 +91,57 @@ export const columns = [
   },
   {
     id: "papeleo",
-    accessorKey: 'subsidy_stage.note_doc.is_confirm',
+    accessorKey: 'subsidy_stage.decree_doc.is_confirm',
     header: 'Papeleo',
     cell: (props) => {
-      const [isConfirmed, setIsConfirmed] = useState(props.getValue());
       const assignmentId = props.row.original.id;
-  
-      const handleToggleConfirmation = async () => {
-        try {
-          await confirmDoc(assignmentId, isConfirmed);
-          setIsConfirmed(!isConfirmed);
-        } catch (error) {
-          console.error("Error updating document confirmation:", error);
-        }
-      };
-  
-      return (
-        <div className="flex items-center justify-center">
-          <BsArrowRepeat />  
-          {
-            isConfirmed ? (
-            <button
-              onClick={handleToggleConfirmation}
-              className="text-green-400 font-bold p-2 rounded"
-            >
-              Disponible
-            </button>
-          ) : (
-            <button
-              onClick={handleToggleConfirmation}
-              className="text-red-400 font-bold p-2 rounded"
-            >
-              En espera
-            </button>
-          )
-          }
-        </div>
-      )
+      const initialConfirmation = props.getValue();
+
+      // Usa el componente PapeleoCell que encapsula la lógica
+      return <PapeleoCell assignmentId={assignmentId} initialConfirmation={initialConfirmation} />;
     },
   },
+  // {
+  //   id: "papeleo",
+  //   accessorKey: 'subsidy_stage.note_doc.is_confirm',
+  //   header: 'Papeleo',
+  //   cell: (props) => {
+  //     const [isConfirmed, setIsConfirmed] = useState(props.getValue());
+  //     const assignmentId = props.row.original.id;
+  
+  //     const handleToggleConfirmation = async () => {
+  //       try {
+  //         await confirmDoc(assignmentId, isConfirmed);
+  //         setIsConfirmed(!isConfirmed);
+  //       } catch (error) {
+  //         console.error("Error updating document confirmation:", error);
+  //       }
+  //     };
+  
+  //     return (
+  //       <div className="flex items-center justify-center">
+  //         <BsArrowRepeat />  
+  //         {
+  //           isConfirmed ? (
+  //           <button
+  //             onClick={handleToggleConfirmation}
+  //             className="text-green-400 font-bold p-2 rounded"
+  //           >
+  //             Disponible
+  //           </button>
+  //         ) : (
+  //           <button
+  //             onClick={handleToggleConfirmation}
+  //             className="text-red-400 font-bold p-2 rounded"
+  //           >
+  //             En espera
+  //           </button>
+  //         )
+  //         }
+  //       </div>
+  //     )
+  //   },
+  // },
   // {
   //   id: "papeleo",
   //   accessorKey: 'subsidy_stage.note_doc.is_confirm', // Para el documento de tipo nota

@@ -13,6 +13,7 @@ import ReusableDialogForm from "./reusable-dialog-form";
 import { disableObservation } from "@/actions/subsidy-actions/credencial-actions";
 import ObservationCard from "./observation-card";
 import FormIssueCredential from "./form-issue-credential";
+import prisma from "@/lib/prisma";
 
 export default async function AssignmentDetail({ params }) {
   
@@ -231,6 +232,18 @@ export default async function AssignmentDetail({ params }) {
       
     </div>
   );
+}
+
+export async function generateStaticParams() {
+  // Fetch the data required to generate the static parameters.
+  const assignments = await prisma.assignment.findMany({
+    select: { id: true }, // Assuming you want to generate params for each assignment
+  });
+
+  // Map through the fetched assignments to create an array of params
+  return assignments.map(assignment => ({
+    id: assignment.id.toString(), // Ensure the ID is a string for the URL
+  }));
 }
 
 

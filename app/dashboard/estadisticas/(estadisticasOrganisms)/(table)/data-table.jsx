@@ -1,24 +1,9 @@
 'use client';
 
 import { useState, useEffect, useCallback } from 'react';
-import {
-    Table,
-    TableHeader,
-    TableBody,
-    TableRow,
-    TableHead,
-    TableCell,
-    TableFooter,
-  } from '@/components/ui/table';
+import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell, TableFooter, } from '@/components/ui/table';
 import { RxMixerHorizontal } from 'react-icons/rx'; // Asegúrate de importar correctamente los íconos
-import {
-    DropdownMenu,
-    DropdownMenuCheckboxItem,
-    DropdownMenuContent,
-    DropdownMenuLabel,
-    DropdownMenuSeparator,
-    DropdownMenuTrigger
-  } from '@/components/ui/dropdown-menu';
+import { DropdownMenu, DropdownMenuCheckboxItem, DropdownMenuContent, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { Button } from '@/components/ui/button';
 import { calculatePartialSums, calculateTotals, getBenefitsAssignments } from '@/actions/estadisticas-actions';
 
@@ -97,7 +82,7 @@ export default function DoubleEntryTable() {
     if (data.benefits.length > 0 && visibleBenefits.length === 0) {
       setVisibleBenefits(data.benefits.map(benefit => benefit.benefitId));
     }
-  }, [data.benefits]);
+  }, [data.benefits, visibleBenefits.length]); // Añadimos visibleBenefits.length como dependencia
 
   const handleToggleMonthVisibility = useCallback((index) => {
     setVisibleMonths((prev) => {

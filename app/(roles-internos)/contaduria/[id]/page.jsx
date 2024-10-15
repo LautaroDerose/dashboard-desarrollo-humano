@@ -5,6 +5,7 @@ import CreateDecreeDocForm from "./form-doc-contaduria";
 import { FaRegSquareCheck } from "react-icons/fa6";
 import { Button } from "@/components/ui/button";
 import CreatePaymentDocForm from "./form-doc-contaduria";
+import prisma from "@/lib/prisma";
 
 
 export default async function AssignmentDetail({ params }) {
@@ -145,4 +146,15 @@ export default async function AssignmentDetail({ params }) {
         </Card>
     </div>
   );
+}
+
+
+export async function generateStaticParams() {
+  const assignments = await prisma.assignment.findMany({
+    select: { id: true },
+  });
+
+  return assignments.map((assignment) => ({
+    id: assignment.id.toString(),
+  }));
 }

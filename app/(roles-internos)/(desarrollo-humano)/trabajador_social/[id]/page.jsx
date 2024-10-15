@@ -13,6 +13,7 @@ import FormTsVisit from "./form-ts-visit";
 import { disableObservation } from "@/actions/subsidy-actions/credencial-actions";
 import ObservationCard from "./observation-card";
 import FormVisitConfirm from "./form-visit-confirm";
+import prisma from "@/lib/prisma";
 
 export default async function AssignmentDetail({ params }) {
   
@@ -235,6 +236,17 @@ export default async function AssignmentDetail({ params }) {
   );
 }
 
+export async function generateStaticParams() {
+  const assignments = await prisma.assignment.findMany({
+    select: {
+      id: true, // Select only the id field
+    },
+  });
+
+  return assignments.map((assignment) => ({
+    id: assignment.id.toString(), // Return the id as a string for each assignment
+  }));
+}
 
 // import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 // import { Separator } from "@/components/ui/separator";

@@ -13,7 +13,8 @@ import Link from "next/link";
 import { useState } from "react";
 import { confirmDoc } from "@/actions/doc-actions/doc-subse-actions";
 import { confirmDecreeDoc } from "@/actions/doc-actions/doc-contaduria-actions";
- 
+import { PapeleoCell } from "@/components/papeleo-column";
+
 export const columns = [
   // {
   //   id: "select",
@@ -100,42 +101,53 @@ export const columns = [
     accessorKey: 'subsidy_stage.decree_doc.is_confirm',
     header: 'Papeleo',
     cell: (props) => {
-      const [isConfirmed, setIsConfirmed] = useState(props.getValue());
       const assignmentId = props.row.original.id;
+      const initialConfirmation = props.getValue();
   
-      const handleToggleConfirmation = async () => {
-        try {
-          await confirmDecreeDoc(assignmentId, isConfirmed);
-          setIsConfirmed(!isConfirmed);
-        } catch (error) {
-          console.error("Error updating document confirmation:", error);
-        }
-      };
-  
-      return (
-        <div className="flex items-center justify-center">
-          <BsArrowRepeat />  
-          {
-            isConfirmed ? (
-            <button
-              onClick={handleToggleConfirmation}
-              className="text-green-400 font-bold p-2 rounded"
-            >
-              Disponible
-            </button>
-          ) : (
-            <button
-              onClick={handleToggleConfirmation}
-              className="text-red-400 font-bold p-2 rounded"
-            >
-              En espera
-            </button>
-          )
-          }
-        </div>
-      )
+      return  <PapeleoCell assignmentId={assignmentId} initialConfirmation={initialConfirmation} />;
     },
   },
+  // {
+  //   id: "papeleo",
+  //   accessorKey: 'subsidy_stage.decree_doc.is_confirm',
+  //   header: 'Papeleo',
+  //   cell: (props) => {
+  //     const [isConfirmed, setIsConfirmed] = useState(props.getValue());
+  //     const assignmentId = props.row.original.id;
+  
+  //     const handleToggleConfirmation = async () => {
+  //       try {
+  //         await confirmDecreeDoc(assignmentId, isConfirmed);
+  //         setIsConfirmed(!isConfirmed);
+  //       } catch (error) {
+  //         console.error("Error updating document confirmation:", error);
+  //       }
+  //     };
+  
+  //     return (
+  //       <div className="flex items-center justify-center">
+  //         <BsArrowRepeat />  
+  //         {
+  //           isConfirmed ? (
+  //           <button
+  //             onClick={handleToggleConfirmation}
+  //             className="text-green-400 font-bold p-2 rounded"
+  //           >
+  //             Disponible
+  //           </button>
+  //         ) : (
+  //           <button
+  //             onClick={handleToggleConfirmation}
+  //             className="text-red-400 font-bold p-2 rounded"
+  //           >
+  //             En espera
+  //           </button>
+  //         )
+  //         }
+  //       </div>
+  //     )
+  //   },
+  // },
   // {
   //   id: "papeleo",
   //   accessorKey: 'subsidy_stage.note_doc.is_confirm', // Para el documento de tipo nota
@@ -176,73 +188,3 @@ export const columns = [
     },
   },
 ];
-    // {
-  //   id: "id",
-  //   accessorKey: "id",
-  //   header: ({ column }) => (
-  //     <Button variant="ghost" onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}>
-  //       ID Beneficiario
-  //       <TbArrowsUpDown className="ml-2 h-4 w-4" />
-  //     </Button>
-  //   ),
-  // },
-  // {
-  //   id: 'Direccion',
-  //   header: 'Direccion',
-  //   accessorFn: row => row.contact_info.street.name + ' ' + row.contact_info.street_number,
-  //   cell: (props) => {
-  //     return <p className=''>{props.getValue()}</p>;
-  //   }
-  // },
- 
- 
-  
-  // {
-  //   id: 'status',
-  //   accessorKey: 'status',
-  //   header: 'Estado',
-  //   cell: (props) => {
-  //     const value = props.getValue().toString();
-  //     return <p>{value}</p>;
-  //   },
-  //   filterFn: (row, columnId, filterValue) => {
-  //     const cellValue = row.getValue(columnId).toString();
-  //     return cellValue.includes(filterValue);
-  //   }
-  // },
-  
-  // {
-  //   id: 'recipient.locality',
-  //   accessorKey: 'recipient.contact_info.locality.name',
-  //   header: 'Localidad',
-  //   cell: (props) => <p>{props.getValue()}</p>,
-  // },
-  // {
-  //   accessorKey: 'enrollment_date',
-  //   header: ({ column }) => (
-  //     <Button variant="ghost" onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}>
-  //       Registro
-  //       <TbArrowsUpDown className="ml-2 h-4 w-4" />
-  //     </Button>
-  //   ),
-  //   cell: (props) => <p>{new Date(props.getValue()).toLocaleDateString()}</p>,
-  // },
-  
-  // {
-  //   accessorKey: 'withdrawal_date',
-  //   header: 'F. de Concresion',
-  //   cell: (props) => { null ? "" : <p>{new Date(props.getValue()).toLocaleDateString()}</p>},
-  // },
-  // {
-  //   accessorKey: 'amount',
-  //   header: 'Monto',
-  //   cell: (props) => <p>{props.getValue()}</p>,
-  // },
-  // {
-  //   accessorKey: 'quantity',
-  //   header: 'Cantidad',
-  //   cell: (props) => <p>{props.getValue()}</p>,
-  // },
- 
- 
-  

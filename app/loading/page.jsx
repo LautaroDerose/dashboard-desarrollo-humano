@@ -1,6 +1,7 @@
 // app/loading/page.js
 import { redirect } from "next/navigation";
 import { auth } from "@/auth";
+import Spinner from "@/components/spinner";
 
 export default async function LoadingPage() {
   // Obtener la sesión en el servidor
@@ -43,7 +44,7 @@ export default async function LoadingPage() {
 
   return (
     <div>
-      <div className="w-8 h-8 border-4 border-t-primary border-r-primary border-b-primary-foreground border-l-primary-foreground rounded-full animate-spin"></div>
+      <Spinner />
     </div>
   ); // Página temporal de carga
 }
