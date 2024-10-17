@@ -11,11 +11,11 @@ export const metadata = {
 
 export default async function GarrafaProviderLayout({ children }) {
   
-//   const session = await auth()
+  const session = await auth()
   
-//   if (session?.user?.role !== "provedor" && session?.user?.role !== "admin") {
-//     return <div>No eres del área de Secretaria de Desarrollo Humano</div>
-//  }
+  if (session?.user?.role !== "provedor" && session?.user?.role !== "admin") {
+    return <div>No eres del área de Secretaria de Desarrollo Humano</div>
+ }
 
   return (
     <html lang="en">
