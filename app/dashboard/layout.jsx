@@ -3,11 +3,11 @@ import { auth } from "@/auth"
 
 export default async function DashboardLayout({ children }) {
 
-  const session = await auth()
+//   const session = await auth()
   
-  if (session?.user?.role !== "user_dh" && session?.user?.role !== "admin") {
-    return <div>No eres del área de Desarrollo Humano</div>
- }
+//   if (session?.user?.role !== "user_dh" && session?.user?.role !== "admin") {
+//     return <div>No eres del área de Desarrollo Humano</div>
+//  }
 
   return (
     <div className="flex" >
