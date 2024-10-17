@@ -65,7 +65,9 @@ export async function createRecipient(formData) {
     },
   });
   revalidatePath("dashboard/recipients");
-}export async function editRecipient(formData) {
+}
+
+export async function editRecipient(formData) {
   const id = parseInt(formData.get("id"));
   const firstName = formData.get("first_name");
   const lastName = formData.get("last_name");
@@ -307,43 +309,6 @@ export async function createFamilyGroup(formData) {
   revalidatePath('/dashboard/recipients/grupo-familiar/crear');
   return { newFamilyGroup };
 }
-
-// export async function updateFamilyGroup(formData) {
-//   const selectedRecipients = JSON.parse(formData.get("selected_recipients") || "[]");
-//   const familyGroupId = parseInt(formData.get("family_group_id"), 10);
-
-//   if (!familyGroupId) {
-//     throw new Error("No se seleccionó un grupo familiar existente.");
-//   }
-
-//   if (selectedRecipients.length === 0) {
-//     throw new Error("No se seleccionaron destinatarios.");
-//   }
-
-//   // Verificar si el family_group_id existe
-//   const familyGroupExists = await prisma.familyGroup.findUnique({
-//     where: { id: familyGroupId },
-//   });
-
-//   if (!familyGroupExists) {
-//     throw new Error(`El grupo familiar con ID ${familyGroupId} no existe.`);
-//   }
-
-//   // Actualizar los destinatarios seleccionados con el ID del grupo familiar
-//   await prisma.recipient.updateMany({
-//     where: {
-//       id: {
-//         in: selectedRecipients,
-//       },
-//     },
-//     data: {
-//       family_group_id: familyGroupId,
-//     },
-//   });
-
-//   return { message: "Destinatarios agregados al grupo familiar." };
-// }
-
 
 export async function updateFamilyGroup(formData) {
   const selectedRecipients = JSON.parse(formData.get("selected_recipients") || "[]");

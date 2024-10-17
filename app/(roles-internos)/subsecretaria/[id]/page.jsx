@@ -129,13 +129,3 @@ export default async function AssignmentDetail({ params }) {
     </div>
   );
 }
-
-export async function generateStaticParams() {
-  const assignments = await prisma.assignment.findMany({
-    select: { id: true },
-  });
-
-  return assignments.map((assignment) => ({
-    id: assignment.id.toString(),
-  }));
-}
